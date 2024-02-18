@@ -54,7 +54,8 @@
       ]
     },
     "address": {
-      "type": "string"
+      "type": "string",
+      "title": "On-Chain address of the reporter"
     },
     "wish": {
       "title": "Whether to retain rank or promote. Both contains their rank resp.",
@@ -86,7 +87,7 @@
       ]
     },
     "evidence_categories": {
-      "title": "Array of enums of the evidence categories",
+      "title": "Evidence categories covered in this report",
       "type": "array",
       "items": {
         "type": "string",
@@ -114,7 +115,7 @@
     },
     "evidence": {
       "type": "array",
-      "title": "Array of evidence",
+      "title": "Pieces of evidence that support the report",
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -125,7 +126,7 @@
           },
           "tasks": {
             "type": "array",
-            "title": "Array of tasks",
+            "title": "Tasks of this evidence",
             "items": {
               "type": "object",
               "additionalProperties": false,
@@ -136,7 +137,7 @@
                 },
                 "links": {
                   "type": "array",
-                  "title": "Array of links",
+                  "title": "Links to the task",
                   "items": {
                     "type": "string",
                     "format": "uri"
