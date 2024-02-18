@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>OTY - evidence report</title>
+
+  <style>
+    .space {
+      padding-bottom: 0.5rem;
+    }
+    .big {
+      padding-bottom: 1.0rem;
+    }
+  </style>
+</head>
+<body>
+<tt>
+
+<% use crate::evidence::Wish; %>
+<% use crate::traits::FormatLink; %>
+
+<center><h1>Evidence Report</h1></center>
+<center><h3><%- report.collective.name() %></h3></center>
+<div class="space"></div>
+<div align="right">Date: <%= report.date %></div>
+<br>
+<center></centeR>
+Fellow <strong><%- report.name %></strong> (<%- report.github_link() %>, <%- report.address_link() %>) wishes to
+<div class="big"></div>
+&nbsp;&nbsp;- <%= report.wish.as_typed().title().to_uppercase() %> -
+<div class="big"></div>
+
+<% match report.wish.as_typed() {
+  Wish::Retain(rank) => { %>
+    the rank of
+    <div class="big"></div>
+    &nbsp;&nbsp;- <%= rank.name().to_uppercase() %> -
+    <div class="big"></div>
+  <% },
+  Wish::Promote(rank) => { %>
+    to rank
+    <div class="big"></div>
+    &nbsp;&nbsp;- <%= rank.name().to_uppercase() %> -
+    <div class="big"></div>
+  <% },
+} %>
+
+by providing evidence for the period <%= report.period.start %> to <%= report.period.end %> in the following categories:
+<div class="space"></div>
+<% for cat in report.categories.iter().map(|c| c.clone().into_typed()) { %>
+  &nbsp;- <%= cat.title() %><%= cat.sub_categories().map(|cs| format!(": {cs}")).unwrap_or("".into()) %>
+<% } %>
+<br><br>
+<hr>
+<br>
+
+<center><h3>Evidence</h3></center>
+
+The fellow has either solely completed the following tasks or has significantly contributed to their success.
+<div class="big"></div>
+
+<% for (i, evidence) in report.evidence.iter().enumerate() { %>
+  <h4> <%= evidence.title %></h4>
+  <% for(j, task) in evidence.tasks.iter().enumerate() { %>
+    &nbsp;- <%= i + 1 %>.<%= j + 1 %>: <%= task.title %> (<%- task.links[0].format_link() %>).<br>
+  <% } %>
+  <div class="space"></div>
+<% } %>
+
+</tt>
+</body>
+</html>

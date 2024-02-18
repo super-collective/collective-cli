@@ -1,0 +1,27 @@
+name: Oliver Tale-Yazdi
+address: "16a357f5Sxab3V2ne4emGQvqJaCLeYpTMx3TCjnQhmJQ71DX"
+github: "ggwpez"
+collective: Fellowship
+wish:
+  retain: 2
+report_date: "2024-02-18"
+report_period:
+  start_date: "2024-01-01"
+  end_date: "2024-03-10"
+evidence_categories:
+  - development: ["sdk", "runtime", "tooling"]
+evidence:
+  - title: "Substrate: Multi Block Migrations"
+    tasks:
+    - title: "Adapt frame-executive to support MBMs"
+      links: ["https://github.com/paritytech/polkadot-sdk/pull/1781"]
+    - title: "Introduce migrations pallet"
+      links: ["https://github.com/paritytech/polkadot-sdk/pull/1781"]
+    - title: "Prepare RuntimeAPI Core for MBMs"
+      links: ["https://github.com/polkadot-fellows/RFCs/pull/13"]
+  - title: "Substrate: Dynamic parameters for runtime configs"
+    tasks:
+      - title: "Fork and adopt ORML parameters pallet"
+        links: ["https://github.com/paritytech/polkadot-sdk/pull/2061"]
+      - title: "Create FRAME macros for derive params syntax"
+        links: ["https://github.com/paritytech/polkadot-sdk/pull/2061"]
