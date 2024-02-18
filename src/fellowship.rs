@@ -35,9 +35,9 @@ impl crate::traits::Rank for Rank {
 }
 
 #[test]
-fn parses_yaml_file() {
-    let file = std::fs::read_to_string("example.evidence").unwrap();
+fn parses_example_file() {
+    let file = std::fs::read_to_string("example/example.evidence").unwrap();
     let evidence: FellowshipReport = serde_yaml::from_str(&file).unwrap();
 
-    assert_eq!(evidence.name, "Oliver Tale-Yazdi");
+    assert_eq!(evidence.name, "Max Power");
 }
