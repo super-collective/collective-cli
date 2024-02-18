@@ -1,5 +1,5 @@
-use crate::fellowship::FellowshipReport;
 use crate::cmd::OutputArgs;
+use crate::fellowship::FellowshipReport;
 
 #[derive(Debug, clap::Parser)]
 pub struct NewEvidenceCommand {
@@ -28,6 +28,6 @@ impl NewEvidenceCommand {
             GenerationMode::Example => FellowshipReport::example(),
         };
 
-        self.output.write(&data)
+        self.output.write(data)
     }
 }

@@ -1,5 +1,5 @@
-use crate::fellowship::FellowshipReport;
 use crate::cmd::OutputArgs;
+use crate::fellowship::FellowshipReport;
 
 #[derive(Debug, clap::Parser)]
 pub struct SchemaEvidenceCommand {
@@ -11,6 +11,6 @@ impl SchemaEvidenceCommand {
     pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
         let schema = FellowshipReport::schema();
 
-        self.output.write(&schema)
+        self.output.write(schema)
     }
 }

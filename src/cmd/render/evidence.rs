@@ -1,6 +1,6 @@
+use crate::cmd::OutputArgs;
 use crate::fellowship::FellowshipReport;
 use std::path::PathBuf;
-use crate::cmd::OutputArgs;
 
 use sailfish::TemplateOnce;
 
@@ -20,7 +20,7 @@ impl RenderEvidenceCommand {
 
         let ctx = crate::template::EvidenceTemplate { report };
         let rendered = ctx.render_once()?;
-        
+
         self.output.write(&rendered)
     }
 }
