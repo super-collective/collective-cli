@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 license = "GPL-3.0-only"
 repository = "https://github.com/ggwpez/fellowship"
+description = "A CLI to automate work around Polkadot collective work reports."
 
 [dependencies]
 clap = { version = "4.5.0", features = ["derive", "cargo"] }
