@@ -12,7 +12,6 @@ impl<T: HumanDisplay> HumanDisplay for Option<T> {
 }
 
 pub trait Rank: Copy {
-    fn number(&self) -> u8;
     fn name(&self) -> &'static str;
 }
 

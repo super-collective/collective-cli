@@ -184,6 +184,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5443807d6dff69373d433ab9ef5378ad8df50ca6298caf15de6e52e24aaf54d5"
 
 [[package]]
+name = "fellowship"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "env_logger",
+ "inquire",
+ "log",
+ "sailfish",
+ "serde",
+ "serde_repr",
+ "serde_yaml",
+]
+
+[[package]]
 name = "filetime"
 version = "0.2.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -336,20 +350,6 @@ dependencies = [
  "redox_syscall",
  "smallvec",
  "windows-targets 0.48.5",
-]
-
-[[package]]
-name = "powdoc"
-version = "0.1.0"
-dependencies = [
- "clap",
- "env_logger",
- "inquire",
- "log",
- "sailfish",
- "serde",
- "serde_repr",
- "serde_yaml",
 ]
 
 [[package]]

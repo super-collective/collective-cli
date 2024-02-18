@@ -1,3 +1,5 @@
+use core::fmt::Display;
+use core::fmt::Formatter;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -28,7 +30,6 @@ impl<Rank: crate::traits::Rank> WishUntyped<Rank> {
             (Some(rank), None) => Wish::Retain(*rank),
             (None, Some(rank)) => Wish::Promote(*rank),
         }
-        .into()
     }
 }
 
@@ -113,13 +114,13 @@ pub enum DevelopmentEvidenceCategory {
     Other,
 }
 
-impl ToString for DevelopmentEvidenceCategory {
-    fn to_string(&self) -> String {
+impl Display for DevelopmentEvidenceCategory {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            DevelopmentEvidenceCategory::Sdk => "SDK".to_string(),
-            DevelopmentEvidenceCategory::Runtime => "Runtime".to_string(),
-            DevelopmentEvidenceCategory::Tooling => "Tooling".to_string(),
-            DevelopmentEvidenceCategory::Other => "Other".to_string(),
+            DevelopmentEvidenceCategory::Sdk => write!(f, "SDK"),
+            DevelopmentEvidenceCategory::Runtime => write!(f, "Runtime"),
+            DevelopmentEvidenceCategory::Tooling => write!(f, "Tooling"),
+            DevelopmentEvidenceCategory::Other => write!(f, "Other"),
         }
     }
 }

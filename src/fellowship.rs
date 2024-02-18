@@ -18,10 +18,6 @@ pub enum Rank {
 }
 
 impl crate::traits::Rank for Rank {
-    fn number(&self) -> u8 {
-        *self as u8
-    }
-
     fn name(&self) -> &'static str {
         match self {
             Rank::Candidate => "Candidate",
