@@ -9,7 +9,6 @@ description = "A CLI to automate work around Polkadot collective work reports."
 [dependencies]
 clap = { version = "4.5.0", features = ["derive", "cargo"] }
 env_logger = "0.11.2"
-inquire = "0.6.2"
 log = "0.4.20"
 sailfish = "0.8.3"
 serde = { version = "1.0.196", features = ["derive"] }

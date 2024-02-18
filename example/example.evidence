@@ -1,0 +1,25 @@
+collective: Fellowship
+name: Max Power
+address: "16a357f5Sxab3V2ne4emGQvqJaCLeYpTMx3TCjnQhmJQ71DX"
+github: mpower
+wish:
+  retain: 9
+report_date: "2024-03-20"
+report_period:
+  start_date: "2024-01-01"
+  end_date: "2024-03-10"
+evidence_categories:
+  - development: ["sdk", "runtime", "tooling"]
+evidence:
+  - title: "Substrate: Some Awesome work"
+    tasks:
+    - title: "Introduce true randomness"
+      links: ["https://github.com/paritytech/polkadot-sdk/pull/444"]
+    - title: "Refactor everything"
+      links: ["https://github.com/paritytech/polkadot-sdk/pull/999"]
+  - title: "Polkadot: Big improvements"
+    tasks:
+    - title: "Adapt frame-system"
+      links: ["https://github.com/paritytech/polkadot-sdk/pull/321"]
+    - title: "Do other things"
+      links: ["https://github.com/paritytech/polkadot-sdk/pull/123"]

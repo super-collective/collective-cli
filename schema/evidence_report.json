@@ -11,9 +11,9 @@
   "additionalProperties": false,
   "properties": {
     "name": {
-      "title": "Title of the change",
+      "title": "Name of the reporter",
       "type": "string",
-      "description": "Title for the PR. This is what will show up in the release notes.\nif needed, you may provide a different title override for each audience in the `doc` property."
+      "description": "Legal name or otherwise unique alias"
     },
     "github": {
       "title": "GitHub handle of the reporter",
@@ -63,8 +63,8 @@
           "type": "object",
           "properties": {
             "retain": {
-              "title": "Retain rank",
-              "type": "string"
+              "title": "Retain this rank",
+              "type": "integer"
             }
           },
           "required": [
@@ -75,10 +75,13 @@
           "type": "object",
           "properties": {
             "promote": {
-              "title": "Promote",
-              "type": "string"
+              "title": "Promote to this rank",
+              "type": "integer"
             }
-          }
+          },
+          "required": [
+            "promote"
+          ]
         }
       ]
     },

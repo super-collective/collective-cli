@@ -1,0 +1,20 @@
+collective: Fellowship
+name: 
+address: 
+github: 
+wish:
+report_date: "2024-"
+report_period:
+  start_date: "2024-"
+  end_date: "2024-"
+evidence_categories:
+  - development: [ ] # TODO
+evidence:
+  - title: "Polkadot: Big improvements"
+    tasks:
+    - title: 
+      links: [ ] # TODO
+  - title: 
+    tasks:
+    - title: 
+      links: [ ] # TODO

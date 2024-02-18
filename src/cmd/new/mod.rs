@@ -8,6 +8,7 @@ pub struct NewCommand {
 
 #[derive(Debug, clap::Subcommand)]
 enum NewSubCommand {
+    /// Create a new evidence report.
     Evidence(evidence::NewEvidenceCommand),
 }
 

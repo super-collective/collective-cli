@@ -54,7 +54,7 @@ pub struct Evidence {
     pub tasks: Vec<Tasks>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone, clap::ValueEnum)]
 pub enum Collective {
     #[serde(alias = "fellowship")]
     Fellowship,
@@ -127,7 +127,7 @@ impl Display for DevelopmentEvidenceCategory {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
-pub struct EvidenceReport<Rank: crate::traits::Rank> {
+pub struct EvidenceReport<Rank> {
     pub name: String,
     pub address: String,
     pub github: String,
@@ -160,5 +160,20 @@ impl<Rank: crate::traits::Rank> EvidenceReport<Rank> {
             "<a target='_blank' href='https://github.com/{}'>{}</a>",
             self.github, self.github
         )
+    }
+}
+
+impl<Rank> EvidenceReport<Rank> {
+    /// YAML schema in JSON format.
+    pub fn schema() -> &'static str {
+        include_str!("../schema/evidence_report.json")
+    }
+
+    pub fn example() -> &'static str {
+        include_str!("../example/example.evidence")
+    }
+
+    pub fn template() -> &'static str {
+        include_str!("../example/template.evidence")
     }
 }
