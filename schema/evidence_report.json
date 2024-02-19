@@ -3,8 +3,7 @@
   "version": {
     "major": 1,
     "minor": 0,
-    "patch": 0,
-    "timestamp": 20230817152351
+    "patch": 0
   },
   "title": "Fellowship Evidence",
   "type": "object",
