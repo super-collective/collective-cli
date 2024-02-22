@@ -152,6 +152,10 @@ impl<Rank: crate::traits::Rank> EvidenceReport<Rank> {
 	pub fn github_link(&self) -> String {
 		format!("<a target='_blank' href='https://github.com/{}'>{}</a>", self.github, self.github)
 	}
+
+	pub fn canonical_name(&self) -> String {
+		self.name.to_lowercase().replace(" ", "-")
+	}
 }
 
 impl<Rank> EvidenceReport<Rank> {

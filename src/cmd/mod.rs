@@ -1,3 +1,5 @@
+mod check;
+mod index;
 mod new;
 mod render;
 mod schema;
@@ -45,6 +47,10 @@ enum SubCommand {
 	Render(render::RenderCommand),
 	/// Generate a schema of a report.
 	Schema(schema::SchemaCommand),
+	/// Check something for validity.
+	Check(check::CheckCommand),
+	/// Index some files.
+	Index(index::IndexCommand),
 }
 
 impl Command {
@@ -53,6 +59,8 @@ impl Command {
 			SubCommand::New(c) => c.run(),
 			SubCommand::Render(c) => c.run(),
 			SubCommand::Schema(c) => c.run(),
+			SubCommand::Check(c) => c.run(),
+			SubCommand::Index(c) => c.run(),
 		}
 	}
 }
@@ -67,40 +75,12 @@ impl OutputArgs {
 
 		Ok(())
 	}
+}
 
-	pub fn write_evidence(&self, data: &str) -> Result<(), Box<dyn std::error::Error>> {
-		if self.stdout {
-			println!("{}", data);
-		} else if let Some(path) = &self.output {
-			std::fs::write(path, data)?;
-			println!("Wrote evidence to {}", path.display());
-		} else {
-			let path = Self::find_good_path()?;
-			assert!(!path.exists(), "Should not try to overwrite data");
-
-			std::fs::write(&path, data)?;
-			println!("Wrote evidence to {}", path.display());
-		}
-
-		Ok(())
-	}
-
-	fn find_good_path() -> Result<PathBuf, Box<dyn std::error::Error>> {
-		let date = chrono::Local::now().format("%Y-%m-%d").to_string();
-
-		for i in 0..100 {
-			let mut path = date.clone();
-			if i != 0 {
-				path.push_str(&format!(".{}", i));
-			}
-			path.push_str(".evidence");
-
-			let path = PathBuf::from(path);
-			if !path.exists() {
-				return Ok(path);
-			}
-		}
-
-		Err("Could not find a good path".into())
+pub fn plural(count: usize) -> &'static str {
+	if count == 1 {
+		""
+	} else {
+		"s"
 	}
 }

@@ -5,6 +5,7 @@ use crate::{
 	prompt::Prompt,
 	traits::Rank,
 };
+use std::path::PathBuf;
 
 use chrono::{NaiveDate, Weekday};
 use inquire::{DateSelect, Select};
@@ -16,8 +17,9 @@ pub struct NewEvidenceCommand {
 	#[clap(index = 1, default_value = "cli")]
 	mode: GenerationMode,
 
-	#[clap(flatten)]
-	output: OutputArgs,
+	/// The evidence folder.
+	#[clap(long, default_value = "evidence", conflicts_with_all = &["output", "stdout"])]
+	evidence: PathBuf,
 }
 
 #[derive(Debug, Clone, PartialEq, clap::ValueEnum)]
@@ -38,7 +40,24 @@ impl NewEvidenceCommand {
 			GenerationMode::Cli => self.run_prompt()?,
 		};
 
-		self.output.write_evidence(&data)
+		let path = self.find_good_path()?;
+		std::fs::write(&path, data)?;
+		println!("🎉 Wrote partial evidence report to '{}'.", path.display());
+
+		Ok(())
+	}
+
+	fn find_good_path(&self) -> Result<PathBuf> {
+		for i in 0..1000 {
+			// lol shit code
+			let path = self.evidence.join(i.to_string()).with_extension("evidence");
+
+			if !path.exists() {
+				return Ok(path);
+			}
+		}
+
+		Err("Could not find a good path. Please use `--evidence` to specify an empty.".into())
 	}
 
 	fn run_prompt(&self) -> Result<String> {

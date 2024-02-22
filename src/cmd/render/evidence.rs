@@ -1,7 +1,6 @@
 use crate::fellowship::FellowshipReport;
-use std::path::PathBuf;
-
 use sailfish::TemplateOnce;
+use std::path::PathBuf;
 
 #[derive(Debug, clap::Parser)]
 pub struct RenderEvidenceCommand {

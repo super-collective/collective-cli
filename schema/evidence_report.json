@@ -89,7 +89,6 @@
       "title": "Evidence categories covered in this report",
       "type": "array",
       "items": {
-        "type": "string",
         "oneOf": [
           {
             "type": "object",
