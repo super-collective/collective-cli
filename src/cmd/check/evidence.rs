@@ -15,7 +15,7 @@ pub struct CheckEvidenceCommand {
 impl CheckEvidenceCommand {
 	pub fn run(&self) -> Result<()> {
 		let schema_str = FellowshipReport::schema();
-		let schema: serde_json::Value = serde_json::from_str(&schema_str)?;
+		let schema: serde_json::Value = serde_json::from_str(schema_str)?;
 		let mut scope = json_schema::Scope::new();
 		let schema = scope.compile_and_return(schema, false).unwrap();
 

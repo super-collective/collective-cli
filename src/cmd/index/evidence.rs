@@ -1,12 +1,6 @@
-use crate::{
-	cmd::{plural, OutputArgs},
-	fellowship::FellowshipReport,
-};
-use relative_path::RelativePath;
-use std::{
-	fs::canonicalize,
-	path::{Path, PathBuf},
-};
+use crate::{cmd::plural, fellowship::FellowshipReport};
+
+use std::path::PathBuf;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
@@ -51,7 +45,7 @@ impl IndexEvidenceCommand {
 				let sub = self.create_sub_folder(&["by_reporter", &evidence.canonical_name()])?;
 
 				// yikes... this is a bit ugly
-				let from = PathBuf::from("..").join("..").join(&file_name);
+				let from = PathBuf::from("..").join("..").join(file_name);
 				let to = sub.join(file_name);
 
 				if std::fs::symlink_metadata(&to).is_ok() {
@@ -69,10 +63,10 @@ impl IndexEvidenceCommand {
 			if self.by_date() {
 				let splits = evidence.date.split('-').collect::<Vec<_>>();
 				let sub =
-					self.create_sub_folder(&["by_date", &splits[0], &splits[1], &splits[2]])?;
+					self.create_sub_folder(&["by_date", (splits[0]), (splits[1]), (splits[2])])?;
 
 				// yikes... this is a bit ugly
-				let from = PathBuf::from("..").join("..").join("..").join("..").join(&file_name);
+				let from = PathBuf::from("..").join("..").join("..").join("..").join(file_name);
 				let to = sub.join(file_name);
 
 				if std::fs::symlink_metadata(&to).is_ok() {
@@ -132,7 +126,7 @@ impl IndexEvidenceCommand {
 		if self.reindex {
 			self.delete_sub_folder(&["by_date"])?;
 		}
-		let folder = self.create_sub_folder(&["by_date"])?;
+		let _folder = self.create_sub_folder(&["by_date"])?;
 
 		Ok(())
 	}
@@ -144,7 +138,7 @@ impl IndexEvidenceCommand {
 		if self.reindex {
 			self.delete_sub_folder(&["by_reporter"])?;
 		}
-		let folder = self.create_sub_folder(&["by_reporter"])?;
+		let _folder = self.create_sub_folder(&["by_reporter"])?;
 
 		Ok(())
 	}

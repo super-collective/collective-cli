@@ -154,7 +154,7 @@ impl<Rank: crate::traits::Rank> EvidenceReport<Rank> {
 	}
 
 	pub fn canonical_name(&self) -> String {
-		self.name.to_lowercase().replace(" ", "-")
+		self.name.to_lowercase().replace(' ', "-")
 	}
 }
 

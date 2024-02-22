@@ -1,5 +1,4 @@
 use crate::{
-	cmd::OutputArgs,
 	evidence::{Collective, Evidence, ReportPeriod, Tasks, WishUntyped},
 	fellowship::FellowshipReport,
 	prompt::Prompt,

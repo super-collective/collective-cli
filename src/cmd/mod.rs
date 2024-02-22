@@ -4,8 +4,6 @@ mod new;
 mod render;
 mod schema;
 
-use std::path::PathBuf;
-
 /// See out how Rust dependencies and features are enabled.
 #[derive(Debug, clap::Parser)]
 #[command(author, version, about, long_about = None)]
