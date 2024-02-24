@@ -66,11 +66,16 @@ impl Command {
 }
 
 impl OutputArgs {
-	pub fn write_schema(&self, data: &str) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn write_schema(&self, default_path: &str, data: &str) -> Result<(), Box<dyn std::error::Error>> {
 		if let Some(path) = &self.output {
 			std::fs::write(path, data)?;
-		} else {
+			println!("Wrote schema to '{}'", path.display());
+		} else if self.stdout {
 			println!("{}", data);
+		} else {
+			let path = std::path::PathBuf::from(default_path);
+			std::fs::write(&path, data)?;
+			println!("Wrote schema to '{}'", path.display());
 		}
 
 		Ok(())

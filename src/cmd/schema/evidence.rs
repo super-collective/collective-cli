@@ -10,6 +10,6 @@ impl SchemaEvidenceCommand {
 	pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
 		let schema = FellowshipReport::schema();
 
-		self.output.write_schema(schema)
+		self.output.write_schema("schema_evidence.json", schema)
 	}
 }
