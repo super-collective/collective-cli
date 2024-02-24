@@ -1,4 +1,5 @@
 use crate::{
+	cmd::OnOff,
 	evidence::{Collective, Evidence, ReportPeriod, Tasks, WishUntyped},
 	fellowship::FellowshipReport,
 	prompt::Prompt,
@@ -17,8 +18,12 @@ pub struct NewEvidenceCommand {
 	mode: GenerationMode,
 
 	/// The evidence folder.
-	#[clap(long, default_value = "evidence", conflicts_with_all = &["output", "stdout"])]
+	#[clap(long, default_value = "evidence")]
 	evidence: PathBuf,
+
+	/// Whether to cache the answers.
+	#[clap(long, default_value = "on")]
+	cache: OnOff,
 }
 
 #[derive(Debug, Clone, PartialEq, clap::ValueEnum)]
@@ -67,7 +72,7 @@ impl NewEvidenceCommand {
 	}
 
 	fn query(&self) -> Result<FellowshipReport> {
-		let mut prompt = Prompt::new()?;
+		let mut prompt = Prompt::new(self.cache == OnOff::On)?;
 
 		let name = prompt.query_cached_text::<String>(
 			"reporter_legal_name",

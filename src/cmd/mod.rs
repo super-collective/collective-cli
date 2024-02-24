@@ -3,6 +3,7 @@ mod index;
 mod new;
 mod render;
 mod schema;
+mod tests;
 
 pub const EVIDENCE_FOLDER: &str = "evidence";
 
@@ -66,7 +67,11 @@ impl Command {
 }
 
 impl OutputArgs {
-	pub fn write_schema(&self, default_path: &str, data: &str) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn write_schema(
+		&self,
+		default_path: &str,
+		data: &str,
+	) -> Result<(), Box<dyn std::error::Error>> {
 		if let Some(path) = &self.output {
 			std::fs::write(path, data)?;
 			println!("Wrote schema to '{}'", path.display());
@@ -88,4 +93,10 @@ pub fn plural(count: usize) -> &'static str {
 	} else {
 		"s"
 	}
+}
+
+#[derive(Debug, Clone, PartialEq, clap::ValueEnum)]
+pub enum OnOff {
+	On,
+	Off,
 }

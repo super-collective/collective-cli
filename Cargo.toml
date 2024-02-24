@@ -22,3 +22,7 @@ serde_repr = "0.1.18"
 serde_yaml = "0.9.31"
 symlink = "0.1.0"
 valico = { version = "4.0", default-features = false, features = [] }
+
+[dev-dependencies]
+assert_cmd = "2.0.14"
+assert_fs = "1.1.1"
