@@ -1,6 +1,6 @@
 [package]
 name = "collective"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license = "GPL-3.0-only"
 repository = "https://github.com/ggwpez/fellowship"
@@ -11,6 +11,7 @@ chrono = "0.4.34"
 clap = { version = "4.5.0", features = ["derive", "cargo"] }
 dirs = "5.0.1"
 env_logger = "0.11.2"
+glob = "0.3.1"
 inquire = { version = "0.6.2", features = ["date"] }
 log = "0.4.20"
 relative-path = "1.9.2"

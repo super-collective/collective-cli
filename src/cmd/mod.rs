@@ -4,6 +4,8 @@ mod new;
 mod render;
 mod schema;
 
+pub const EVIDENCE_FOLDER: &str = "evidence";
+
 /// See out how Rust dependencies and features are enabled.
 #[derive(Debug, clap::Parser)]
 #[command(author, version, about, long_about = None)]

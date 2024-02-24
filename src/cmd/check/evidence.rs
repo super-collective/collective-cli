@@ -1,4 +1,5 @@
 use crate::fellowship::FellowshipReport;
+use glob::glob;
 use std::path::PathBuf;
 
 use valico::{json_schema, json_schema::schema::ScopedSchema};
@@ -7,9 +8,9 @@ type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
 #[derive(Debug, clap::Parser)]
 pub struct CheckEvidenceCommand {
-	/// List of paths to evidence reports.
-	#[clap(index = 1)]
-	path: Vec<PathBuf>,
+	/// Explicit list of paths to evidence reports.
+	#[clap(long)]
+	files: Option<Vec<PathBuf>>,
 }
 
 impl CheckEvidenceCommand {
@@ -19,7 +20,8 @@ impl CheckEvidenceCommand {
 		let mut scope = json_schema::Scope::new();
 		let schema = scope.compile_and_return(schema, false).unwrap();
 
-		for path in &self.path {
+		let paths = self.relevant_files()?;
+		for path in paths.iter() {
 			let data = std::fs::read_to_string(path.as_path())?;
 
 			// Check that we can decode it.
@@ -29,13 +31,24 @@ impl CheckEvidenceCommand {
 			Self::validate_schema(&schema, &data)?;
 		}
 
-		println!(
-			"Validated {} evidence report{}.",
-			self.path.len(),
-			crate::cmd::plural(self.path.len())
-		);
+		println!("Validated {} evidence report{}.", paths.len(), crate::cmd::plural(paths.len()));
 
 		Ok(())
+	}
+
+	fn relevant_files(&self) -> Result<Vec<PathBuf>> {
+		if let Some(files) = &self.files {
+			Ok(files.clone())
+		} else {
+			let pattern = format!("{}/**/*.evidence", crate::cmd::EVIDENCE_FOLDER);
+			let mut files = vec![];
+
+			for entry in glob(&pattern)? {
+				files.push(entry?);
+			}
+
+			Ok(files)
+		}
 	}
 
 	fn validate_schema<'a>(schema: &'a ScopedSchema<'a>, data: &str) -> Result<()> {
