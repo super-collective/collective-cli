@@ -1,4 +1,4 @@
-use crate::{cmd::plural, fellowship::FellowshipReport};
+use crate::{cmd::plural, collective::fellowship::FellowshipEvidenceReport};
 
 use std::path::PathBuf;
 
@@ -100,7 +100,7 @@ impl IndexEvidenceCommand {
 		Ok(())
 	}
 
-	fn parse_files(&self) -> Result<Vec<(PathBuf, FellowshipReport)>> {
+	fn parse_files(&self) -> Result<Vec<(PathBuf, FellowshipEvidenceReport)>> {
 		let mut reports = vec![];
 
 		for entry in std::fs::read_dir(&self.evidence)? {
@@ -109,7 +109,7 @@ impl IndexEvidenceCommand {
 
 			if path.is_file() && path.extension() == Some("evidence".as_ref()) {
 				let file = std::fs::File::open(&path)?;
-				let report: FellowshipReport = serde_yaml::from_reader(file)?;
+				let report: FellowshipEvidenceReport = serde_yaml::from_reader(file)?;
 
 				log::debug!("Parsed evidence report from '{}'", path.display());
 				reports.push((path, report));

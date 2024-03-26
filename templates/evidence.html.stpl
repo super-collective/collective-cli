@@ -17,6 +17,7 @@
 
 <% use crate::evidence::Wish; %>
 <% use crate::traits::FormatLink; %>
+<% use crate::traits::Named; %>
 
 <center><h1>Evidence Report</h1></center>
 <center><h3><%- report.collective.name() %></h3></center>

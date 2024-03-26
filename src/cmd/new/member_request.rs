@@ -1,7 +1,7 @@
 use crate::{
 	cmd::OnOff,
 	evidence::{Collective, Evidence, ReportPeriod, Tasks, WishUntyped},
-	fellowship::FellowshipReport,
+	fellowship::FellowshipEvidenceReport,
 	prompt::Prompt,
 	traits::Rank,
 };
@@ -71,7 +71,7 @@ impl NewMemberRequestCommand {
 		serde_yaml::to_string(&filled).map_err(Into::into)
 	}
 
-	fn query(&self) -> Result<FellowshipReport> {
+	fn query(&self) -> Result<FellowshipEvidenceReport> {
 		let mut prompt = Prompt::new(self.cache == OnOff::On)?;
 
 		let name = prompt.query_cached_text::<String>(
@@ -95,7 +95,7 @@ impl NewMemberRequestCommand {
 		let report_period_start = Self::query_date("First day that this report covers")?;
 		let report_period_end = Self::query_date("Last day that this report covers")?;
 
-		Ok(FellowshipReport {
+		Ok(FellowshipEvidenceReport {
 			collective: Collective::Fellowship,
 			name,
 			address,

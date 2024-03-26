@@ -1,3 +1,16 @@
+use core::fmt::Debug;
+use serde::{Deserialize, Serialize};
+
+pub trait Named {
+	fn name(&self) -> &'static str;
+}
+
+pub trait Rank: Named + Into<u32> + Copy + Debug + Serialize + for<'a> Deserialize<'a> {
+	fn possible_values() -> Vec<Self>;
+}
+
+ // HTML stuff:
+
 pub trait HumanDisplay {
 	fn human(&self) -> String;
 }
@@ -9,11 +22,6 @@ impl<T: HumanDisplay> HumanDisplay for Option<T> {
 			None => String::from("?"),
 		}
 	}
-}
-
-pub trait Rank: Copy {
-	fn name(&self) -> &'static str;
-	fn possible_values() -> Vec<Self>;
 }
 
 pub trait FormatLink {

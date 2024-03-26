@@ -1,4 +1,4 @@
-use crate::fellowship::FellowshipReport;
+use crate::collective::fellowship::FellowshipEvidenceReport;
 use glob::glob;
 use std::path::PathBuf;
 
@@ -15,7 +15,7 @@ pub struct CheckEvidenceCommand {
 
 impl CheckEvidenceCommand {
 	pub fn run(&self) -> Result<()> {
-		let schema_str = FellowshipReport::schema();
+		let schema_str = FellowshipEvidenceReport::schema();
 		let schema: serde_json::Value = serde_json::from_str(schema_str)?;
 		let mut scope = json_schema::Scope::new();
 		let schema = scope.compile_and_return(schema, false).unwrap();
@@ -25,7 +25,7 @@ impl CheckEvidenceCommand {
 			let data = std::fs::read_to_string(path.as_path())?;
 
 			// Check that we can decode it.
-			let _: FellowshipReport = serde_yaml::from_str(&data)?;
+			let _: FellowshipEvidenceReport = serde_yaml::from_str(&data)?;
 
 			// Check that it validates against the schema.
 			Self::validate_schema(&schema, &data)?;

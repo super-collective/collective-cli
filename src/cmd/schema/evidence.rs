@@ -1,4 +1,4 @@
-use crate::{cmd::OutputArgs, fellowship::FellowshipReport};
+use crate::{cmd::OutputArgs, collective::fellowship::FellowshipEvidenceReport};
 
 #[derive(Debug, clap::Parser)]
 pub struct SchemaEvidenceCommand {
@@ -8,7 +8,7 @@ pub struct SchemaEvidenceCommand {
 
 impl SchemaEvidenceCommand {
 	pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
-		let schema = FellowshipReport::schema();
+		let schema = FellowshipEvidenceReport::schema();
 
 		self.output.write_schema("evidence.schema.json", schema)
 	}

@@ -1,10 +1,9 @@
 use crate::{cmd::plural};
-use crate::member::Member;
 
 use std::path::PathBuf;
-use crate::fellowship::Rank;
 use sailfish::TemplateOnce;
 use crate::member::Members;
+use crate::collective::fellowship::FellowshipMember;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
@@ -48,7 +47,7 @@ impl RenderMembersCommand {
 		Ok(())
 	}
 
-	fn parse_files(&self) -> Result<Vec<Member<Rank>>> {
+	fn parse_files(&self) -> Result<Vec<FellowshipMember>> {
 		let mut members = vec![];
 
 		for entry in std::fs::read_dir(&self.members)? {
@@ -57,7 +56,7 @@ impl RenderMembersCommand {
 
 			if path.is_file() && path.extension() == Some("yaml".as_ref()) {
 				let file = std::fs::File::open(&path)?;
-				let member: Member<Rank> = serde_yaml::from_reader(file)?;
+				let member: FellowshipMember = serde_yaml::from_reader(file)?;
 
 				log::debug!("Parsed member from '{}'", path.display());
 				members.push(member);

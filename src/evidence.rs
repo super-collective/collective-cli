@@ -1,5 +1,6 @@
 use core::fmt::{Display, Formatter};
 use serde::{Deserialize, Serialize};
+use crate::collective::Collective;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ReportPeriod {
@@ -51,23 +52,6 @@ pub struct Tasks {
 pub struct Evidence {
 	pub title: String,
 	pub tasks: Vec<Tasks>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone, clap::ValueEnum)]
-pub enum Collective {
-	#[serde(alias = "fellowship")]
-	Fellowship,
-	#[serde(alias = "potoc")]
-	PoToC,
-}
-
-impl Collective {
-	pub fn name(&self) -> &'static str {
-		match self {
-			Collective::Fellowship => "Polkadot Fellowship",
-			Collective::PoToC => "Polkadot Tooling Collective",
-		}
-	}
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -123,13 +107,15 @@ impl Display for DevelopmentEvidenceCategory {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(bound(deserialize = "C::Rank: Deserialize<'de>"))]
+#[serde(bound(serialize = "C::Rank: Serialize"))]
 #[serde(rename_all = "snake_case")]
-pub struct EvidenceReport<Rank> {
+pub struct EvidenceReport<C: Collective> {
 	pub name: String,
 	pub address: String,
 	pub github: String,
-	pub wish: WishUntyped<Rank>,
-	pub collective: Collective,
+	pub wish: WishUntyped<C::Rank>,
+	pub collective: crate::collective::CollectiveId,
 	#[serde(rename = "report_date")]
 	pub date: String,
 	#[serde(rename = "report_period")]
@@ -139,7 +125,7 @@ pub struct EvidenceReport<Rank> {
 	pub evidence: Vec<Evidence>,
 }
 
-impl<Rank: crate::traits::Rank> EvidenceReport<Rank> {
+impl<C: Collective> EvidenceReport<C> {
 	pub fn address_link(&self) -> String {
 		let shortened = if self.address.len() > 8 {
 			format!("{}..", &self.address[..8])
@@ -161,7 +147,7 @@ impl<Rank: crate::traits::Rank> EvidenceReport<Rank> {
 	}
 }
 
-impl<Rank> EvidenceReport<Rank> {
+impl<C: Collective> EvidenceReport<C> {
 	/// YAML schema in JSON format.
 	pub fn schema() -> &'static str {
 		include_str!("../schema/evidence_report.json")

@@ -1,4 +1,4 @@
-use crate::fellowship::FellowshipReport;
+use crate::collective::fellowship::FellowshipEvidenceReport;
 use sailfish::TemplateOnce;
 use std::path::PathBuf;
 
@@ -11,7 +11,7 @@ pub struct RenderEvidenceCommand {
 impl RenderEvidenceCommand {
 	pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
 		let file = std::fs::read_to_string(self.path.as_path())?;
-		let report: FellowshipReport = serde_yaml::from_str(&file)?;
+		let report: FellowshipEvidenceReport = serde_yaml::from_str(&file)?;
 
 		let ctx = crate::template::EvidenceTemplate { report };
 		let rendered = ctx.render_once()?;

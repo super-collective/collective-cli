@@ -16,7 +16,7 @@ pub struct Command {
 
 	/// The collective to use.
 	#[clap(long, short, default_value = "fellowship")]
-	collective: crate::evidence::Collective,
+	collective: crate::collective::CollectiveId,
 
 	#[clap(flatten)]
 	global: GlobalArgs,

@@ -1,10 +1,10 @@
 mod cmd;
 mod evidence;
-mod fellowship;
 mod prompt;
 mod template;
 mod traits;
 mod member;
+mod collective;
 
 use clap::Parser;
 use cmd::Command;

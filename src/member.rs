@@ -1,26 +1,27 @@
 use serde::{Deserialize, Serialize};
-use crate::evidence::Collective; // TODO refactor
+use crate::collective::CollectiveId;
+use crate::collective::Collective;
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Member<Rank> {
+pub struct Member<C: Collective> {
 	pub name: String,
 	pub address: String,
 	pub github: String,
-	pub collective: Collective,
-	pub rank: Rank,
+	pub collective: CollectiveId,
+	pub rank: C::Rank,
 }
 
 /// Con-empty collection of [Member]s.
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Members<Rank> {
-	pub members: Vec<Member<Rank>>,
-	pub collective: Collective,
+pub struct Members<C: Collective> {
+	pub members: Vec<Member<C>>,
+	pub collective: CollectiveId,
 }
 
-impl<Rank> TryFrom<Vec<Member<Rank>>> for Members<Rank> {
+impl<C: Collective> TryFrom<Vec<Member<C>>> for Members<C> {
 	type Error = &'static str;
 
-	fn try_from(members: Vec<Member<Rank>>) -> Result<Self, Self::Error> {
+	fn try_from(members: Vec<Member<C>>) -> Result<Self, Self::Error> {
 		if members.is_empty() {
 			Err("Members collection cannot be empty")
 		} else {

@@ -1,12 +1,12 @@
 use crate::{
 	cmd::OnOff,
-	evidence::{Collective, Evidence, ReportPeriod, Tasks, WishUntyped},
-	fellowship::FellowshipReport,
+	evidence::{Evidence, ReportPeriod, Tasks, WishUntyped},
+	collective::fellowship::FellowshipEvidenceReport,
 	prompt::Prompt,
 	traits::Rank,
 };
+use crate::collective::CollectiveId;
 use std::path::PathBuf;
-
 use chrono::{NaiveDate, Weekday};
 use inquire::{DateSelect, Select};
 
@@ -39,8 +39,8 @@ pub enum GenerationMode {
 impl NewEvidenceCommand {
 	pub fn run(&self) -> Result<()> {
 		let data = match self.mode {
-			GenerationMode::Template => FellowshipReport::template().into(),
-			GenerationMode::Example => FellowshipReport::example().into(),
+			GenerationMode::Template => FellowshipEvidenceReport::template().into(),
+			GenerationMode::Example => FellowshipEvidenceReport::example().into(),
 			GenerationMode::Cli => self.run_prompt()?,
 		};
 
@@ -71,7 +71,7 @@ impl NewEvidenceCommand {
 		serde_yaml::to_string(&filled).map_err(Into::into)
 	}
 
-	fn query(&self) -> Result<FellowshipReport> {
+	fn query(&self) -> Result<FellowshipEvidenceReport> {
 		let mut prompt = Prompt::new(self.cache == OnOff::On)?;
 
 		let name = prompt.query_cached_text::<String>(
@@ -90,13 +90,13 @@ impl NewEvidenceCommand {
 			.query_cached_text::<String>("reporter_github", "your GitHub handle", None)?
 			.replace('@', " ");
 
-		let wish = Self::query_wish::<crate::fellowship::Rank>()?;
+		let wish = Self::query_wish::<crate::collective::fellowship::FellowshipRank>()?;
 		let date = Self::query_date("Creation date of this report")?;
 		let report_period_start = Self::query_date("First day that this report covers")?;
 		let report_period_end = Self::query_date("Last day that this report covers")?;
 
-		Ok(FellowshipReport {
-			collective: Collective::Fellowship,
+		Ok(FellowshipEvidenceReport {
+			collective: CollectiveId::Fellowship,
 			name,
 			address,
 			github,
