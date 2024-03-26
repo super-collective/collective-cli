@@ -4,6 +4,7 @@ mod fellowship;
 mod prompt;
 mod template;
 mod traits;
+mod member;
 
 use clap::Parser;
 use cmd::Command;

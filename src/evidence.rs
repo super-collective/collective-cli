@@ -57,12 +57,15 @@ pub struct Evidence {
 pub enum Collective {
 	#[serde(alias = "fellowship")]
 	Fellowship,
+	#[serde(alias = "potoc")]
+	PoToC,
 }
 
 impl Collective {
 	pub fn name(&self) -> &'static str {
 		match self {
 			Collective::Fellowship => "Polkadot Fellowship",
+			Collective::PoToC => "Polkadot Tooling Collective",
 		}
 	}
 }
