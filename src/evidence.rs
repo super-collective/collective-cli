@@ -1,6 +1,11 @@
-use core::fmt::{Display, Formatter};
-use serde::{Deserialize, Serialize};
 use crate::collective::Collective;
+use serde::{Deserialize, Serialize};
+use std::collections::BTreeSet;
+use crate::traits::Query;
+use crate::collective::EvidenceCategories;
+use inquire::Text;
+use inquire::Select;
+use crate::traits::EnumLike;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ReportPeriod {
@@ -11,25 +16,24 @@ pub struct ReportPeriod {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct WishUntyped<Rank> {
-	pub retain: Option<Rank>,
-	pub promote: Option<Rank>,
-}
-
+#[serde(tag = "intent", content = "rank", rename_all = "lowercase")]
 pub enum Wish<Rank> {
 	Retain(Rank),
 	Promote(Rank),
 }
 
-impl<Rank: crate::traits::Rank> WishUntyped<Rank> {
-	pub fn as_typed(&self) -> Wish<Rank> {
-		match (&self.retain, &self.promote) {
-			(Some(_), Some(_)) | (None, None) => {
-				panic!("retain and promote are mutually exclusive")
-			},
-			(Some(rank), None) => Wish::Retain(*rank),
-			(None, Some(rank)) => Wish::Promote(*rank),
-		}
+impl<Rank: crate::traits::Rank> Query for Wish<Rank> {
+	fn query(_title: Option<&str>, _key: Option<&str>, p: &mut crate::prompt::Prompt) -> anyhow::Result<Self> {
+		let options = vec!["retain", "promote"];
+		let wish = Select::new("Wish", options.clone()).prompt()?;
+		let rank_title = format!("Rank to {}", wish);
+		let rank = Rank::query(Some(&rank_title), None, p)?;
+
+		Ok(match wish {
+			"retain" => Self::Retain(rank),
+			"promote" => Self::Promote(rank),
+			_ => unreachable!(),
+		})
 	}
 }
 
@@ -42,87 +46,104 @@ impl<Rank> Wish<Rank> {
 	}
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Tasks {
 	pub title: String,
 	pub links: Vec<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Evidence {
+impl Query for Tasks {
+	fn query(_title: Option<&str>, _key: Option<&str>, p: &mut crate::prompt::Prompt) -> anyhow::Result<Self> {
+		let title = Text::new("Title of the Task").prompt()?;
+		let link = Text::new("Link to Task").prompt()?;
+
+		Ok(Self {
+			title,
+			links: vec![link],
+		})
+	}
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Evidence<EC> {
 	pub title: String,
+	pub category: EC,
 	pub tasks: Vec<Tasks>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-#[serde(rename_all = "snake_case")]
-pub struct EvidenceCategoryUntyped {
-	pub development: Vec<DevelopmentEvidenceCategory>,
-}
+impl<EC: EvidenceCategories> Query for Evidence<EC> {
+	fn query(title: Option<&str>, _key: Option<&str>, p: &mut crate::prompt::Prompt) -> anyhow::Result<Self> {
+		let title = Text::new("Title for this piece of evidence").with_help_message("Some example could be 'Fixed lots of bugs', 'Added features' or 'Maintained code' etc.").prompt()?;
+		let category = EC::query_bare(p)?;
+		let task = Tasks::query_bare(p)?;
 
-impl EvidenceCategoryUntyped {
-	pub fn into_typed(self) -> EvidenceCategory {
-		EvidenceCategory::Development(self.development)
-	}
-}
-
-pub enum EvidenceCategory {
-	Development(Vec<DevelopmentEvidenceCategory>),
-}
-
-impl EvidenceCategory {
-	pub fn title(&self) -> &'static str {
-		match self {
-			EvidenceCategory::Development(_) => "Development",
-		}
-	}
-
-	// this is a bit hacky.. but makes the code in the template easier.
-	pub fn sub_categories(&self) -> Option<String> {
-		match self {
-			EvidenceCategory::Development(categories) if categories.is_empty() => None,
-			EvidenceCategory::Development(categories) =>
-				Some(categories.iter().map(|c| c.to_string()).collect::<Vec<_>>().join(", ")),
-		}
-	}
-}
-#[derive(Debug, Serialize, Deserialize, Clone)]
-#[serde(rename_all = "snake_case")]
-pub enum DevelopmentEvidenceCategory {
-	Sdk,
-	Runtime,
-	Tooling,
-	Other,
-}
-
-impl Display for DevelopmentEvidenceCategory {
-	fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-		match self {
-			DevelopmentEvidenceCategory::Sdk => write!(f, "SDK"),
-			DevelopmentEvidenceCategory::Runtime => write!(f, "Runtime"),
-			DevelopmentEvidenceCategory::Tooling => write!(f, "Tooling"),
-			DevelopmentEvidenceCategory::Other => write!(f, "Other"),
-		}
+		Ok(Self {
+			title,
+			category,
+			tasks: vec![task],
+		})
 	}
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(bound(deserialize = "C::Rank: Deserialize<'de>"))]
-#[serde(bound(serialize = "C::Rank: Serialize"))]
+#[serde(bound(deserialize = "C::Rank: Deserialize<'de>, C::EvidenceCategories: Deserialize<'de>"))]
+#[serde(bound(serialize = "C::Rank: Serialize, C::EvidenceCategories: Serialize"))]
 #[serde(rename_all = "snake_case")]
 pub struct EvidenceReport<C: Collective> {
 	pub name: String,
 	pub address: String,
 	pub github: String,
-	pub wish: WishUntyped<C::Rank>,
+	pub wish: Wish<C::Rank>,
 	pub collective: crate::collective::CollectiveId,
 	#[serde(rename = "report_date")]
 	pub date: String,
 	#[serde(rename = "report_period")]
 	pub period: ReportPeriod,
-	#[serde(rename = "evidence_categories")]
-	pub categories: Vec<EvidenceCategoryUntyped>,
-	pub evidence: Vec<Evidence>,
+	#[serde(rename = "evidence")]
+	pub evidence: Vec<Evidence<C::EvidenceCategories>>,
+}
+
+impl<C: Collective> Query for EvidenceReport<C> {
+	fn query(_title: Option<&str>, _key: Option<&str>, prompt: &mut crate::prompt::Prompt) -> anyhow::Result<Self> {
+		let name = prompt.query_cached_text::<String>(
+			"reporter_legal_name",
+			"your legal name",
+			Some("You can also use a pseudonym instead"),
+		)?;
+
+		let address = prompt.query_cached_text::<String>(
+			"reporter_address",
+			"your Polkadot address",
+			None,
+		)?;
+
+		let github = prompt
+			.query_cached_text::<String>("reporter_github", "your GitHub handle", None)?
+			.replace('@', " ");
+
+		let wish = Wish::<C::Rank>::query_bare(prompt)?;
+		let date = prompt.query_date("Creation date of this report")?;
+		let report_period_start = prompt.query_date("First day that this report covers")?;
+		let report_period_end = prompt.query_date("Last day that this report covers")?;
+
+		Ok(Self {
+			collective: C::ID,
+			name,
+			address,
+			github,
+			wish,
+			date: date.to_string(),
+			period: ReportPeriod {
+				start: report_period_start.to_string(),
+				end: report_period_end.to_string(),
+			},
+			evidence: vec![Evidence {
+				category: C::EvidenceCategories::variants()[0], //  FIXME
+				title: "TODO".into(),
+				tasks: vec![Tasks { title: "TODO".into(), links: vec!["TODO".into()] }],
+			}],
+		})
+	}
 }
 
 impl<C: Collective> EvidenceReport<C> {
@@ -144,6 +165,10 @@ impl<C: Collective> EvidenceReport<C> {
 
 	pub fn canonical_name(&self) -> String {
 		self.name.to_lowercase().replace(' ', "-")
+	}
+
+	pub fn evidence_categories(&self) -> BTreeSet<C::EvidenceCategories> {
+		self.evidence.iter().map(|e| e.category).collect()
 	}
 }
 

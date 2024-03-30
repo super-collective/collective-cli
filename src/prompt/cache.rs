@@ -1,5 +1,6 @@
 use super::Result;
 
+use anyhow::bail;
 use std::{collections::BTreeMap, path::PathBuf};
 
 pub struct Cache {
@@ -37,7 +38,7 @@ impl Cache {
 
 	fn config_path() -> Result<PathBuf> {
 		let Some(root) = dirs::config_dir() else {
-			return Err("Could not find the config directory".into());
+			bail!("Could not find the config directory");
 		};
 
 		Ok(root.join("collective-cli").join("config.toml"))

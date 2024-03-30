@@ -13,7 +13,7 @@ enum IndexSubCommand {
 }
 
 impl IndexCommand {
-	pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn run(&self) -> anyhow::Result<()> {
 		match &self.subcommand {
 			IndexSubCommand::Evidence(c) => c.run(),
 		}

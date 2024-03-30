@@ -2,8 +2,11 @@ mod cache;
 
 use cache::Cache;
 use inquire::Text;
+use chrono::NaiveDate;
+use inquire::DateSelect;
+use chrono::Weekday;
 
-pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+pub type Result<T> = anyhow::Result<T>;
 
 pub struct Prompt {
 	cache: Option<Cache>,
@@ -22,7 +25,7 @@ impl Prompt {
 		help: Option<&str>,
 	) -> Result<T>
 	where
-		<T as TryFrom<String>>::Error: std::error::Error + 'static,
+		<T as TryFrom<String>>::Error: std::error::Error + Send + Sync + 'static,
 	{
 		let mut default = String::new();
 		if let Some(ref cache) = self.cache {
@@ -53,5 +56,13 @@ impl Prompt {
 		}
 
 		Ok(decoded)
+	}
+
+	pub fn query_date(&self, title: &str) -> Result<NaiveDate> {
+		DateSelect::new(title)
+			.with_starting_date(chrono::Utc::now().date_naive())
+			.with_week_start(Weekday::Mon)
+			.prompt()
+			.map_err(Into::into)
 	}
 }

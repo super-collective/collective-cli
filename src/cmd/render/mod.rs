@@ -1,5 +1,8 @@
 mod evidence;
 mod members;
+mod join_request;
+
+use crate::config::GlobalConfig;
 
 #[derive(Debug, clap::Parser)]
 pub struct RenderCommand {
@@ -14,10 +17,10 @@ enum RenderSubCommand {
 }
 
 impl RenderCommand {
-	pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn run(&self, g: &GlobalConfig) -> anyhow::Result<()> {
 		match &self.subcommand {
 			RenderSubCommand::Evidence(c) => c.run(),
-			RenderSubCommand::Members(c) => c.run(),
+			RenderSubCommand::Members(c) => c.run(g),
 		}
 	}
 }

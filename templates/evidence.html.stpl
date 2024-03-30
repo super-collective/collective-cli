@@ -15,7 +15,7 @@
 <body>
 <tt>
 
-<% use crate::evidence::Wish; %>
+<% use crate::evidence::Wish; use crate::traits::MultiTierNamed; %>
 <% use crate::traits::FormatLink; %>
 <% use crate::traits::Named; %>
 
@@ -27,10 +27,10 @@
 <center></centeR>
 Fellow <strong><%- report.name %></strong> (<%- report.github_link() %>, <%- report.address_link() %>) wishes to
 <div class="big"></div>
-&nbsp;&nbsp;- <%= report.wish.as_typed().title().to_uppercase() %> -
+&nbsp;&nbsp;- <%= report.wish.title().to_uppercase() %> -
 <div class="big"></div>
 
-<% match report.wish.as_typed() {
+<% match report.wish {
   Wish::Retain(rank) => { %>
     the rank of
     <div class="big"></div>
@@ -47,8 +47,8 @@ Fellow <strong><%- report.name %></strong> (<%- report.github_link() %>, <%- rep
 
 by providing evidence for the period <%= report.period.start %> to <%= report.period.end %> in the following categories:
 <div class="space"></div>
-<% for cat in report.categories.iter().map(|c| c.clone().into_typed()) { %>
-  &nbsp;- <%= cat.title() %><%= cat.sub_categories().map(|cs| format!(": {cs}")).unwrap_or("".into()) %>
+<% for cat in report.evidence_categories().iter() { %>
+  &nbsp;- <%= cat.multi_tier_name().iter().map(|cs| format!("{cs}")).collect::<Vec<_>>().join(": ") %>
 <% } %>
 <br><br>
 <hr>

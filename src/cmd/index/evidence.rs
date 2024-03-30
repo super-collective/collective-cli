@@ -1,8 +1,9 @@
 use crate::{cmd::plural, collective::fellowship::FellowshipEvidenceReport};
 
+use anyhow::{bail, Context};
 use std::path::PathBuf;
 
-type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+type Result<T> = anyhow::Result<T>;
 
 #[derive(Debug, clap::Parser)]
 pub struct IndexEvidenceCommand {
@@ -38,7 +39,7 @@ impl IndexEvidenceCommand {
 		let (mut scanned, mut created) = (0, 0);
 
 		for (path, evidence) in evidences.iter() {
-			let file_name = path.file_name().ok_or("No file name")?;
+			let file_name = path.file_name().context("No file name")?;
 			log::debug!("Processing '{}'", path.display());
 
 			if self.by_reporter() {
@@ -91,10 +92,10 @@ impl IndexEvidenceCommand {
 		let root = PathBuf::from(&self.evidence);
 
 		if !root.exists() {
-			return Err(format!("Folder '{}' does not exist", root.display()).into());
+			bail!("Folder '{}' does not exist", root.display())
 		}
 		if !root.is_dir() {
-			return Err(format!("Folder '{}' is not a directory", root.display()).into());
+			bail!("Folder '{}' is not a directory", root.display())
 		}
 
 		Ok(())
@@ -162,7 +163,7 @@ impl IndexEvidenceCommand {
 			log::debug!("Index folder '{}' already exists", folder.display());
 
 			if !folder.is_dir() {
-				return Err(format!("Path {} is not a directory", folder.display()).into());
+				bail!("Path {} is not a directory", folder.display());
 			}
 		} else {
 			log::info!("Creating index folder at '{}'", folder.display());

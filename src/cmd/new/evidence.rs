@@ -1,16 +1,22 @@
 use crate::{
 	cmd::OnOff,
-	evidence::{Evidence, ReportPeriod, Tasks, WishUntyped},
-	collective::fellowship::FellowshipEvidenceReport,
+	collective::{
+		fellowship::{FellowshipEvidenceCategory, FellowshipEvidenceReport},
+		CollectiveId,
+	},
+	evidence::{Evidence, ReportPeriod, Tasks},
 	prompt::Prompt,
 	traits::Rank,
 };
-use crate::collective::CollectiveId;
-use std::path::PathBuf;
+use crate::traits::EnumLike;
+use crate::traits::Query;
+use crate::evidence::Wish;
+use anyhow::anyhow;
 use chrono::{NaiveDate, Weekday};
 use inquire::{DateSelect, Select};
+use std::path::PathBuf;
 
-pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+pub type Result<T> = anyhow::Result<T>;
 
 #[derive(Debug, clap::Parser)]
 pub struct NewEvidenceCommand {
@@ -44,6 +50,7 @@ impl NewEvidenceCommand {
 			GenerationMode::Cli => self.run_prompt()?,
 		};
 
+		std::fs::create_dir_all(&self.evidence)?;
 		let path = self.find_good_path()?;
 		std::fs::write(&path, data)?;
 		println!("🎉 Wrote partial evidence report to '{}'.", path.display());
@@ -61,7 +68,7 @@ impl NewEvidenceCommand {
 			}
 		}
 
-		Err("Could not find a good path. Please use `--evidence` to specify an empty.".into())
+		Err(anyhow!("Could not find a good path. Please use `--evidence` to specify an empty."))
 	}
 
 	fn run_prompt(&self) -> Result<String> {
@@ -90,7 +97,7 @@ impl NewEvidenceCommand {
 			.query_cached_text::<String>("reporter_github", "your GitHub handle", None)?
 			.replace('@', " ");
 
-		let wish = Self::query_wish::<crate::collective::fellowship::FellowshipRank>()?;
+		let wish = Wish::<crate::collective::fellowship::FellowshipRank>::query_bare(&mut prompt)?;
 		let date = Self::query_date("Creation date of this report")?;
 		let report_period_start = Self::query_date("First day that this report covers")?;
 		let report_period_end = Self::query_date("Last day that this report covers")?;
@@ -106,8 +113,8 @@ impl NewEvidenceCommand {
 				start: report_period_start.to_string(),
 				end: report_period_end.to_string(),
 			},
-			categories: vec![],
 			evidence: vec![Evidence {
+				category: FellowshipEvidenceCategory::variants()[0], //  FIXME
 				title: "TODO".into(),
 				tasks: vec![Tasks { title: "TODO".into(), links: vec!["TODO".into()] }],
 			}],
@@ -122,31 +129,8 @@ impl NewEvidenceCommand {
 			.map_err(Into::into)
 	}
 
-	fn query_wish<R: Rank>() -> Result<WishUntyped<R>> {
-		let wish =
-			Select::new("Your wish regarding your rank", vec!["retain", "promote"]).prompt()?;
-
-		match wish {
-			"retain" => {
-				let rank = Self::query_rank::<R>(
-					"Your desired rank that you would like to be promoted to",
-				)?;
-
-				Ok(WishUntyped { retain: Some(rank), promote: None })
-			},
-			"prompt" => {
-				let rank = Self::query_rank::<R>(
-					"Your desired rank that you would like to be promoted to",
-				)?;
-
-				Ok(WishUntyped { promote: Some(rank), retain: None })
-			},
-			_ => unreachable!(),
-		}
-	}
-
 	fn query_rank<R: Rank>(title: &str) -> Result<R> {
-		let ranks = R::possible_values();
+		let ranks = R::variants();
 		let options = ranks
 			.iter()
 			.enumerate()

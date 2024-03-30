@@ -1,18 +1,29 @@
 #![allow(dead_code)]
 
+use crate::{
+	collective::{Collective, EvidenceCategories},
+	evidence::EvidenceReport,
+	member::{GenericMember},
+};
+use crate::collective::GenericJoinRequest;
+use serde::{Deserialize, Serialize};
 use serde_repr::*;
-use crate::collective::Collective;
-use crate::evidence::EvidenceReport;
-use crate::member::Member;
+use crate::traits::EnumLike;
+use std::borrow::Cow;
+use crate::collective::CollectiveId;
 
-pub type FellowshipMember = Member<FellowshipCollective>;
+pub type FellowshipMember = GenericMember<FellowshipCollective>;
 pub type FellowshipEvidenceReport = EvidenceReport<FellowshipCollective>;
+pub type FellowshipJoinRequest = GenericJoinRequest<FellowshipCollective>;
 
 /// Something similarly structured as the fellowship, but could have a different rank type.
 pub struct FellowshipCollective;
 
 impl Collective for FellowshipCollective {
+	const ID: CollectiveId = CollectiveId::Fellowship;
 	type Rank = FellowshipRank;
+	type EvidenceCategories = FellowshipEvidenceCategory;
+	type Member = FellowshipMember;
 	const NAME: &'static str = "Polkadot Fellowship";
 }
 
@@ -32,7 +43,7 @@ pub enum FellowshipRank {
 }
 
 impl crate::traits::Named for FellowshipRank {
-	fn name(&self) -> &'static str {
+	fn name(&self) -> Cow<'static, str> {
 		match self {
 			Self::Candidate => "Candidate",
 			Self::Humble => "Humble",
@@ -45,11 +56,14 @@ impl crate::traits::Named for FellowshipRank {
 			Self::MasterConstant => "Master Constant",
 			Self::GrandMaster => "Grand Master",
 		}
+		.into()
 	}
 }
 
-impl crate::traits::Rank for FellowshipRank {
-	fn possible_values() -> Vec<Self> {
+impl crate::traits::Rank for FellowshipRank {}
+
+impl crate::traits::EnumLike for FellowshipRank {
+	fn variants() -> Vec<Self> {
 		vec![
 			Self::Candidate,
 			Self::Humble,
@@ -68,6 +82,60 @@ impl crate::traits::Rank for FellowshipRank {
 impl From<FellowshipRank> for u32 {
 	fn from(rank: FellowshipRank) -> u32 {
 		rank as u32
+	}
+}
+
+#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+#[serde(tag = "t", content = "c")]
+pub enum FellowshipEvidenceCategory {
+	Development(FellowshipDevelopmentEvidence),
+}
+
+#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum FellowshipDevelopmentEvidence {
+	Sdk,
+	Runtime,
+	Tooling,
+	Other,
+}
+
+impl EvidenceCategories for FellowshipEvidenceCategory {}
+
+impl crate::traits::MultiTierNamed for FellowshipEvidenceCategory {
+	fn multi_tier_name(&self) -> Vec<Cow<'static, str>> {
+		match self {
+			Self::Development(dev) =>
+				[vec!["Development".into()], dev.multi_tier_name()].concat(),
+		}
+	}
+}
+
+impl EnumLike for FellowshipEvidenceCategory {
+	fn variants() -> Vec<Self> {
+		FellowshipDevelopmentEvidence::variants()
+			.into_iter()
+			.map(Self::Development)
+			.collect()
+	}
+}
+
+impl crate::traits::MultiTierNamed for FellowshipDevelopmentEvidence {
+	fn multi_tier_name(&self) -> Vec<Cow<'static, str>> {
+		vec![match self {
+			Self::Sdk => "SDK",
+			Self::Runtime => "Runtime",
+			Self::Tooling => "Tooling",
+			Self::Other => "Other",
+		}
+		.into()]
+	}
+}
+
+impl EnumLike for FellowshipDevelopmentEvidence {
+	fn variants() -> Vec<Self> {
+		vec![Self::Sdk, Self::Runtime, Self::Tooling, Self::Other]
 	}
 }
 

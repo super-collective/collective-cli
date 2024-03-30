@@ -13,7 +13,7 @@ enum SchemaSubCommand {
 }
 
 impl SchemaCommand {
-	pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn run(&self) -> anyhow::Result<()> {
 		match &self.subcommand {
 			SchemaSubCommand::Evidence(c) => c.run(),
 		}

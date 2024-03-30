@@ -1,0 +1,15 @@
+member:
+  name: Oliver Tale-Yazdij
+  address: 16a357f5Sxab3V2ne4emGQvqJaCLeYpTMx3TCjnQhmJQ71DX#
+  github: ggwpez
+  rank: 1
+date: 2024-03-29
+evidence:
+- title: Feature
+  category:
+    t: development
+    c: runtime
+  tasks:
+  - title: Random
+    links:
+    - https:daf

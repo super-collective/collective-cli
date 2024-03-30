@@ -5,6 +5,8 @@ mod render;
 mod schema;
 mod tests;
 
+use crate::config::{GlobalArgs, GlobalConfig};
+
 pub const EVIDENCE_FOLDER: &str = "evidence";
 
 /// See out how Rust dependencies and features are enabled.
@@ -14,18 +16,9 @@ pub struct Command {
 	#[clap(subcommand)]
 	subcommand: SubCommand,
 
-	/// The collective to use.
-	#[clap(long, short, default_value = "fellowship")]
-	collective: crate::collective::CollectiveId,
-
+	/// The evidence folder.
 	#[clap(flatten)]
 	global: GlobalArgs,
-}
-
-#[derive(Debug, clap::Parser)]
-pub struct GlobalArgs {
-	#[clap(long, short, global = true)]
-	quiet: bool,
 }
 
 #[derive(Debug, clap::Parser)]
@@ -55,10 +48,12 @@ enum SubCommand {
 }
 
 impl Command {
-	pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn run(self) -> anyhow::Result<()> {
+		let g: GlobalConfig = self.global.try_into()?;
+
 		match &self.subcommand {
-			SubCommand::New(c) => c.run(),
-			SubCommand::Render(c) => c.run(),
+			SubCommand::New(c) => c.run(&g),
+			SubCommand::Render(c) => c.run(&g),
 			SubCommand::Schema(c) => c.run(),
 			SubCommand::Check(c) => c.run(),
 			SubCommand::Index(c) => c.run(),
@@ -67,11 +62,7 @@ impl Command {
 }
 
 impl OutputArgs {
-	pub fn write_schema(
-		&self,
-		default_path: &str,
-		data: &str,
-	) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn write_schema(&self, default_path: &str, data: &str) -> anyhow::Result<()> {
 		if let Some(path) = &self.output {
 			std::fs::write(path, data)?;
 			println!("Wrote schema to '{}'", path.display());

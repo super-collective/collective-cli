@@ -3,21 +3,26 @@ name: Max Power
 address: "16a357f5Sxab3V2ne4emGQvqJaCLeYpTMx3TCjnQhmJQ71DX"
 github: mpower
 wish:
-  retain: 9
+  intent: retain
+  rank: 9
 report_date: "2024-03-20"
 report_period:
   start_date: "2024-01-01"
   end_date: "2024-03-10"
-evidence_categories:
-  - development: ["sdk", "runtime", "tooling"]
 evidence:
   - title: "Substrate: Some Awesome work"
+    category:
+      t: development
+      c: sdk
     tasks:
     - title: "Introduce true randomness"
       links: ["https://github.com/paritytech/polkadot-sdk/pull/444"]
     - title: "Refactor everything"
       links: ["https://github.com/paritytech/polkadot-sdk/pull/999"]
   - title: "Polkadot: Big improvements"
+    category:
+      t: development
+      c: sdk
     tasks:
     - title: "Adapt frame-system"
       links: ["https://github.com/paritytech/polkadot-sdk/pull/321"]

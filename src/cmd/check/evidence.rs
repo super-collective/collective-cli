@@ -4,7 +4,7 @@ use std::path::PathBuf;
 
 use valico::{json_schema, json_schema::schema::ScopedSchema};
 
-type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+type Result<T> = anyhow::Result<T>;
 
 #[derive(Debug, clap::Parser)]
 pub struct CheckEvidenceCommand {

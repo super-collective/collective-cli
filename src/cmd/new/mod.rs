@@ -1,5 +1,7 @@
 mod evidence;
-//mod member_request;
+mod join_request;
+
+use crate::config::GlobalConfig;
 
 #[derive(Debug, clap::Parser)]
 pub struct NewCommand {
@@ -12,14 +14,14 @@ enum NewSubCommand {
 	/// Create a new evidence report.
 	Evidence(evidence::NewEvidenceCommand),
 	// Create a new member request.
-	//MemberRequest(member_request::NewMemberRequestCommand),
+	JoinRequest(join_request::NewJoinRequestCommand),
 }
 
 impl NewCommand {
-	pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn run(&self, g: &GlobalConfig) -> anyhow::Result<()> {
 		match &self.subcommand {
 			NewSubCommand::Evidence(c) => c.run(),
-		//	NewSubCommand::MemberRequest(c) => c.run(),
+			NewSubCommand::JoinRequest(c) => c.run(g),
 		}
 	}
 }

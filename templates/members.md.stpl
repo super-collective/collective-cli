@@ -7,4 +7,4 @@
 
 | Name | Rank | Address |
 |------|------|---------| <% for member in members.members.iter() { %>
-| <%- member.name %> | <%- member.rank.name() %> | <%- member.address %> |<% } %>
+| <%- member.name() %> | <%- member.rank() %> | <%- member.address().unwrap_or("?") %> |<% } %>

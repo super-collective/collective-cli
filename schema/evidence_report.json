@@ -85,32 +85,6 @@
         }
       ]
     },
-    "evidence_categories": {
-      "title": "Evidence categories covered in this report",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "type": "object",
-            "properties": {
-              "development": {
-                "title": "Development",
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "enum": [
-                    "sdk",
-                    "runtime",
-                    "tooling",
-                    "other"
-                  ]
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
     "evidence": {
       "type": "array",
       "title": "Pieces of evidence that support the report",
@@ -121,6 +95,30 @@
           "title": {
             "type": "string",
             "title": "Title of the evidence"
+          },
+          "category": {
+            "title": "Evidence categories covered in this report",
+            "properties": {
+              "t": {
+                "title": "Super Category",
+                "enum": [
+                  "development"
+                ]
+              },
+              "c": {
+                "title": "Sub Category",
+                "enum": [
+                  "sdk",
+                  "runtime",
+                  "tooling",
+                  "other"
+                ]
+              }
+            },
+            "required": [
+              "t",
+              "c"
+            ]
           },
           "tasks": {
             "type": "array",
@@ -148,7 +146,12 @@
               ]
             }
           }
-        }
+        },
+        "required": [
+          "title",
+          "category",
+          "tasks"
+        ]
       }
     }
   },
@@ -159,7 +162,6 @@
     "wish",
     "report_date",
     "report_period",
-    "evidence_categories",
     "evidence"
   ]
 }

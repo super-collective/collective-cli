@@ -5,12 +5,12 @@ use anyhow::Context;
 use anyhow::bail;
 
 #[derive(Debug, clap::Parser)]
-pub struct RenderEvidenceCommand {
+pub struct RenderJoinRequestCommand {
 	#[clap(index = 1)]
 	path: PathBuf,
 }
 
-impl RenderEvidenceCommand {
+impl RenderJoinRequestCommand {
 	pub fn run(&self) -> anyhow::Result<()> {
 		if !self.path.exists() {
 			bail!("evidence file does not exist: {}", self.path.display());

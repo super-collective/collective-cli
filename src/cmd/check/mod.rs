@@ -13,7 +13,7 @@ enum CheckSubCommand {
 }
 
 impl CheckCommand {
-	pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn run(&self) -> anyhow::Result<()> {
 		match &self.subcommand {
 			CheckSubCommand::Evidence(c) => c.run(),
 		}

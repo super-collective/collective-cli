@@ -7,7 +7,7 @@ pub struct SchemaEvidenceCommand {
 }
 
 impl SchemaEvidenceCommand {
-	pub fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+	pub fn run(&self) -> anyhow::Result<()> {
 		let schema = FellowshipEvidenceReport::schema();
 
 		self.output.write_schema("evidence.schema.json", schema)
