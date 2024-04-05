@@ -61,11 +61,11 @@ impl TryFrom<GlobalArgs> for GlobalConfig {
 		};
 		let r = Self {
 			collective,
-			members_dir: args.members_dir.or(cfg.members_dir).unwrap_or("members".into()),
+			members_dir: args.members_dir.or(cfg.members_dir).unwrap_or("member".into()),
 			join_requests_dir: args
 				.join_requests_dir
 				.or(cfg.join_requests_dir)
-				.unwrap_or("join_requests".into()),
+				.unwrap_or("join_request".into()),
 			evidence_dir: args.evidence_dir.or(cfg.evidence_dir).unwrap_or("evidence".into()),
 			config_path: args.config,
 		};

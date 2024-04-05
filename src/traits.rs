@@ -1,7 +1,10 @@
 use core::fmt::Debug;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use std::borrow::Cow;
 use inquire::Select;
+use anyhow::Result;
+use inquire::Confirm;
+use serde::de::DeserializeOwned;
 
 #[macro_export]
 macro_rules! using_collective {
@@ -40,15 +43,14 @@ pub trait EnumLike {
 }
 
 impl<T: EnumLike + Named + Clone> Query for T {
-	fn query(title: Option<&str>, _key: Option<&str>, _p: &mut crate::prompt::Prompt) -> anyhow::Result<Self> {
+	fn query(title: Option<&str>, _key: Option<&str>, _p: &mut crate::prompt::Prompt) -> Result<Self> {
 		let title = title.expect("Blanket implemented query for named types always need a title");
 		assert!(_key.is_none(), "Blanket implemented query for named types does not support keys");
 
 		let variants = T::variants();
 		let options = variants
 			.iter()
-			.enumerate()
-			.map(|(i, r)| r.name())
+			.map(Named::name)
 			.collect::<Vec<_>>();
 		let rank = Select::new(title, options.clone()).prompt()?;
 		let index = options.iter().position(|r| r == &rank).unwrap();
@@ -57,7 +59,11 @@ impl<T: EnumLike + Named + Clone> Query for T {
 	}
 }
 
-pub trait Rank: Named + EnumLike + Into<u32> + Copy + Debug + Serialize + for<'a> Deserialize<'a> {}
+/// Object safe version of a Rank.
+pub trait RankBaseTrait: Named + EnumLike {}
+
+/// Not object safe version of a Rank.
+pub trait Rank: RankBaseTrait + Copy + Debug + Into<u32> + Serialize + DeserializeOwned {}
 
 pub trait MultiTierNamed {
 	fn multi_tier_name(&self) -> Vec<Cow<'static, str>>;
@@ -122,5 +128,21 @@ pub trait Query {
 		Self: Sized
 	{
 		Self::query(None, None, p)
+	}
+}
+
+pub fn vector_prompt<F: FnMut() -> std::result::Result<R, E>, R, E: Into<anyhow::Error>>(title: &str, mut f: F) -> Result<Vec<R>> {
+	let mut ret = Vec::new();
+	loop {
+		if let Ok(value) = f() {
+			ret.push(value);
+		} else {
+			println!("Invalid input, please try again.");
+			continue;
+		}
+
+		if !Confirm::new(&format!("Add more {title}? (y/n)")).prompt()? {
+			return Ok(ret);
+		}
 	}
 }

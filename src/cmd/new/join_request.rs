@@ -3,13 +3,11 @@ use crate::{
 	member::JoinRequest,
 	config::{GlobalArgs, GlobalConfig},
 	prompt::Prompt,
-	traits::Rank,
 };
 use anyhow::Context;
 use anyhow::anyhow;
 use std::path::PathBuf;
 use crate::traits::Query;
-use inquire::{Select};
 
 pub type Result<T> = anyhow::Result<T>;
 
@@ -78,18 +76,5 @@ impl NewJoinRequestCommand {
 		let request = JoinRequest::query_bare(&mut prompt)?;
 
 		Ok(request)
-	}
-
-	fn query_rank<R: Rank>(title: &str) -> Result<R> {
-		let ranks = R::variants();
-		let options = ranks
-			.iter()
-			.enumerate()
-			.map(|(i, r)| format!("{i} - {}", r.name()))
-			.collect::<Vec<_>>();
-		let rank = Select::new(title, options.clone()).prompt()?;
-		let index = options.iter().position(|r| r == &rank).unwrap();
-
-		Ok(ranks[index])
 	}
 }

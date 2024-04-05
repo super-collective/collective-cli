@@ -4,18 +4,26 @@ use crate::{
 	traits::{Decode, Encode, Named, Query},
 	using_collective,
 };
+use crate::traits::RankBaseTrait;
 use core::fmt::Debug;
 use derivative::Derivative;
 use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 use crate::collective::fellowship::FellowshipJoinRequest;
 use crate::collective::potoc::PotocJoinRequest;
+use crate::evidence::EvidenceTrait;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(tag = "collective")]
 pub enum Member {
 	Fellowship(<crate::collective::fellowship::FellowshipCollective as Collective>::Member),
 	Potoc(<crate::collective::potoc::PotocCollective as Collective>::Member),
+}
+
+pub trait MemberTrait: Named {
+	fn github(&self) -> &str;
+	fn address(&self) -> &str;
+	fn rank(&self) -> &dyn RankBaseTrait;
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -32,6 +40,22 @@ impl JoinRequest {
 			Self::Potoc(_) => CollectiveId::Potoc,
 		}
 	}
+
+	pub fn member(&self) -> &dyn MemberTrait {
+		using_collective!(self, request, { &request.member })
+	}
+
+	pub fn date(&self) -> &str {
+		using_collective!(self, request, { &request.date })
+	}
+
+	pub fn evidence(&self) -> Vec<&dyn EvidenceTrait> {
+		using_collective!(self, request, { request.evidence.iter().map(|e| e as &dyn EvidenceTrait).collect() })
+	}
+
+	pub fn evidence_categories(&self) -> Vec<&dyn crate::collective::EvidenceCategoriesBaseTrait> {
+		using_collective!(self, request, { request.evidence.iter().map(|e| e.category()).collect() })
+	}
 }
 
 impl Query for JoinRequest {
@@ -43,6 +67,7 @@ impl Query for JoinRequest {
 	}
 }
 
+// TODO split into member and ranked-member
 #[derive(Serialize, Deserialize, Derivative)]
 #[derivative(Debug(bound = "C::Rank: Debug"))]
 #[derivative(Clone(bound = "C::Rank: Clone"))]
@@ -53,15 +78,35 @@ pub struct GenericMember<C: Collective> {
 	pub rank: C::Rank,
 }
 
+impl<C: Collective> MemberTrait for GenericMember<C> {
+	fn github(&self) -> &str {
+		&self.github
+	}
+
+	fn address(&self) -> &str {
+		&self.address
+	}
+
+	fn rank(&self) -> &dyn RankBaseTrait {
+		&self.rank
+	}
+}
+
+impl MemberTrait for Member {
+	fn github(&self) -> &str {
+		using_collective!(self, member, { member.github() })
+	}
+
+	fn address(&self) -> &str {
+		using_collective!(self, member, { member.address() })
+	}
+
+	fn rank(&self) -> &dyn RankBaseTrait {
+		using_collective!(self, member, { member.rank() })
+	}
+}
+
 impl Member {
-	pub fn rank(&self) -> u32 {
-		using_collective!(self, member, { member.rank as u32 })
-	}
-
-	pub fn address(&self) -> Option<&str> {
-		using_collective!(self, member, { Some(&member.address) })
-	}
-
 	pub fn collective(&self) -> CollectiveId {
 		match self {
 			Self::Fellowship(_) => CollectiveId::Fellowship,

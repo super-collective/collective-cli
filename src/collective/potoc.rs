@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use crate::{
-	collective::{Collective, EvidenceCategories},
+	collective::{Collective, EvidenceCategories, EvidenceCategoriesBaseTrait},
 	evidence::EvidenceReport,
 	member::{GenericMember},
 };
@@ -24,7 +24,8 @@ impl Collective for PotocCollective {
 	type Rank = PotocRank;
 	type EvidenceCategories = PotocEvidenceCategory;
 	type Member = PotocMember;
-	const NAME: &'static str = "Polkadot Tooling Collective";
+	const NAME: &'static str = "Tooling Collective";
+	const NICKNAME: &'static str = "PoToC";
 }
 
 #[repr(u8)]
@@ -44,6 +45,7 @@ impl crate::traits::Named for PotocRank {
 	}
 }
 
+impl crate::traits::RankBaseTrait for PotocRank {}
 impl crate::traits::Rank for PotocRank {}
 
 impl crate::traits::EnumLike for PotocRank {
@@ -65,6 +67,7 @@ pub enum PotocEvidenceCategory {
 	DAppTooling,
 }
 
+impl EvidenceCategoriesBaseTrait for PotocEvidenceCategory {}
 impl EvidenceCategories for PotocEvidenceCategory {}
 
 impl crate::traits::MultiTierNamed for PotocEvidenceCategory {

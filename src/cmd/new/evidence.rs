@@ -6,14 +6,13 @@ use crate::{
 	},
 	evidence::{Evidence, ReportPeriod, Tasks},
 	prompt::Prompt,
-	traits::Rank,
 };
 use crate::traits::EnumLike;
 use crate::traits::Query;
 use crate::evidence::Wish;
 use anyhow::anyhow;
 use chrono::{NaiveDate, Weekday};
-use inquire::{DateSelect, Select};
+use inquire::{DateSelect};
 use std::path::PathBuf;
 
 pub type Result<T> = anyhow::Result<T>;
@@ -127,18 +126,5 @@ impl NewEvidenceCommand {
 			.with_week_start(Weekday::Mon)
 			.prompt()
 			.map_err(Into::into)
-	}
-
-	fn query_rank<R: Rank>(title: &str) -> Result<R> {
-		let ranks = R::variants();
-		let options = ranks
-			.iter()
-			.enumerate()
-			.map(|(i, r)| format!("{i} - {}", r.name()))
-			.collect::<Vec<_>>();
-		let rank = Select::new(title, options.clone()).prompt()?;
-		let index = options.iter().position(|r| r == &rank).unwrap();
-
-		Ok(ranks[index])
 	}
 }

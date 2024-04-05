@@ -3,12 +3,16 @@ use collective::cmd::Command;
 use backtrace::Backtrace;
 use urlencoding::encode as url_escape;
 
-fn main() -> anyhow::Result<()> {
+fn main() {
 	std::env::set_var("RUST_BACKTRACE", "1");
 	set_panic_hook();
 	env_logger::init();
 
-	Command::parse().run()
+	// Handle the error so it wont print a stack trace.
+	if let Err(e) = Command::parse().run() {
+		eprintln!("Error: {}", e);
+		std::process::exit(1);
+	}
 }
 
 fn set_panic_hook() {
@@ -29,7 +33,7 @@ fn set_panic_hook() {
 		eprintln!("The program crashed. Please report this issue and include the 'panic.log' file: {:?}", url);
 
 		if let Err(err) = std::fs::write("panic.log", &trace) {
-			eprintln!("The program crashed and could not write the panic log: {:?}", trace);
+			eprintln!("The program crashed and could not write the panic log: {:?}\nwrite error: {:?}", trace, err);
 		}
 	}));
 }

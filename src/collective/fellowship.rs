@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use crate::{
-	collective::{Collective, EvidenceCategories},
+	collective::{Collective, EvidenceCategories, EvidenceCategoriesBaseTrait},
 	evidence::EvidenceReport,
 	member::{GenericMember},
 };
@@ -24,7 +24,8 @@ impl Collective for FellowshipCollective {
 	type Rank = FellowshipRank;
 	type EvidenceCategories = FellowshipEvidenceCategory;
 	type Member = FellowshipMember;
-	const NAME: &'static str = "Polkadot Fellowship";
+	const NAME: &'static str = "Fellowship";
+	const NICKNAME: &'static str = "The Fellowship";
 }
 
 #[repr(u8)]
@@ -60,6 +61,7 @@ impl crate::traits::Named for FellowshipRank {
 	}
 }
 
+impl crate::traits::RankBaseTrait for FellowshipRank {}
 impl crate::traits::Rank for FellowshipRank {}
 
 impl crate::traits::EnumLike for FellowshipRank {
@@ -101,6 +103,7 @@ pub enum FellowshipDevelopmentEvidence {
 	Other,
 }
 
+impl EvidenceCategoriesBaseTrait for FellowshipEvidenceCategory {}
 impl EvidenceCategories for FellowshipEvidenceCategory {}
 
 impl crate::traits::MultiTierNamed for FellowshipEvidenceCategory {
@@ -137,6 +140,13 @@ impl EnumLike for FellowshipDevelopmentEvidence {
 	fn variants() -> Vec<Self> {
 		vec![Self::Sdk, Self::Runtime, Self::Tooling, Self::Other]
 	}
+}
+
+#[test]
+fn encodes_evidence_category() {
+	let category = FellowshipEvidenceCategory::Development(FellowshipDevelopmentEvidence::Sdk);
+	let encoded = serde_yaml::to_string(&category).unwrap();
+	assert_eq!(encoded, "t: development\nc: sdk\n");
 }
 
 #[test]

@@ -1,8 +1,8 @@
-use crate::collective::fellowship::FellowshipEvidenceReport;
 use sailfish::TemplateOnce;
 use std::path::PathBuf;
 use anyhow::Context;
 use anyhow::bail;
+use crate::member::JoinRequest;
 
 #[derive(Debug, clap::Parser)]
 pub struct RenderJoinRequestCommand {
@@ -16,15 +16,15 @@ impl RenderJoinRequestCommand {
 			bail!("evidence file does not exist: {}", self.path.display());
 		}
 		let file = std::fs::read_to_string(self.path.as_path()).context("reading evidence file")?;
-		let report: FellowshipEvidenceReport = serde_yaml::from_str(&file)?;
+		let request: JoinRequest = serde_yaml::from_str(&file)?;
 
-		let ctx = crate::template::EvidenceTemplate { report };
+		let ctx = crate::template::JoinRequestTemplateHtml { request };
 		let rendered = ctx.render_once()?;
 
 		let output_path = self.path.with_extension("html");
 		std::fs::write(&output_path, rendered)?;
 
-		println!("Rendered evidence report to {}", output_path.display());
+		println!("Rendered join request to {}", output_path.display());
 		println!(
 			"Tip: You can render it into a PDF with `htmldoc --webpage -f {} {}`",
 			output_path.with_extension("pdf").display(),

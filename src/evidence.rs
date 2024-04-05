@@ -2,10 +2,14 @@ use crate::collective::Collective;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 use crate::traits::Query;
-use crate::collective::EvidenceCategories;
+use crate::collective::{EvidenceCategories, EvidenceCategoriesBaseTrait};
 use inquire::Text;
 use inquire::Select;
 use crate::traits::EnumLike;
+use crate::traits::vector_prompt;
+
+#[cfg(test)]
+use pretty_assertions::assert_eq;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ReportPeriod {
@@ -53,15 +57,22 @@ pub struct Tasks {
 }
 
 impl Query for Tasks {
-	fn query(_title: Option<&str>, _key: Option<&str>, p: &mut crate::prompt::Prompt) -> anyhow::Result<Self> {
-		let title = Text::new("Title of the Task").prompt()?;
-		let link = Text::new("Link to Task").prompt()?;
+	fn query(_title: Option<&str>, _key: Option<&str>, _p: &mut crate::prompt::Prompt) -> anyhow::Result<Self> {
+		let title = Text::new("Title a the Task")
+			.with_help_message("A piece of evidence consists of multiple tasks.\nEach task should be an atom of contribution.\nFor example a Merge Request or Referendum.").prompt()?;
+		let links = vector_prompt("links", || Text::new("Link to Task").prompt())?;
 
 		Ok(Self {
 			title,
-			links: vec![link],
+			links,
 		})
 	}
+}
+
+pub trait EvidenceTrait {
+	fn title(&self) -> &str;
+	fn tasks(&self) -> &Vec<Tasks>;
+	fn category(&self) -> &dyn EvidenceCategoriesBaseTrait;
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -71,16 +82,30 @@ pub struct Evidence<EC> {
 	pub tasks: Vec<Tasks>,
 }
 
+impl<EC: EvidenceCategories> EvidenceTrait for Evidence<EC> {
+	fn title(&self) -> &str {
+		&self.title
+	}
+
+	fn tasks(&self) -> &Vec<Tasks> {
+		&self.tasks		
+	}
+
+	fn category(&self) -> &dyn EvidenceCategoriesBaseTrait {
+		&self.category
+	}
+}
+
 impl<EC: EvidenceCategories> Query for Evidence<EC> {
-	fn query(title: Option<&str>, _key: Option<&str>, p: &mut crate::prompt::Prompt) -> anyhow::Result<Self> {
+	fn query(_title: Option<&str>, _key: Option<&str>, p: &mut crate::prompt::Prompt) -> anyhow::Result<Self> {
 		let title = Text::new("Title for this piece of evidence").with_help_message("Some example could be 'Fixed lots of bugs', 'Added features' or 'Maintained code' etc.").prompt()?;
-		let category = EC::query_bare(p)?;
-		let task = Tasks::query_bare(p)?;
+		let category = EC::query(Some("Category of the evidence"), None, p)?;
+		let tasks = vector_prompt("tasks", || Tasks::query_bare(p))?;
 
 		Ok(Self {
 			title,
 			category,
-			tasks: vec![task],
+			tasks,
 		})
 	}
 }
@@ -185,4 +210,27 @@ impl<C: Collective> EvidenceReport<C> {
 	pub fn template() -> &'static str {
 		include_str!("../example/template.evidence")
 	}
+}
+
+
+#[test]
+fn evidence_encode_works() {
+	let evidence = Evidence {
+		title: "Fixed a lot of bugs".into(),
+		category: crate::collective::fellowship::FellowshipEvidenceCategory::Development(crate::collective::fellowship::FellowshipDevelopmentEvidence::Sdk),
+		tasks: vec![Tasks {
+			title: "Fixed a bug".into(),
+			links: vec!["https://tasty.limo".into()],
+		}],
+	};
+	let encoded = serde_yaml::to_string(&evidence).unwrap();
+	assert_eq!(r#"title: Fixed a lot of bugs
+category:
+  t: development
+  c: sdk
+tasks:
+- title: Fixed a bug
+  links:
+  - https://tasty.limo
+"#, encoded);
 }

@@ -4,4 +4,6 @@
 <% use crate::traits::Named; %>
 -->
 
-#  <%- request.collective().name() %> - Join Request
+# Request to join the Polkadot <%- request.collective().name() %>
+
+*<%- request.member().name() %>* would like to join the Polkadot <%- request.collective().name() %> as rank *<%- request.member().rank().name() %>*.
