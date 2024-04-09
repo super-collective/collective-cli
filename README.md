@@ -1,10 +1,14 @@
 # Collective Evidence Reports
 
-Provides a way to create evidence reports for Polkadot On-Chain collectives. Reports are machine readable and can be rendered. This is just a proposed format for work evidence - it is not required to do it this way.
+Provides a way to create evidence reports for Polkadot On-Chain collectives. Reports are machine readable and can be rendered. This is just a proposed format - it is not required to do it this way.
 
-The rendered HTML/PDF output can look like this:
+The rendered HTML/PDF output of a work-evidence can look like this:
 
 ![Example](./example/example.pdf.png)
+
+Or a Request for Admission to a Collective:
+
+![Example](./example/join_request.pdf.png)
 
 ## Creating Evidence - Manually
 
@@ -48,6 +52,14 @@ htmldoc --webpage -f example/example.pdf example/example.html
 # https://github.com/ilaborie/html2pdf
 html2pdf example/example.html
 ```
+
+## Creating a Request for Admission - Interactive
+
+There is a `new join-request` subcommand that you can use to create a request for admission. It is also possible to fill out the adapt the [example file](./example/join_request.yaml) manually. Currently there is no schema for this, so the only way to validate it is with `check join-request --files ..`.
+
+[![asciicast](https://asciinema.org/a/nd8yyXyGhYsOw4uu4Y4WHyHX4.svg)](https://asciinema.org/a/nd8yyXyGhYsOw4uu4Y4WHyHX4)
+
+This should create a file in the `join_request/` directory of your collective. You can also render this into html with `render join-request ..`.
 
 ## TODO
 - [ ] Add schema for join_request.
