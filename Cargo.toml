@@ -9,20 +9,20 @@ description = "A CLI to automate work around Polkadot collective work reports."
 [dependencies]
 anyhow = "1.0.81"
 backtrace = "0.3.71"
-chrono = "0.4.34"
-clap = { version = "4.5.0", features = ["derive", "cargo"] }
+chrono = "0.4.37"
+clap = { version = "4.5.4", features = ["derive", "cargo"] }
 derivative = "2.2.0"
 dirs = "5.0.1"
-env_logger = "0.11.2"
+env_logger = "0.11.3"
 glob = "0.3.1"
-inquire = { version = "0.6.2", features = ["date"] }
-log = "0.4.20"
+inquire = { version = "0.7.4", features = ["date"] }
+log = "0.4.21"
 relative-path = "1.9.2"
 sailfish = "0.8.3"
-serde = { version = "1.0.196", features = ["derive"] }
-serde_json = "1.0.114"
-serde_repr = "0.1.18"
-serde_yaml = "0.9.31"
+serde = { version = "1.0.197", features = ["derive"] }
+serde_json = "1.0.115"
+serde_repr = "0.1.19"
+serde_yaml = "0.9.34"
 symlink = "0.1.0"
 tt-call = "1.0.9"
 url-escape = "0.1.1"
@@ -39,7 +39,7 @@ futures = "0.3.30"
 portable-pty = "0.8.1"
 pretty_assertions = "1.4"
 ptyprocess = "0.4.1"
-tokio = { version = "1.10.0", features = ["full"] }
+tokio = { version = "1.37.0", features = ["full"] }
 tokio-io = "0.1.13"
 tokio-macros = "2.2.0"
 tokio-pty-process = "0.4.0"
