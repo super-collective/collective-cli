@@ -48,3 +48,7 @@ htmldoc --webpage -f example/example.pdf example/example.html
 # https://github.com/ilaborie/html2pdf
 html2pdf example/example.html
 ```
+
+## TODO
+- [ ] Add schema for join_request.
+- [ ] Add e2e tests. First attempt with this did not work for interactive CLI, see [tests](src/tests).

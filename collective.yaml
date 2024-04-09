@@ -1,3 +1,4 @@
 collective: fellowship
-members_dir: example
-evidence_dir: asdf
+join_request_dir: join_request
+members_dir: member
+evidence_dir: evidence

@@ -1,0 +1,20 @@
+collective: Potoc
+member:
+  name: Max Power
+  address: 16a
+  github: mpower
+  rank: 0
+date: 2024-04-09
+evidence:
+- title: PolkadotJS
+  category: d_app_tooling
+  tasks:
+  - title: Creation and Maintenance
+    links:
+    - https://github.com/polkadot-js/apps
+- title: SrTool
+  category: core_tooling
+  tasks:
+  - title: Creation and Maintenance
+    links:
+    - https://github.com/paritytech/srtool

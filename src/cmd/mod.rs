@@ -55,7 +55,7 @@ impl Command {
 			SubCommand::New(c) => c.run(&g),
 			SubCommand::Render(c) => c.run(&g),
 			SubCommand::Schema(c) => c.run(),
-			SubCommand::Check(c) => c.run(),
+			SubCommand::Check(c) => c.run(&g),
 			SubCommand::Index(c) => c.run(),
 		}
 	}

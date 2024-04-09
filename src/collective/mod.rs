@@ -6,6 +6,7 @@ use crate::{
 	evidence::Evidence,
 	traits::{MultiTierNamed, Query, Rank},
 };
+use crate::traits::vector_prompt;
 use core::fmt::Debug;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::borrow::Cow;
@@ -67,12 +68,12 @@ impl<C: Collective> Query for GenericJoinRequest<C> {
 		let member = C::Member::query(Some("join"), None, p)?;
 		let date = p.query_date("Date of this Request")?;
 		println!("\nYou will now be queried to provide evidence for your request.\nThis should show concrete examples how you contributed to the mission of the collective.\nEvery piece of evidence has a title, category and a set of tasks.\nPlease fill them in either in this CLI or in the resulting yaml file that will be created at the end of this prompt.\n");
-		let evidence = Evidence::<C::EvidenceCategories>::query(Some("are a good addition to the fellowship"), None, p)?;
+		let evidence = vector_prompt("evidence", || Evidence::<C::EvidenceCategories>::query(Some("are a good addition to the fellowship"), None, p))?;
 
 		Ok(Self {
 			member,
 			date: date.to_string(),
-			evidence: vec![evidence],
+			evidence,
 		})
 	}
 }

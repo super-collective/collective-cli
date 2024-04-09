@@ -1,4 +1,7 @@
 mod evidence;
+mod join_request;
+
+use crate::config::GlobalConfig;
 
 #[derive(Debug, clap::Parser)]
 pub struct CheckCommand {
@@ -10,12 +13,15 @@ pub struct CheckCommand {
 enum CheckSubCommand {
 	/// Check one or more evidence reports for formatting errors.
 	Evidence(evidence::CheckEvidenceCommand),
+	/// Check a join-request for formatting errors.
+	JoinRequest(join_request::CheckJoinRequestCommand),
 }
 
 impl CheckCommand {
-	pub fn run(&self) -> anyhow::Result<()> {
+	pub fn run(&self, g: &GlobalConfig) -> anyhow::Result<()> {
 		match &self.subcommand {
 			CheckSubCommand::Evidence(c) => c.run(),
+			CheckSubCommand::JoinRequest(c) => c.run(g),
 		}
 	}
 }

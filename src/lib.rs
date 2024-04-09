@@ -6,3 +6,4 @@ pub mod member;
 pub mod prompt;
 pub mod template;
 pub mod traits;
+mod tests;
