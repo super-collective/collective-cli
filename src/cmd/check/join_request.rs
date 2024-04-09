@@ -1,8 +1,6 @@
 use glob::glob;
 use std::path::PathBuf;
 use crate::config::GlobalConfig;
-use valico::{json_schema, json_schema::schema::ScopedSchema};
-use crate::collective::fellowship::FellowshipEvidenceReport;
 use crate::member::JoinRequest;
 
 type Result<T> = anyhow::Result<T>;

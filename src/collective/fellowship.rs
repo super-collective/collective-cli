@@ -142,14 +142,14 @@ impl EnumLike for FellowshipDevelopmentEvidence {
 	}
 }
 
-//#[test]
+#[test]
 fn encodes_evidence_category() {
 	let category = FellowshipEvidenceCategory::Development(FellowshipDevelopmentEvidence::Sdk);
 	let encoded = serde_yaml::to_string(&category).unwrap();
 	assert_eq!(encoded, "t: development\nc: sdk\n");
 }
 
-//#[test]
+#[test]
 fn parses_example_file() {
 	let file = std::fs::read_to_string("example/example.evidence").unwrap();
 	let evidence: FellowshipEvidenceReport = serde_yaml::from_str(&file).unwrap();

@@ -56,14 +56,29 @@ impl JoinRequest {
 	pub fn evidence_categories(&self) -> Vec<&dyn crate::collective::EvidenceCategoriesBaseTrait> {
 		using_collective!(self, request, { request.evidence.iter().map(|e| e.category()).collect() })
 	}
+
+	pub fn about(&self) -> &str {
+		using_collective!(self, request, { &request.about })
+	}
+
+	pub fn motivation(&self) -> &str {
+		using_collective!(self, request, { &request.motivation })
+	}
 }
 
 impl Query for JoinRequest {
 	fn query(_title: Option<&str>, _key: Option<&str>, prompt: &mut Prompt) -> anyhow::Result<Self> {
-		Ok(match CollectiveId::query(Some("Collective to join"), None, prompt)? {
-			CollectiveId::Fellowship => Self::Fellowship(FellowshipJoinRequest::query_bare(prompt)?),
-			CollectiveId::Potoc => Self::Potoc(PotocJoinRequest::query_bare(prompt)?),
-		})
+		let id = CollectiveId::query(Some("Collective to join"), None, prompt)?;
+		Self::query_with_id(&id, prompt)
+	}
+}
+
+impl JoinRequest {
+	pub fn query_with_id(id: &CollectiveId, prompt: &mut Prompt) -> anyhow::Result<Self> {
+		match id {
+			CollectiveId::Fellowship => Ok(Self::Fellowship(FellowshipJoinRequest::query_bare(prompt)?)),
+			CollectiveId::Potoc => Ok(Self::Potoc(PotocJoinRequest::query_bare(prompt)?)),
+		}
 	}
 }
 

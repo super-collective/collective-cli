@@ -213,7 +213,7 @@ impl<C: Collective> EvidenceReport<C> {
 }
 
 
-//#[test]
+#[test]
 fn evidence_encode_works() {
 	let evidence = Evidence {
 		title: "Fixed a lot of bugs".into(),

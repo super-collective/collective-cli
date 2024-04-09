@@ -86,7 +86,7 @@ impl EnumLike for PotocEvidenceCategory {
 	}
 }
 
-//#[test]
+#[test]
 fn parses_example_file() {
 	let file = std::fs::read_to_string("example/example.evidence").unwrap();
 	let evidence: PotocEvidenceReport = serde_yaml::from_str(&file).unwrap();

@@ -15,7 +15,6 @@
 <body>
 <tt>
 
-<% use crate::evidence::Wish; use crate::traits::MultiTierNamed; %>
 <% use crate::traits::FormatLink; %>
 <% use crate::traits::Named; %>
 
@@ -43,6 +42,14 @@ by providing evidence in the following categories:
 <br><br>
 <hr>
 <br>
+
+<center><h3>Motivation</h3></center>
+
+<%- request.motivation() %>
+
+<center><h3>About</h3></center>
+
+<%- request.about() %>
 
 <center><h3>Evidence</h3></center>
 

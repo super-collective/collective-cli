@@ -7,7 +7,6 @@ use crate::{
 use anyhow::Context;
 use anyhow::anyhow;
 use std::path::PathBuf;
-use crate::traits::Query;
 
 pub type Result<T> = anyhow::Result<T>;
 
@@ -64,17 +63,15 @@ impl NewJoinRequestCommand {
 		Err(anyhow!("Could not find a good path. Please use `--evidence` to specify an empty."))
 	}
 
-	fn run_prompt(&self, _g: &GlobalConfig) -> Result<String> {
-		let filled = self.query()?;
+	fn run_prompt(&self, g: &GlobalConfig) -> Result<String> {
+		let filled = self.query(g)?;
 
 		println!("Please fill out the remaining TODOs");
 		serde_yaml::to_string(&filled).map_err(Into::into)
 	}
 
-	fn query(&self) -> Result<JoinRequest> {
+	fn query(&self, g: &GlobalConfig) -> Result<JoinRequest> {
 		let mut prompt = Prompt::new(self.cache == OnOff::On)?;
-		let request = JoinRequest::query_bare(&mut prompt)?;
-
-		Ok(request)
+		JoinRequest::query_with_id(&g.collective, &mut prompt)
 	}
 }

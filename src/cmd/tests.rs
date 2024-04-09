@@ -3,7 +3,7 @@
 use assert_cmd::Command;
 use assert_fs::fixture::*;
 
-//#[test]
+#[test]
 fn schema_generator_works() {
 	let temp = assert_fs::TempDir::new().unwrap();
 
@@ -14,7 +14,7 @@ fn schema_generator_works() {
 	assert!(schema.exists());
 }
 
-//#[test]
+#[test]
 fn check_evidence_works() {
 	let temp = assert_fs::TempDir::new().unwrap();
 
@@ -27,7 +27,7 @@ fn check_evidence_works() {
 		.stdout("Validated 0 evidence reports.\n");
 }
 
-//#[test]
+#[test]
 fn example_works() {
 	let temp = assert_fs::TempDir::new().unwrap();
 	let evidence = temp.child("evidence");
