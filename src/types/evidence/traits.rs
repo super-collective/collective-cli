@@ -1,0 +1,21 @@
+use crate::{
+	traits::{EnumLike, MultiTierNamed, Query},
+	types::prelude::Tasks,
+};
+use core::fmt::Debug;
+use serde::{de::DeserializeOwned, Serialize};
+
+pub trait EvidenceTrait {
+	fn title(&self) -> &str;
+	fn tasks(&self) -> &Vec<Tasks>;
+	fn category(&self) -> &dyn EvidenceCategoriesBaseTrait;
+}
+
+// Object safe version of EvidenceCategories.
+pub trait EvidenceCategoriesBaseTrait: MultiTierNamed + EnumLike + Debug {}
+
+// Not object safe version of EvidenceCategories.
+pub trait EvidenceCategories:
+	EvidenceCategoriesBaseTrait + Copy + Query + Serialize + DeserializeOwned + Ord
+{
+}

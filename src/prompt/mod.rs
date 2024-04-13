@@ -1,10 +1,8 @@
 mod cache;
 
 use cache::Cache;
-use inquire::Text;
-use chrono::NaiveDate;
-use inquire::DateSelect;
-use chrono::Weekday;
+use chrono::{NaiveDate, Weekday};
+use inquire::{DateSelect, Text};
 
 pub type Result<T> = anyhow::Result<T>;
 

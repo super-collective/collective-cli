@@ -4,15 +4,16 @@ use crate::{
 		fellowship::{FellowshipEvidenceCategory, FellowshipEvidenceReport},
 		CollectiveId,
 	},
-	evidence::{Evidence, ReportPeriod, Tasks},
 	prompt::Prompt,
+	traits::{EnumLike, Query},
+	types::{
+		evidence::{Evidence, ReportPeriod, Tasks},
+		wish::Wish,
+	},
 };
-use crate::traits::EnumLike;
-use crate::traits::Query;
-use crate::evidence::Wish;
 use anyhow::anyhow;
 use chrono::{NaiveDate, Weekday};
-use inquire::{DateSelect};
+use inquire::DateSelect;
 use std::path::PathBuf;
 
 pub type Result<T> = anyhow::Result<T>;

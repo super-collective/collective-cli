@@ -1,16 +1,17 @@
 #![allow(dead_code)]
 
 use crate::{
-	collective::{Collective, EvidenceCategories, EvidenceCategoriesBaseTrait},
-	evidence::EvidenceReport,
-	member::{GenericMember},
+	collective::{Collective, CollectiveId},
+	traits::EnumLike,
+	types::{
+		evidence::{EvidenceReport, EvidenceCategories, EvidenceCategoriesBaseTrait},
+		join_request::generic::GenericJoinRequest,
+		member::GenericMember,
+	},
 };
-use crate::collective::GenericJoinRequest;
-use crate::traits::EnumLike;
 use serde::{Deserialize, Serialize};
 use serde_repr::*;
 use std::borrow::Cow;
-use crate::collective::CollectiveId;
 
 pub type PotocMember = GenericMember<PotocCollective>;
 pub type PotocEvidenceReport = EvidenceReport<PotocCollective>;

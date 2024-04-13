@@ -1,8 +1,7 @@
+use crate::types::join_request::JoinRequest;
+use anyhow::{bail, Context};
 use sailfish::TemplateOnce;
 use std::path::PathBuf;
-use anyhow::Context;
-use anyhow::bail;
-use crate::member::JoinRequest;
 
 #[derive(Debug, clap::Parser)]
 pub struct RenderJoinRequestCommand {

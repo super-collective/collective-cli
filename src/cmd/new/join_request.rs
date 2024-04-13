@@ -1,11 +1,10 @@
 use crate::{
 	cmd::OnOff,
-	member::JoinRequest,
 	config::{GlobalArgs, GlobalConfig},
 	prompt::Prompt,
+	types::join_request::JoinRequest,
 };
-use anyhow::Context;
-use anyhow::anyhow;
+use anyhow::{anyhow, Context};
 use std::path::PathBuf;
 
 pub type Result<T> = anyhow::Result<T>;
@@ -50,7 +49,8 @@ impl NewJoinRequestCommand {
 	}
 
 	fn find_good_path(&self, g: &GlobalConfig) -> Result<PathBuf> {
-		std::fs::create_dir_all(&g.join_requests_dir).context("creating the join request directory")?;
+		std::fs::create_dir_all(&g.join_requests_dir)
+			.context("creating the join request directory")?;
 		for i in 0..1000 {
 			// lol shit code
 			let path = g.join_requests_dir.join(i.to_string()).with_extension("yaml");

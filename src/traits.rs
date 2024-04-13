@@ -1,10 +1,8 @@
-use core::fmt::Debug;
-use serde::Serialize;
-use std::borrow::Cow;
-use inquire::Select;
 use anyhow::Result;
-use inquire::Confirm;
-use serde::de::DeserializeOwned;
+use core::fmt::Debug;
+use inquire::{Confirm, Select};
+use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
 
 #[macro_export]
 macro_rules! using_collective {
@@ -39,19 +37,22 @@ pub trait Named {
 /// Something with a fixed set of variants that can be listed at runtime.
 pub trait EnumLike {
 	/// All possible variants.
-	fn variants() -> Vec<Self> where Self: Sized;
+	fn variants() -> Vec<Self>
+	where
+		Self: Sized;
 }
 
 impl<T: EnumLike + Named + Clone> Query for T {
-	fn query(title: Option<&str>, _key: Option<&str>, _p: &mut crate::prompt::Prompt) -> Result<Self> {
+	fn query(
+		title: Option<&str>,
+		_key: Option<&str>,
+		_p: &mut crate::prompt::Prompt,
+	) -> Result<Self> {
 		let title = title.expect("Blanket implemented query for named types always need a title");
 		assert!(_key.is_none(), "Blanket implemented query for named types does not support keys");
 
 		let variants = T::variants();
-		let options = variants
-			.iter()
-			.map(Named::name)
-			.collect::<Vec<_>>();
+		let options = variants.iter().map(Named::name).collect::<Vec<_>>();
 		let rank = Select::new(title, options.clone()).prompt()?;
 		let index = options.iter().position(|r| r == &rank).unwrap();
 
@@ -119,19 +120,26 @@ impl FormatLink for String {
 }
 
 pub trait Query {
-	fn query(_title: Option<&str>, _key: Option<&str>, p: &mut crate::prompt::Prompt) -> anyhow::Result<Self>
+	fn query(
+		_title: Option<&str>,
+		_key: Option<&str>,
+		p: &mut crate::prompt::Prompt,
+	) -> anyhow::Result<Self>
 	where
 		Self: Sized;
-	
+
 	fn query_bare(p: &mut crate::prompt::Prompt) -> anyhow::Result<Self>
 	where
-		Self: Sized
+		Self: Sized,
 	{
 		Self::query(None, None, p)
 	}
 }
 
-pub fn vector_prompt<F: FnMut() -> std::result::Result<R, E>, R, E: Into<anyhow::Error>>(title: &str, mut f: F) -> Result<Vec<R>> {
+pub fn vector_prompt<F: FnMut() -> std::result::Result<R, E>, R, E: Into<anyhow::Error>>(
+	title: &str,
+	mut f: F,
+) -> Result<Vec<R>> {
 	let mut ret = Vec::new();
 	loop {
 		if let Ok(value) = f() {

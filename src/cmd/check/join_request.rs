@@ -1,7 +1,6 @@
+use crate::{config::GlobalConfig, types::join_request::JoinRequest};
 use glob::glob;
 use std::path::PathBuf;
-use crate::config::GlobalConfig;
-use crate::member::JoinRequest;
 
 type Result<T> = anyhow::Result<T>;
 

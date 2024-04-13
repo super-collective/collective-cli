@@ -1,17 +1,18 @@
-use crate::collective::Collective;
-use crate::member::JoinRequest;
+use crate::{
+	collective::Collective,
+	types::{join_request::JoinRequest, member::Members, prelude::EvidenceReport},
+};
 
 #[derive(sailfish::TemplateOnce)]
 #[template(path = "evidence.html.stpl")]
 pub struct EvidenceTemplate<C: Collective> {
-	pub report: crate::evidence::EvidenceReport<C>,
+	pub report: EvidenceReport<C>,
 }
-
 
 #[derive(sailfish::TemplateOnce)]
 #[template(path = "members.md.stpl")]
 pub struct MembersTemplate {
-	pub members: crate::member::Members,
+	pub members: Members,
 }
 
 #[derive(sailfish::TemplateOnce)]

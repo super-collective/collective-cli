@@ -1,8 +1,7 @@
 use crate::collective::fellowship::FellowshipEvidenceReport;
+use anyhow::{bail, Context};
 use sailfish::TemplateOnce;
 use std::path::PathBuf;
-use anyhow::Context;
-use anyhow::bail;
 
 #[derive(Debug, clap::Parser)]
 pub struct RenderEvidenceCommand {

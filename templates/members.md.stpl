@@ -2,7 +2,7 @@
 <!-- <%- std::env::args().collect::<Vec<String>>().join(" ") %> -->
 # Members of the <%- members.collective.name() %>
 <!--
-<% use crate::traits::Named; use crate::member::MemberTrait; %>
+<% use crate::traits::Named; use crate::types::member::MemberTrait; %>
 -->
 
 | Name | Rank | Address |

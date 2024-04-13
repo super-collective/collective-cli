@@ -1,6 +1,6 @@
 mod evidence;
-mod members;
 mod join_request;
+mod members;
 
 use crate::config::GlobalConfig;
 

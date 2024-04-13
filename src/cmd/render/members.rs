@@ -2,10 +2,9 @@ use crate::cmd::plural;
 
 use crate::{
 	config::GlobalConfig,
-	member::{Member, Members},
+	types::member::{Member, Members},
 };
-use anyhow::Context;
-use anyhow::bail;
+use anyhow::{bail, Context};
 use sailfish::TemplateOnce;
 use std::path::PathBuf;
 

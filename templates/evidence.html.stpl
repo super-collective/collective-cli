@@ -15,7 +15,7 @@
 <body>
 <tt>
 
-<% use crate::evidence::Wish; use crate::traits::MultiTierNamed; %>
+<% use crate::types::wish::Wish; use crate::traits::MultiTierNamed; %>
 <% use crate::traits::FormatLink; %>
 <% use crate::traits::Named; %>
 

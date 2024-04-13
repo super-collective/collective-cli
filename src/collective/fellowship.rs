@@ -1,16 +1,17 @@
 #![allow(dead_code)]
 
 use crate::{
-	collective::{Collective, EvidenceCategories, EvidenceCategoriesBaseTrait},
-	evidence::EvidenceReport,
-	member::{GenericMember},
+	collective::{Collective, CollectiveId},
+	traits::EnumLike,
+	types::{
+		evidence::{EvidenceReport, EvidenceCategories, EvidenceCategoriesBaseTrait},
+		join_request::generic::GenericJoinRequest,
+		member::GenericMember,
+	},
 };
-use crate::collective::GenericJoinRequest;
 use serde::{Deserialize, Serialize};
 use serde_repr::*;
-use crate::traits::EnumLike;
 use std::borrow::Cow;
-use crate::collective::CollectiveId;
 
 pub type FellowshipMember = GenericMember<FellowshipCollective>;
 pub type FellowshipEvidenceReport = EvidenceReport<FellowshipCollective>;
@@ -109,8 +110,7 @@ impl EvidenceCategories for FellowshipEvidenceCategory {}
 impl crate::traits::MultiTierNamed for FellowshipEvidenceCategory {
 	fn multi_tier_name(&self) -> Vec<Cow<'static, str>> {
 		match self {
-			Self::Development(dev) =>
-				[vec!["Development".into()], dev.multi_tier_name()].concat(),
+			Self::Development(dev) => [vec!["Development".into()], dev.multi_tier_name()].concat(),
 		}
 	}
 }
