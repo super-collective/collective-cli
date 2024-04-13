@@ -4,6 +4,6 @@ out.html
 output.pdf
 panic.log
 *.cast
-./join_request/
-./evidence/
-./member/
+/join_request
+/evidence
+/member
