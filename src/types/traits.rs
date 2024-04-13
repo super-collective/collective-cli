@@ -60,6 +60,12 @@ impl<T: EnumLike + Named + Clone> Query for T {
 	}
 }
 
+impl<T: clap::ValueEnum> EnumLike for T {
+	fn variants() -> Vec<Self> {
+		T::value_variants().to_vec()
+	}
+}
+
 /// Object safe version of a Rank.
 pub trait RankBaseTrait: Named + EnumLike {}
 

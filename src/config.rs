@@ -1,4 +1,4 @@
-use crate::collective::CollectiveId;
+use crate::types::prelude::*;
 use anyhow::{bail, Context};
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;

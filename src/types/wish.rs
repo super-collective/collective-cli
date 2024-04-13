@@ -1,15 +1,15 @@
-use crate::traits::Query;
+use crate::types::prelude::*;
 use inquire::Select;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "intent", content = "rank", rename_all = "lowercase")]
-pub enum Wish<Rank> {
-	Retain(Rank),
-	Promote(Rank),
+pub enum Wish<R> {
+	Retain(R),
+	Promote(R),
 }
 
-impl<Rank: crate::traits::Rank> Query for Wish<Rank> {
+impl<R: Rank> Query for Wish<R> {
 	fn query(
 		_title: Option<&str>,
 		_key: Option<&str>,
@@ -18,7 +18,7 @@ impl<Rank: crate::traits::Rank> Query for Wish<Rank> {
 		let options = vec!["retain", "promote"];
 		let wish = Select::new("Wish", options.clone()).prompt()?;
 		let rank_title = format!("Rank to {}", wish);
-		let rank = Rank::query(Some(&rank_title), None, p)?;
+		let rank = R::query(Some(&rank_title), None, p)?;
 
 		Ok(match wish {
 			"retain" => Self::Retain(rank),

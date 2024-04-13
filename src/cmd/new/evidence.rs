@@ -1,16 +1,10 @@
 use crate::{
 	cmd::OnOff,
-	collective::{
-		fellowship::{FellowshipEvidenceCategory, FellowshipEvidenceReport},
-		CollectiveId,
-	},
+	collective::fellowship::{FellowshipEvidenceCategory, FellowshipEvidenceReport},
 	prompt::Prompt,
-	traits::{EnumLike, Query},
-	types::{
-		evidence::{Evidence, ReportPeriod, Tasks},
-		wish::Wish,
-	},
+	types::prelude::*,
 };
+
 use anyhow::anyhow;
 use chrono::{NaiveDate, Weekday};
 use inquire::DateSelect;

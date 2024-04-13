@@ -1,8 +1,4 @@
-use crate::{
-	collective::{Collective, CollectiveId},
-	traits::{Named, RankBaseTrait},
-	using_collective,
-};
+use crate::{types::prelude::*, using_collective};
 use core::fmt::Debug;
 
 use super::MemberTrait;

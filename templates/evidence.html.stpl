@@ -15,9 +15,9 @@
 <body>
 <tt>
 
-<% use crate::types::wish::Wish; use crate::traits::MultiTierNamed; %>
-<% use crate::traits::FormatLink; %>
-<% use crate::traits::Named; %>
+<% use crate::types::wish::Wish; use crate::types::traits::MultiTierNamed; %>
+<% use crate::types::traits::FormatLink; %>
+<% use crate::types::traits::Named; %>
 
 <center><h1>Evidence Report</h1></center>
 <center><h3><%- report.collective.name() %></h3></center>

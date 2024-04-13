@@ -1,6 +1,6 @@
-use crate::{
+use crate::types::{
+	prelude::Tasks,
 	traits::{EnumLike, MultiTierNamed, Query},
-	types::prelude::Tasks,
 };
 use core::fmt::Debug;
 use serde::{de::DeserializeOwned, Serialize};

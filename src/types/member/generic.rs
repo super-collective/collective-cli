@@ -1,9 +1,4 @@
-use crate::{
-	collective::Collective,
-	prompt::Prompt,
-	traits::{Decode, Encode, Named, Query, RankBaseTrait},
-	types::prelude::MemberTrait,
-};
+use crate::{prompt::Prompt, types::prelude::*};
 use core::fmt::Debug;
 use derivative::Derivative;
 use serde::{Deserialize, Serialize};

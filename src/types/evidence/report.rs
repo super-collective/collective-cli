@@ -1,13 +1,5 @@
-use crate::traits::Query;
+use crate::types::{prelude::*, traits::Query};
 use serde::{Deserialize, Serialize};
-
-use crate::{
-	traits::EnumLike,
-	types::{
-		evidence::Collective,
-		prelude::{Evidence, ReportPeriod, Tasks, Wish},
-	},
-};
 use std::collections::BTreeSet;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -19,7 +11,7 @@ pub struct EvidenceReport<C: Collective> {
 	pub address: String,
 	pub github: String,
 	pub wish: Wish<C::Rank>,
-	pub collective: crate::collective::CollectiveId,
+	pub collective: CollectiveId,
 	#[serde(rename = "report_date")]
 	pub date: String,
 	#[serde(rename = "report_period")]

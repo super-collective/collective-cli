@@ -1,7 +1,4 @@
-use crate::{
-	collective::Collective,
-	types::{join_request::JoinRequest, member::Members, prelude::EvidenceReport},
-};
+use crate::types::prelude::*;
 
 #[derive(sailfish::TemplateOnce)]
 #[template(path = "evidence.html.stpl")]

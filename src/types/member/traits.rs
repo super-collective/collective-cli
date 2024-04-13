@@ -1,4 +1,4 @@
-use crate::traits::{Named, RankBaseTrait};
+use crate::types::traits::{Named, RankBaseTrait};
 
 pub trait MemberTrait: Named {
 	fn github(&self) -> &str;

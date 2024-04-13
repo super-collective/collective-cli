@@ -1,4 +1,4 @@
-use crate::{collective::CollectiveId, types::prelude::Member};
+use crate::types::prelude::*;
 
 // Non-empty collection of [Member]s.
 #[derive(Debug)]

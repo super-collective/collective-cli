@@ -4,10 +4,7 @@ mod traits;
 pub use report::*;
 pub use traits::*;
 
-use crate::{
-	collective::Collective,
-	traits::{vector_prompt, Query},
-};
+use crate::types::prelude::*;
 use inquire::Text;
 #[cfg(test)]
 use pretty_assertions::assert_eq;

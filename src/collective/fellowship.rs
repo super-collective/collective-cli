@@ -1,13 +1,11 @@
 #![allow(dead_code)]
 
-use crate::{
-	collective::{Collective, CollectiveId},
+use crate::types::{
+	evidence::{EvidenceCategories, EvidenceCategoriesBaseTrait, EvidenceReport},
+	join_request::generic::GenericJoinRequest,
+	member::GenericMember,
+	prelude::*,
 	traits::EnumLike,
-	types::{
-		evidence::{EvidenceReport, EvidenceCategories, EvidenceCategoriesBaseTrait},
-		join_request::generic::GenericJoinRequest,
-		member::GenericMember,
-	},
 };
 use serde::{Deserialize, Serialize};
 use serde_repr::*;
@@ -44,7 +42,7 @@ pub enum FellowshipRank {
 	GrandMaster = 9,
 }
 
-impl crate::traits::Named for FellowshipRank {
+impl Named for FellowshipRank {
 	fn name(&self) -> Cow<'static, str> {
 		match self {
 			Self::Candidate => "Candidate",
@@ -62,10 +60,10 @@ impl crate::traits::Named for FellowshipRank {
 	}
 }
 
-impl crate::traits::RankBaseTrait for FellowshipRank {}
-impl crate::traits::Rank for FellowshipRank {}
+impl RankBaseTrait for FellowshipRank {}
+impl Rank for FellowshipRank {}
 
-impl crate::traits::EnumLike for FellowshipRank {
+impl crate::types::traits::EnumLike for FellowshipRank {
 	fn variants() -> Vec<Self> {
 		vec![
 			Self::Candidate,
@@ -107,7 +105,7 @@ pub enum FellowshipDevelopmentEvidence {
 impl EvidenceCategoriesBaseTrait for FellowshipEvidenceCategory {}
 impl EvidenceCategories for FellowshipEvidenceCategory {}
 
-impl crate::traits::MultiTierNamed for FellowshipEvidenceCategory {
+impl MultiTierNamed for FellowshipEvidenceCategory {
 	fn multi_tier_name(&self) -> Vec<Cow<'static, str>> {
 		match self {
 			Self::Development(dev) => [vec!["Development".into()], dev.multi_tier_name()].concat(),
@@ -124,7 +122,7 @@ impl EnumLike for FellowshipEvidenceCategory {
 	}
 }
 
-impl crate::traits::MultiTierNamed for FellowshipDevelopmentEvidence {
+impl MultiTierNamed for FellowshipDevelopmentEvidence {
 	fn multi_tier_name(&self) -> Vec<Cow<'static, str>> {
 		vec![match self {
 			Self::Sdk => "SDK",

@@ -1,15 +1,7 @@
+use crate::{prompt::Prompt, types::prelude::*, using_collective};
 use serde::{Deserialize, Serialize};
 
-use crate::{
-	collective::{fellowship::FellowshipJoinRequest, potoc::PotocJoinRequest, CollectiveId},
-	prompt::Prompt,
-	traits::Query,
-	types::{
-		evidence::EvidenceCategoriesBaseTrait,
-		prelude::{EvidenceTrait, MemberTrait},
-	},
-	using_collective,
-};
+use crate::collective::{fellowship::FellowshipJoinRequest, potoc::PotocJoinRequest};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(tag = "collective")]

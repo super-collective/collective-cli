@@ -1,13 +1,8 @@
-use derivative::Derivative;
-use serde::{Deserialize, Serialize};
-
-use crate::{
-	collective::Collective,
-	traits::{vector_prompt, Query},
-	types::prelude::Evidence,
-};
+use crate::types::prelude::*;
 use core::fmt::Debug;
+use derivative::Derivative;
 use inquire::Text;
+use serde::{Deserialize, Serialize};
 
 #[derive(Derivative, Serialize, Deserialize)]
 #[derivative(Debug(bound = "C::Member: Debug, C::EvidenceCategories: Debug"))]

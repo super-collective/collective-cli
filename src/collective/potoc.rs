@@ -1,13 +1,11 @@
 #![allow(dead_code)]
 
-use crate::{
-	collective::{Collective, CollectiveId},
+use crate::types::{
+	evidence::{EvidenceCategories, EvidenceCategoriesBaseTrait, EvidenceReport},
+	join_request::generic::GenericJoinRequest,
+	member::GenericMember,
+	prelude::*,
 	traits::EnumLike,
-	types::{
-		evidence::{EvidenceReport, EvidenceCategories, EvidenceCategoriesBaseTrait},
-		join_request::generic::GenericJoinRequest,
-		member::GenericMember,
-	},
 };
 use serde::{Deserialize, Serialize};
 use serde_repr::*;
@@ -36,7 +34,7 @@ pub enum PotocRank {
 	Member = 1,
 }
 
-impl crate::traits::Named for PotocRank {
+impl Named for PotocRank {
 	fn name(&self) -> Cow<'static, str> {
 		match self {
 			Self::Candidate => "Candidate",
@@ -46,10 +44,10 @@ impl crate::traits::Named for PotocRank {
 	}
 }
 
-impl crate::traits::RankBaseTrait for PotocRank {}
-impl crate::traits::Rank for PotocRank {}
+impl RankBaseTrait for PotocRank {}
+impl Rank for PotocRank {}
 
-impl crate::traits::EnumLike for PotocRank {
+impl EnumLike for PotocRank {
 	fn variants() -> Vec<Self> {
 		vec![Self::Candidate, Self::Member]
 	}
@@ -71,7 +69,7 @@ pub enum PotocEvidenceCategory {
 impl EvidenceCategoriesBaseTrait for PotocEvidenceCategory {}
 impl EvidenceCategories for PotocEvidenceCategory {}
 
-impl crate::traits::MultiTierNamed for PotocEvidenceCategory {
+impl MultiTierNamed for PotocEvidenceCategory {
 	fn multi_tier_name(&self) -> Vec<Cow<'static, str>> {
 		vec![match self {
 			Self::CoreTooling => "Core Tooling",
