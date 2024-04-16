@@ -19,8 +19,11 @@ fn expect() {
 		assert!(output.status.success(), "{stderr}");
 		
 		let join_request_path = file.parent().unwrap().join("join_request").join("0.yaml");
-		assert!(join_request_path.exists());
+		let evidence_path = file.parent().unwrap().join("evidence").join("0.evidence");
+
+		assert!(join_request_path.exists() || evidence_path.exists());
 		// delete folder
-		std::fs::remove_dir_all(join_request_path.parent().unwrap()).unwrap();
+		std::fs::remove_dir_all(join_request_path.parent().unwrap());
+		std::fs::remove_dir_all(evidence_path.parent().unwrap());
 	}
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/expect
-#set timeout 10
+#set timeout 1
 
 proc del {} {
 	set times 0;
@@ -19,41 +19,20 @@ del; send "555555\r";
 expect -re ".*Please enter your GitHub handle:.*";
 del; send "mpower\r";
 
-expect "Rank to join";
-expect "enter to select";
-#send "\033\[B";
+expect "Rank that you currently have";
+expect "type to filter";
 send "Member\r";
-expect -re ".*What motivated you to apply?.*";
-send "Polkadot best\r";
+expect "Wish?";
+expect "type to filter";
+send "retain\r";
+send "Member\r";
 
-expect "Tell us a bit about yourself.";
-send "Something about my background\r";
-
-expect "Date of this Request";
-expect "move months and years, enter to select";
+expect "Creation date of this report";
+send "\r";
+expect "First day that this report covers";
+send "\r";
+expect "Last day that this report covers";
 send "\r";
 
-expect "Title for this piece of evidence";
-expect "Some example";
-send "PolkadotJS\r";
-
-expect "Category of the evidence";
-expect "enter to select";
-send "Core Tooling\r";
-
-expect "Title a the Task";
-expect "For example a Merge Request or Referendum.";
-send "Creation and Maintenance\r";
-
-expect "Link to Task";
-send "https://something.com/\r";
-expect "Add more links? (y/n)";
-send "y\r";
-send "https://else.com/\r";
-send "n\r";
-
-expect "Add more tasks? (y/n)"
-send "n\r"; send "n\r";
-
 expect "Please fill out the remaining TODOs";
-expect "Wrote partial member request to";
+expect "Wrote partial evidence report to";

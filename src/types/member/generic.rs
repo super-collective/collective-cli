@@ -66,7 +66,7 @@ impl<C: CollectiveTrait> Query for GenericMember<C> {
 			.replace('@', " ");
 
 		let rank_title =
-			if let Some(title) = title { format!("Rank to {title}") } else { "Rank".into() };
+			if let Some(title) = title { format!("Rank {title}") } else { "Rank".into() };
 		let rank = C::Rank::query(Some(&rank_title), None, prompt)?;
 
 		Ok(Self { name, address, github, rank })
