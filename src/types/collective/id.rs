@@ -5,7 +5,7 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 
-#[derive(Debug, Serialize, Deserialize, Clone, clap::ValueEnum, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord, clap::ValueEnum, strum::EnumIter)]
 pub enum CollectiveId {
 	#[serde(alias = "fellowship")]
 	Fellowship,

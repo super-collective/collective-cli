@@ -2,8 +2,9 @@ use crate::types::prelude::*;
 use core::fmt::Debug;
 use serde::{de::DeserializeOwned, Serialize};
 
-pub trait Collective {
+pub trait CollectiveTrait {
 	const ID: CollectiveId;
+	const MANIFESTO: &'static str;
 
 	type Rank: Rank;
 	type EvidenceCategories: EvidenceCategories;

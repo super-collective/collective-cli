@@ -1,8 +1,10 @@
 mod report;
 mod traits;
+mod aggregate;
 
 pub use report::*;
 pub use traits::*;
+pub use aggregate::*;
 
 use crate::types::prelude::*;
 use inquire::Text;
@@ -11,7 +13,7 @@ use pretty_assertions::assert_eq;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct Evidence<EC> {
+pub struct GenericEvidence<EC> {
 	pub title: String,
 	pub category: EC,
 	pub tasks: Vec<Tasks>,
@@ -45,7 +47,7 @@ impl Query for Tasks {
 	}
 }
 
-impl<EC: EvidenceCategories> EvidenceTrait for Evidence<EC> {
+impl<EC: EvidenceCategories> EvidenceTrait for GenericEvidence<EC> {
 	fn title(&self) -> &str {
 		&self.title
 	}
@@ -59,7 +61,7 @@ impl<EC: EvidenceCategories> EvidenceTrait for Evidence<EC> {
 	}
 }
 
-impl<EC: EvidenceCategories> Query for Evidence<EC> {
+impl<EC: EvidenceCategories> Query for GenericEvidence<EC> {
 	fn query(
 		_title: Option<&str>,
 		_key: Option<&str>,
@@ -75,7 +77,7 @@ impl<EC: EvidenceCategories> Query for Evidence<EC> {
 
 #[test]
 fn evidence_encode_works() {
-	let evidence = Evidence {
+	let evidence = GenericEvidence {
 		title: "Fixed a lot of bugs".into(),
 		category: crate::collective::fellowship::FellowshipEvidenceCategory::Development(
 			crate::collective::fellowship::FellowshipDevelopmentEvidence::Sdk,

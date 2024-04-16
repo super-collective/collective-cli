@@ -1,34 +1,29 @@
-#![allow(dead_code)]
-
-use crate::types::{
-	evidence::{EvidenceCategories, EvidenceCategoriesBaseTrait, EvidenceReport},
-	join_request::generic::GenericJoinRequest,
-	member::GenericMember,
-	prelude::*,
-	traits::EnumLike,
-};
+use crate::types::prelude::*;
 use serde::{Deserialize, Serialize};
 use serde_repr::*;
 use std::borrow::Cow;
+use strum::IntoEnumIterator;
 
-pub type FellowshipMember = GenericMember<FellowshipCollective>;
-pub type FellowshipEvidenceReport = EvidenceReport<FellowshipCollective>;
-pub type FellowshipJoinRequest = GenericJoinRequest<FellowshipCollective>;
-
-/// Something similarly structured as the fellowship, but could have a different rank type.
+/// The Polkadot Fellowship Collective.
 pub struct FellowshipCollective;
 
-impl Collective for FellowshipCollective {
+impl CollectiveTrait for FellowshipCollective {
+	const NAME: &'static str = "Fellowship";
+	const NICKNAME: &'static str = "The Fellowship";
 	const ID: CollectiveId = CollectiveId::Fellowship;
+	const MANIFESTO: &'static str = "https://github.com/polkadot-fellows/manifesto";
+
 	type Rank = FellowshipRank;
 	type EvidenceCategories = FellowshipEvidenceCategory;
 	type Member = FellowshipMember;
-	const NAME: &'static str = "Fellowship";
-	const NICKNAME: &'static str = "The Fellowship";
 }
 
+pub type FellowshipMember = GenericMember<FellowshipCollective>;
+pub type FellowshipEvidenceReport = GenericEvidenceReport<FellowshipCollective>;
+pub type FellowshipJoinRequest = GenericJoinRequest<FellowshipCollective>;
+
 #[repr(u8)]
-#[derive(Debug, Serialize_repr, Deserialize_repr, Copy, Clone)]
+#[derive(Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter)]
 pub enum FellowshipRank {
 	Candidate = 0,
 	Humble = 1,
@@ -61,24 +56,6 @@ impl Named for FellowshipRank {
 }
 
 impl RankBaseTrait for FellowshipRank {}
-impl Rank for FellowshipRank {}
-
-impl crate::types::traits::EnumLike for FellowshipRank {
-	fn variants() -> Vec<Self> {
-		vec![
-			Self::Candidate,
-			Self::Humble,
-			Self::Proficient,
-			Self::Fellow,
-			Self::Architect,
-			Self::ArchitectAdept,
-			Self::GrandArchitect,
-			Self::FreeMaster,
-			Self::MasterConstant,
-			Self::GrandMaster,
-		]
-	}
-}
 
 impl From<FellowshipRank> for u32 {
 	fn from(rank: FellowshipRank) -> u32 {
@@ -93,7 +70,7 @@ pub enum FellowshipEvidenceCategory {
 	Development(FellowshipDevelopmentEvidence),
 }
 
-#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, strum::EnumIter)]
 #[serde(rename_all = "snake_case")]
 pub enum FellowshipDevelopmentEvidence {
 	Sdk,
@@ -103,7 +80,6 @@ pub enum FellowshipDevelopmentEvidence {
 }
 
 impl EvidenceCategoriesBaseTrait for FellowshipEvidenceCategory {}
-impl EvidenceCategories for FellowshipEvidenceCategory {}
 
 impl MultiTierNamed for FellowshipEvidenceCategory {
 	fn multi_tier_name(&self) -> Vec<Cow<'static, str>> {
@@ -115,8 +91,7 @@ impl MultiTierNamed for FellowshipEvidenceCategory {
 
 impl EnumLike for FellowshipEvidenceCategory {
 	fn variants() -> Vec<Self> {
-		FellowshipDevelopmentEvidence::variants()
-			.into_iter()
+		FellowshipDevelopmentEvidence::iter()
 			.map(Self::Development)
 			.collect()
 	}
@@ -134,12 +109,6 @@ impl MultiTierNamed for FellowshipDevelopmentEvidence {
 	}
 }
 
-impl EnumLike for FellowshipDevelopmentEvidence {
-	fn variants() -> Vec<Self> {
-		vec![Self::Sdk, Self::Runtime, Self::Tooling, Self::Other]
-	}
-}
-
 #[test]
 fn encodes_evidence_category() {
 	let category = FellowshipEvidenceCategory::Development(FellowshipDevelopmentEvidence::Sdk);
@@ -152,5 +121,5 @@ fn parses_example_file() {
 	let file = std::fs::read_to_string("example/example.evidence").unwrap();
 	let evidence: FellowshipEvidenceReport = serde_yaml::from_str(&file).unwrap();
 
-	assert_eq!(evidence.name, "Max Power");
+	assert_eq!(evidence.member.name(), "Max Power");
 }

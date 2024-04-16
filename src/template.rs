@@ -2,8 +2,8 @@ use crate::types::prelude::*;
 
 #[derive(sailfish::TemplateOnce)]
 #[template(path = "evidence.html.stpl")]
-pub struct EvidenceTemplate<C: Collective> {
-	pub report: EvidenceReport<C>,
+pub struct EvidenceTemplate {
+	pub report: EvidenceReport,
 }
 
 #[derive(sailfish::TemplateOnce)]

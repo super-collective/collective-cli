@@ -20,32 +20,22 @@
 <% use crate::types::traits::Named; %>
 
 <center><h1>Evidence Report</h1></center>
-<center><h3><%- report.collective.name() %></h3></center>
+<center><h3><%- report.collective().name() %></h3></center>
 <div class="space"></div>
-<div align="right">Date: <%= report.date %></div>
+<div align="right">Date: <%= report.date() %></div>
 <br>
 <center></centeR>
-Fellow <strong><%- report.name %></strong> (<%- report.github_link() %>, <%- report.address_link() %>) wishes to
+Fellow <strong><%- report.member().name() %></strong> (<%- report.member().github_link() %>, <%- report.member().address_link() %>) wishes to
 <div class="big"></div>
-&nbsp;&nbsp;- <%= report.wish.title().to_uppercase() %> -
+&nbsp;&nbsp;- <%= report.wish().name().to_uppercase() %> -
 <div class="big"></div>
 
-<% match report.wish {
-  Wish::Retain(rank) => { %>
-    the rank of
-    <div class="big"></div>
-    &nbsp;&nbsp;- <%= rank.name().to_uppercase() %> -
-    <div class="big"></div>
-  <% },
-  Wish::Promote(rank) => { %>
-    to rank
-    <div class="big"></div>
-    &nbsp;&nbsp;- <%= rank.name().to_uppercase() %> -
-    <div class="big"></div>
-  <% },
-} %>
+  report.wish().verb()
+  <div class="big"></div>
+  &nbsp;&nbsp;- <%= report.wish().rank().name().to_uppercase() %> -
+  <div class="big"></div>
 
-by providing evidence for the period <%= report.period.start %> to <%= report.period.end %> in the following categories:
+by providing evidence for the period <%= report.period().start %> to <%= report.period().end %> in the following categories:
 <div class="space"></div>
 <% for cat in report.evidence_categories().iter() { %>
   &nbsp;- <%= cat.multi_tier_name().iter().map(|cs| format!("{cs}")).collect::<Vec<_>>().join(": ") %>
@@ -59,9 +49,9 @@ by providing evidence for the period <%= report.period.start %> to <%= report.pe
 The fellow has either solely completed the following tasks or has significantly contributed to their success.
 <div class="big"></div>
 
-<% for (i, evidence) in report.evidence.iter().enumerate() { %>
-  <h4> <%= evidence.title %></h4>
-  <% for(j, task) in evidence.tasks.iter().enumerate() { %>
+<% for (i, evidence) in report.evidence().iter().enumerate() { %>
+  <h4> <%= evidence.title() %></h4>
+  <% for(j, task) in evidence.tasks().iter().enumerate() { %>
     &nbsp;- <%= i + 1 %>.<%= j + 1 %>: <%= task.title %> (<%- task.links[0].format_link() %>).<br>
   <% } %>
   <div class="space"></div>

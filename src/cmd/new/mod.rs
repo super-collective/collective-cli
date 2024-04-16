@@ -20,7 +20,7 @@ enum NewSubCommand {
 impl NewCommand {
 	pub fn run(&self, g: &GlobalConfig) -> anyhow::Result<()> {
 		match &self.subcommand {
-			NewSubCommand::Evidence(c) => c.run(),
+			NewSubCommand::Evidence(c) => c.run(g),
 			NewSubCommand::JoinRequest(c) => c.run(g),
 		}
 	}

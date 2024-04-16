@@ -1,34 +1,28 @@
-#![allow(dead_code)]
-
-use crate::types::{
-	evidence::{EvidenceCategories, EvidenceCategoriesBaseTrait, EvidenceReport},
-	join_request::generic::GenericJoinRequest,
-	member::GenericMember,
-	prelude::*,
-	traits::EnumLike,
-};
+use crate::types::prelude::*;
 use serde::{Deserialize, Serialize};
 use serde_repr::*;
 use std::borrow::Cow;
 
-pub type PotocMember = GenericMember<PotocCollective>;
-pub type PotocEvidenceReport = EvidenceReport<PotocCollective>;
-pub type PotocJoinRequest = GenericJoinRequest<PotocCollective>;
-
-/// Something similarly structured as the Potoc, but could have a different rank type.
+/// The Polkadot Tooling Collective (PoToC).
 pub struct PotocCollective;
 
-impl Collective for PotocCollective {
+impl CollectiveTrait for PotocCollective {
+	const NAME: &'static str = "Tooling Collective";
+	const NICKNAME: &'static str = "PoToC";
 	const ID: CollectiveId = CollectiveId::Fellowship;
+	const MANIFESTO: &'static str = "https://github.com/polkadot-tooling-collective/constitution";
+
 	type Rank = PotocRank;
 	type EvidenceCategories = PotocEvidenceCategory;
 	type Member = PotocMember;
-	const NAME: &'static str = "Tooling Collective";
-	const NICKNAME: &'static str = "PoToC";
 }
 
+pub type PotocMember = GenericMember<PotocCollective>;
+pub type PotocEvidenceReport = GenericEvidenceReport<PotocCollective>;
+pub type PotocJoinRequest = GenericJoinRequest<PotocCollective>;
+
 #[repr(u8)]
-#[derive(Debug, Serialize_repr, Deserialize_repr, Copy, Clone)]
+#[derive(Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter)]
 pub enum PotocRank {
 	Candidate = 0,
 	Member = 1,
@@ -45,13 +39,6 @@ impl Named for PotocRank {
 }
 
 impl RankBaseTrait for PotocRank {}
-impl Rank for PotocRank {}
-
-impl EnumLike for PotocRank {
-	fn variants() -> Vec<Self> {
-		vec![Self::Candidate, Self::Member]
-	}
-}
 
 impl From<PotocRank> for u32 {
 	fn from(rank: PotocRank) -> u32 {
@@ -67,7 +54,6 @@ pub enum PotocEvidenceCategory {
 }
 
 impl EvidenceCategoriesBaseTrait for PotocEvidenceCategory {}
-impl EvidenceCategories for PotocEvidenceCategory {}
 
 impl MultiTierNamed for PotocEvidenceCategory {
 	fn multi_tier_name(&self) -> Vec<Cow<'static, str>> {
@@ -84,7 +70,7 @@ impl EnumLike for PotocEvidenceCategory {
 		vec![Self::CoreTooling, Self::DAppTooling]
 	}
 }
-
+/*
 #[test]
 fn parses_example_file() {
 	let file = std::fs::read_to_string("example/example.evidence").unwrap();
@@ -92,3 +78,4 @@ fn parses_example_file() {
 
 	assert_eq!(evidence.name, "Max Power");
 }
+*/

@@ -1,5 +1,5 @@
 use crate::{cmd::plural, collective::fellowship::FellowshipEvidenceReport};
-
+use crate::types::prelude::*;
 use anyhow::{bail, Context};
 use std::path::PathBuf;
 
@@ -43,7 +43,7 @@ impl IndexEvidenceCommand {
 			log::debug!("Processing '{}'", path.display());
 
 			if self.by_reporter() {
-				let sub = self.create_sub_folder(&["by_reporter", &evidence.canonical_name()])?;
+				let sub = self.create_sub_folder(&["by_reporter", &evidence.member.canonical_name()])?;
 
 				// yikes... this is a bit ugly
 				let from = PathBuf::from("..").join("..").join(file_name);

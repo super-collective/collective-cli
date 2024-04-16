@@ -8,8 +8,8 @@ use std::borrow::Cow;
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(tag = "collective")]
 pub enum Member {
-	Fellowship(<crate::collective::fellowship::FellowshipCollective as Collective>::Member),
-	Potoc(<crate::collective::potoc::PotocCollective as Collective>::Member),
+	Fellowship(<crate::collective::fellowship::FellowshipCollective as CollectiveTrait>::Member),
+	Potoc(<crate::collective::potoc::PotocCollective as CollectiveTrait>::Member),
 }
 
 impl Member {

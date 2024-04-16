@@ -8,14 +8,14 @@ use std::borrow::Cow;
 #[derive(Serialize, Deserialize, Derivative)]
 #[derivative(Debug(bound = "C::Rank: Debug"))]
 #[derivative(Clone(bound = "C::Rank: Clone"))]
-pub struct GenericMember<C: Collective> {
+pub struct GenericMember<C: CollectiveTrait> {
 	pub name: String,
 	pub address: String,
 	pub github: String,
 	pub rank: C::Rank,
 }
 
-impl<C: Collective> MemberTrait for GenericMember<C> {
+impl<C: CollectiveTrait> MemberTrait for GenericMember<C> {
 	fn github(&self) -> &str {
 		&self.github
 	}
@@ -29,25 +29,25 @@ impl<C: Collective> MemberTrait for GenericMember<C> {
 	}
 }
 
-impl<C: Collective> Encode for GenericMember<C> {
+impl<C: CollectiveTrait> Encode for GenericMember<C> {
 	fn to_yaml(&self) -> serde_yaml::Value {
 		serde_yaml::to_value(self).unwrap()
 	}
 }
 
-impl<C: Collective> Decode for GenericMember<C> {
+impl<C: CollectiveTrait> Decode for GenericMember<C> {
 	fn from_yaml(value: serde_yaml::Value) -> anyhow::Result<Self> {
 		serde_yaml::from_value(value).map_err(Into::into)
 	}
 }
 
-impl<C: Collective> Named for GenericMember<C> {
+impl<C: CollectiveTrait> Named for GenericMember<C> {
 	fn name(&self) -> Cow<'static, str> {
 		self.name.clone().into()
 	}
 }
 
-impl<C: Collective> Query for GenericMember<C> {
+impl<C: CollectiveTrait> Query for GenericMember<C> {
 	fn query(title: Option<&str>, _key: Option<&str>, prompt: &mut Prompt) -> anyhow::Result<Self> {
 		let name = prompt.query_cached_text::<String>(
 			"reporter_legal_name",

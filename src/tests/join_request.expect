@@ -1,0 +1,59 @@
+#!/usr/bin/expect
+#set timeout 10
+
+proc del {} {
+	set times 0;
+	while { $times < 300 } {
+		send \x7f;
+		set times [ expr $times+1 ];
+	}
+}
+
+spawn collective new join-request;
+expect -re ".*Please enter legal name or pseudonym:.*";
+del; send "Max Power\r";
+
+expect -re ".*Please enter your Polkadot address:.*";
+del; send "555555\r";
+
+expect -re ".*Please enter your GitHub handle:.*";
+del; send "mpower\r";
+
+expect "Rank to join";
+expect "enter to select";
+#send "\033\[B";
+send "Member\r";
+expect -re ".*What motivated you to apply?.*";
+send "Polkadot best\r";
+
+expect "Tell us a bit about yourself.";
+send "Something about my background\r";
+
+expect "Date of this Request";
+expect "move months and years, enter to select";
+send "\r";
+
+expect "Title for this piece of evidence";
+expect "Some example";
+send "PolkadotJS\r";
+
+expect "Category of the evidence";
+expect "enter to select";
+send "Core Tooling\r";
+
+expect "Title a the Task";
+expect "For example a Merge Request or Referendum.";
+send "Creation and Maintenance\r";
+
+expect "Link to Task";
+send "https://something.com/\r";
+expect "Add more links? (y/n)";
+send "y\r";
+send "https://else.com/\r";
+send "n\r";
+
+expect "Add more tasks? (y/n)"
+send "n\r"; send "n\r";
+
+expect "Please fill out the remaining TODOs";
+expect "Wrote partial member request to";

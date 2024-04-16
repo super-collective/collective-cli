@@ -1,7 +1,5 @@
 use anyhow::Result;
-use core::fmt::Debug;
 use inquire::{Confirm, Select};
-use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 
 #[macro_export]
@@ -60,17 +58,11 @@ impl<T: EnumLike + Named + Clone> Query for T {
 	}
 }
 
-impl<T: clap::ValueEnum> EnumLike for T {
+impl<T: strum::IntoEnumIterator> EnumLike for T {
 	fn variants() -> Vec<Self> {
-		T::value_variants().to_vec()
+		T::iter().collect()
 	}
 }
-
-/// Object safe version of a Rank.
-pub trait RankBaseTrait: Named + EnumLike {}
-
-/// Not object safe version of a Rank.
-pub trait Rank: RankBaseTrait + Copy + Debug + Into<u32> + Serialize + DeserializeOwned {}
 
 pub trait MultiTierNamed {
 	fn multi_tier_name(&self) -> Vec<Cow<'static, str>>;

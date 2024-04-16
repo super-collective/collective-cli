@@ -19,3 +19,8 @@ pub trait EvidenceCategories:
 	EvidenceCategoriesBaseTrait + Copy + Query + Serialize + DeserializeOwned + Ord
 {
 }
+
+impl<T: EvidenceCategoriesBaseTrait + Copy + Query + Serialize + DeserializeOwned + Ord> EvidenceCategories
+	for T
+{
+}

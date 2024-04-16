@@ -4,11 +4,11 @@ use crate::{
 	prompt::Prompt,
 	types::prelude::*,
 };
-
 use anyhow::anyhow;
 use chrono::{NaiveDate, Weekday};
 use inquire::DateSelect;
 use std::path::PathBuf;
+use crate::config::GlobalConfig;
 
 pub type Result<T> = anyhow::Result<T>;
 
@@ -37,11 +37,11 @@ pub enum GenerationMode {
 }
 
 impl NewEvidenceCommand {
-	pub fn run(&self) -> Result<()> {
+	pub fn run(&self, g: &GlobalConfig) -> Result<()> {
 		let data = match self.mode {
 			GenerationMode::Template => FellowshipEvidenceReport::template().into(),
 			GenerationMode::Example => FellowshipEvidenceReport::example().into(),
-			GenerationMode::Cli => self.run_prompt()?,
+			GenerationMode::Cli => self.run_prompt(g)?,
 		};
 
 		std::fs::create_dir_all(&self.evidence)?;
@@ -65,14 +65,19 @@ impl NewEvidenceCommand {
 		Err(anyhow!("Could not find a good path. Please use `--evidence` to specify an empty."))
 	}
 
-	fn run_prompt(&self) -> Result<String> {
-		let filled = self.query()?;
+	fn run_prompt(&self, g: &GlobalConfig) -> Result<String> {
+		let filled = self.query(g)?;
 
 		println!("Please fill out the remaining TODOs");
 		serde_yaml::to_string(&filled).map_err(Into::into)
 	}
 
-	fn query(&self) -> Result<FellowshipEvidenceReport> {
+	fn query(&self, g: &GlobalConfig) -> Result<EvidenceReport> {
+		let mut prompt = Prompt::new(self.cache == OnOff::On)?;
+		EvidenceReport::query_with_id(&g.collective, &mut prompt)
+	}
+
+	/*fn query(&self) -> Result<FellowshipEvidenceReport> {
 		let mut prompt = Prompt::new(self.cache == OnOff::On)?;
 
 		let name = prompt.query_cached_text::<String>(
@@ -98,9 +103,7 @@ impl NewEvidenceCommand {
 
 		Ok(FellowshipEvidenceReport {
 			collective: CollectiveId::Fellowship,
-			name,
-			address,
-			github,
+			member,
 			wish,
 			date: date.to_string(),
 			period: ReportPeriod {
@@ -113,7 +116,7 @@ impl NewEvidenceCommand {
 				tasks: vec![Tasks { title: "TODO".into(), links: vec!["TODO".into()] }],
 			}],
 		})
-	}
+	}*/
 
 	fn query_date(title: &str) -> Result<NaiveDate> {
 		DateSelect::new(title)
