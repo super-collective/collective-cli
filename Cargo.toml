@@ -7,6 +7,10 @@ repository = "https://github.com/ggwpez/fellowship"
 description = "A CLI to automate work around Polkadot collective work reports."
 include = ["example/*.png"]
 
+[[bin]]
+name = "collective"
+path = "src/bin/collective.rs"
+
 [dependencies]
 anyhow = "1.0.81"
 backtrace = "0.3.71"
