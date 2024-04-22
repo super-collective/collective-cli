@@ -1,7 +1,7 @@
 mod id;
-mod traits;
 mod rank;
+mod traits;
 
 pub use id::*;
-pub use traits::*;
 pub use rank::*;
+pub use traits::*;

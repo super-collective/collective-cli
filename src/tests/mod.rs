@@ -7,7 +7,7 @@ use std::process::Command;
 fn expect() {
 	let pattern = format!("{}/**/*.expect", std::env!("CARGO_MANIFEST_DIR"));
 	let files = glob(&pattern).unwrap();
-	
+
 	for file in files {
 		// start expect process
 		let file = file.unwrap();
@@ -17,7 +17,7 @@ fn expect() {
 		let output = cmd.output().unwrap();
 		let stderr = String::from_utf8_lossy(&output.stderr);
 		assert!(output.status.success(), "{stderr}");
-		
+
 		let join_request_path = file.parent().unwrap().join("join_request").join("0.yaml");
 		let evidence_path = file.parent().unwrap().join("evidence").join("0.evidence");
 

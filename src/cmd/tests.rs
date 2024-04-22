@@ -7,7 +7,10 @@ use std::path::PathBuf;
 #[test]
 fn schema_generator_works() {
 	let temp = assert_fs::TempDir::new().unwrap();
-	let cfg_path = PathBuf::from(std::env!("CARGO_MANIFEST_DIR")).join("src").join("tests").join("collective.yaml");
+	let cfg_path = PathBuf::from(std::env!("CARGO_MANIFEST_DIR"))
+		.join("src")
+		.join("tests")
+		.join("collective.yaml");
 
 	let mut cmd = Command::cargo_bin("collective").unwrap();
 	cmd.current_dir(temp.path());
@@ -22,7 +25,10 @@ fn schema_generator_works() {
 #[test]
 fn check_evidence_works() {
 	let temp = assert_fs::TempDir::new().unwrap();
-	let cfg_path = PathBuf::from(std::env!("CARGO_MANIFEST_DIR")).join("src").join("tests").join("collective.yaml");
+	let cfg_path = PathBuf::from(std::env!("CARGO_MANIFEST_DIR"))
+		.join("src")
+		.join("tests")
+		.join("collective.yaml");
 
 	let mut cmd = Command::cargo_bin("collective").unwrap();
 	cmd.current_dir(temp.path())
@@ -38,7 +44,10 @@ fn check_evidence_works() {
 #[test]
 fn example_works() {
 	let temp = assert_fs::TempDir::new().unwrap();
-	let cfg_path = PathBuf::from(std::env!("CARGO_MANIFEST_DIR")).join("src").join("tests").join("collective.yaml");
+	let cfg_path = PathBuf::from(std::env!("CARGO_MANIFEST_DIR"))
+		.join("src")
+		.join("tests")
+		.join("collective.yaml");
 	let evidence = temp.child("evidence");
 	evidence.create_dir_all().unwrap();
 

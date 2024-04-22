@@ -71,7 +71,9 @@ pub enum FellowshipEvidenceCategory {
 	Spec(FellowshipSpecEvidence),
 }
 
-#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, strum::EnumIter)]
+#[derive(
+	Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, strum::EnumIter,
+)]
 #[serde(rename_all = "snake_case")]
 pub enum FellowshipDevelopmentEvidence {
 	Sdk,
@@ -94,11 +96,10 @@ impl MultiTierNamed for FellowshipEvidenceCategory {
 impl EnumLike for FellowshipEvidenceCategory {
 	fn variants() -> Vec<Self> {
 		[
-			FellowshipDevelopmentEvidence::iter()
-				.map(Self::Development)
-				.collect::<Vec<_>>(),
+			FellowshipDevelopmentEvidence::iter().map(Self::Development).collect::<Vec<_>>(),
 			FellowshipSpecEvidence::iter().map(Self::Spec).collect::<Vec<_>>(),
-		].concat()		
+		]
+		.concat()
 	}
 }
 
@@ -114,7 +115,9 @@ impl MultiTierNamed for FellowshipDevelopmentEvidence {
 	}
 }
 
-#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, strum::EnumIter)]
+#[derive(
+	Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, strum::EnumIter,
+)]
 #[serde(rename_all = "snake_case")]
 pub enum FellowshipSpecEvidence {
 	Rfc,

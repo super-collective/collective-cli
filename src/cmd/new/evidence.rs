@@ -1,12 +1,9 @@
 use crate::{
-	cmd::OnOff,
-	collective::fellowship::{FellowshipEvidenceReport},
-	prompt::Prompt,
-	types::prelude::*,
+	cmd::OnOff, collective::fellowship::FellowshipEvidenceReport, config::GlobalConfig,
+	prompt::Prompt, types::prelude::*,
 };
 use anyhow::anyhow;
 use std::path::PathBuf;
-use crate::config::GlobalConfig;
 
 pub type Result<T> = anyhow::Result<T>;
 

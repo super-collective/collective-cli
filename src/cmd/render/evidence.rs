@@ -1,7 +1,7 @@
+use crate::types::prelude::EvidenceReport;
 use anyhow::{bail, Context};
 use sailfish::TemplateOnce;
 use std::path::PathBuf;
-use crate::types::prelude::EvidenceReport;
 
 #[derive(Debug, clap::Parser)]
 pub struct RenderEvidenceCommand {

@@ -1,7 +1,7 @@
 use crate::{config::GlobalConfig, types::join_request::JoinRequest};
+use anyhow::Context;
 use glob::glob;
 use std::path::PathBuf;
-use anyhow::Context;
 
 type Result<T> = anyhow::Result<T>;
 
@@ -20,7 +20,8 @@ impl CheckJoinRequestCommand {
 			let data = std::fs::read_to_string(path.as_path())?;
 
 			// Check that we can decode it.
-			let _: JoinRequest = serde_yaml::from_str(&data).context(format!("checking {}", path.display()))?;
+			let _: JoinRequest =
+				serde_yaml::from_str(&data).context(format!("checking {}", path.display()))?;
 			println!("Checking {}", path.display());
 		}
 

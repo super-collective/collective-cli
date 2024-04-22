@@ -6,16 +6,17 @@ pub trait MemberTrait: Named {
 	}
 	fn github(&self) -> &str;
 	fn github_link(&self) -> String {
-		format!("<a target='_blank' href='https://github.com/{}'>{}</a>", self.github(), self.github())
+		format!(
+			"<a target='_blank' href='https://github.com/{}'>{}</a>",
+			self.github(),
+			self.github()
+		)
 	}
 	fn address(&self) -> &str;
 	fn address_link(&self) -> String {
 		let address = self.address();
-		let shortened = if address.len() > 8 {
-			format!("{}..", &address[..8])
-		} else {
-			address.to_string()
-		};
+		let shortened =
+			if address.len() > 8 { format!("{}..", &address[..8]) } else { address.to_string() };
 		format!(
 			"<a target='_blank' href='https://collectives.statescan.io/#/accounts/{}'>{}</a>",
 			address, shortened

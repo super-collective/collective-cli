@@ -1,8 +1,7 @@
 use crate::{prompt::Prompt, types::prelude::*, using_collective};
 use serde::{Deserialize, Serialize};
 
-use crate::collective::potoc::PotocEvidenceReport;
-use crate::collective::fellowship::FellowshipEvidenceReport;
+use crate::collective::{fellowship::FellowshipEvidenceReport, potoc::PotocEvidenceReport};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "collective")]

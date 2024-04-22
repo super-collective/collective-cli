@@ -98,11 +98,13 @@ impl FormatLink for String {
 			self.strip_prefix("https://github.com/polkadot-fellows/RFCs/pull/")
 		{
 			format!("RFC {}", rfc)
-		} else if let Some(link) = self.strip_prefix("https://github.com/polkadot-fellows/runtimes/pull/") {
+		} else if let Some(link) =
+			self.strip_prefix("https://github.com/polkadot-fellows/runtimes/pull/")
+		{
 			let link = link.replace("/pull/", "#").replace("/issues/", "#");
 			format!("Runtimes {}", link)
 		} else if self.contains("/pulls?q=") {
-			format!("PR range")
+			"PR range".to_string()
 		} else {
 			self.clone().trim_start_matches("https://")[..25].into()
 		}

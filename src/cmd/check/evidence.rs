@@ -1,9 +1,8 @@
+use crate::{config::GlobalConfig, types::prelude::EvidenceReport};
+use anyhow::Context;
 use glob::glob;
 use std::path::PathBuf;
-use crate::config::GlobalConfig;
-use valico::{json_schema::schema::ScopedSchema};
-use anyhow::Context;
-use crate::types::prelude::EvidenceReport;
+use valico::json_schema::schema::ScopedSchema;
 
 type Result<T> = anyhow::Result<T>;
 
@@ -26,7 +25,8 @@ impl CheckEvidenceCommand {
 			let data = std::fs::read_to_string(path.as_path())?;
 
 			// Check that we can decode it.
-			serde_yaml::from_str::<EvidenceReport>(&data).context(format!("checking {}", path.display()))?;
+			serde_yaml::from_str::<EvidenceReport>(&data)
+				.context(format!("checking {}", path.display()))?;
 
 			// Check that it validates against the schema.
 			//Self::validate_schema(&schema, &data)?;

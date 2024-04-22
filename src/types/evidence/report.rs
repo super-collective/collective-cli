@@ -1,7 +1,7 @@
 use crate::types::{prelude::*, traits::Query};
-use serde::{Deserialize, Serialize};
-use derivative::Derivative;
 use core::fmt::Debug;
+use derivative::Derivative;
+use serde::{Deserialize, Serialize};
 
 #[derive(Derivative, Serialize, Deserialize)]
 #[derivative(Debug(bound = "C::Member: Debug, C::EvidenceCategories: Debug"))]

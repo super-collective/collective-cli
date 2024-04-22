@@ -1,10 +1,10 @@
+mod aggregate;
 mod report;
 mod traits;
-mod aggregate;
 
+pub use aggregate::*;
 pub use report::*;
 pub use traits::*;
-pub use aggregate::*;
 
 use crate::types::prelude::*;
 use inquire::Text;

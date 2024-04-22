@@ -20,7 +20,7 @@ pub trait EvidenceCategories:
 {
 }
 
-impl<T: EvidenceCategoriesBaseTrait + Copy + Query + Serialize + DeserializeOwned + Ord> EvidenceCategories
-	for T
+impl<T: EvidenceCategoriesBaseTrait + Copy + Query + Serialize + DeserializeOwned + Ord>
+	EvidenceCategories for T
 {
 }
