@@ -37,7 +37,7 @@ Open your `settings.json` file and insert the following, or extend this section.
 You can install the CLI like this: 
 
 ```sh
-cargo install collective
+cargo install --git https://github.com/super-collective/collective-cli
 ```
 
 Running `collective new evidence` will prompt you with a few basic questions. These will be stored in a config file and are available on the next run.

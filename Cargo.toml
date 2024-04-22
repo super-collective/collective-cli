@@ -9,7 +9,7 @@ include = ["example/*.png"]
 
 [[bin]]
 name = "collective"
-path = "src/bin/collective.rs"
+path = "src/main.rs"
 
 [dependencies]
 anyhow = "1.0.81"
