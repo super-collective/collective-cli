@@ -10,7 +10,8 @@ fn main() {
 
 	// Handle the error so it wont print a stack trace.
 	if let Err(e) = Command::parse().run() {
-		eprintln!("Error: {}", e);
+		std::env::set_var("RUST_BACKTRACE", "0");
+		eprintln!("Error: {:#}", e);
 		std::process::exit(1);
 	}
 }

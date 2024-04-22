@@ -2,16 +2,6 @@ use anyhow::Result;
 use inquire::{Confirm, Select};
 use std::borrow::Cow;
 
-#[macro_export]
-macro_rules! using_collective {
-	( $c:expr, $inner:ident, $e:expr ) => {
-		match $c {
-			Self::Fellowship($inner) => $e,
-			Self::Potoc($inner) => $e,
-		}
-	};
-}
-
 /// Encode an item.
 ///
 /// Only needed since the serde traits are not object safe.
@@ -108,11 +98,13 @@ impl FormatLink for String {
 			self.strip_prefix("https://github.com/polkadot-fellows/RFCs/pull/")
 		{
 			format!("RFC {}", rfc)
-		} else if let Some(link) = self.strip_prefix("https://github.com/polkadot-fellows/") {
+		} else if let Some(link) = self.strip_prefix("https://github.com/polkadot-fellows/runtimes/pull/") {
 			let link = link.replace("/pull/", "#").replace("/issues/", "#");
-			format!("Fellowship {}", link)
+			format!("Runtimes {}", link)
+		} else if self.contains("/pulls?q=") {
+			format!("PR range")
 		} else {
-			self.clone()
+			self.clone().trim_start_matches("https://")[..25].into()
 		}
 	}
 }

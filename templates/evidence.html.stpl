@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Evidence report</title>
+  <title>Work Report</title>
 
   <style>
     .space {
@@ -15,12 +15,13 @@
 <body>
 <tt>
 
-<% use crate::types::wish::Wish; use crate::types::traits::MultiTierNamed; %>
 <% use crate::types::traits::FormatLink; %>
-<% use crate::types::traits::Named; %>
+<% use crate::types::traits::Named; use std::collections::BTreeSet; %>
 
-<center><h1>Evidence Report</h1></center>
-<center><h3><%- report.collective().name() %></h3></center>
+<center><h1>Work Report</h1></center>
+<div class="space"></div>
+<center><h3>The Polkadot <%- report.collective().name() %></h3></center>
+
 <div class="space"></div>
 <div align="right">Date: <%= report.date() %></div>
 <br>
@@ -30,21 +31,21 @@ Fellow <strong><%- report.member().name() %></strong> (<%- report.member().githu
 &nbsp;&nbsp;- <%= report.wish().name().to_uppercase() %> -
 <div class="big"></div>
 
-  report.wish().verb()
+  <%= report.wish().verb() %>
   <div class="big"></div>
   &nbsp;&nbsp;- <%= report.wish().rank().name().to_uppercase() %> -
   <div class="big"></div>
 
 by providing evidence for the period <%= report.period().start %> to <%= report.period().end %> in the following categories:
 <div class="space"></div>
-<% for cat in report.evidence_categories().iter() { %>
-  &nbsp;- <%= cat.multi_tier_name().iter().map(|cs| format!("{cs}")).collect::<Vec<_>>().join(": ") %>
+<% for cat in report.evidence_categories().iter().map(|c| c.multi_tier_name()).collect::<BTreeSet<_>>().into_iter() { %>
+  &nbsp;- <%= cat.iter().map(|cs| format!("{cs}")).collect::<Vec<_>>().join(": ") %> <br>
 <% } %>
-<br><br>
-<hr>
+<br>
 <br>
 
 <center><h3>Evidence</h3></center>
+<br>
 
 The fellow has either solely completed the following tasks or has significantly contributed to their success.
 <div class="big"></div>
@@ -52,7 +53,7 @@ The fellow has either solely completed the following tasks or has significantly 
 <% for (i, evidence) in report.evidence().iter().enumerate() { %>
   <h4> <%= evidence.title() %></h4>
   <% for(j, task) in evidence.tasks().iter().enumerate() { %>
-    &nbsp;- <%= i + 1 %>.<%= j + 1 %>: <%= task.title %> (<%- task.links[0].format_link() %>).<br>
+    &nbsp;- <%= i + 1 %>.<%= j + 1 %>: <%= task.title %> (<%- task.links[0].format_link() %>)<br>
   <% } %>
   <div class="space"></div>
 <% } %>

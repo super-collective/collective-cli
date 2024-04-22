@@ -23,7 +23,7 @@ fn expect() {
 
 		assert!(join_request_path.exists() || evidence_path.exists());
 		// delete folder
-		std::fs::remove_dir_all(join_request_path.parent().unwrap());
-		std::fs::remove_dir_all(evidence_path.parent().unwrap());
+		let _ = std::fs::remove_dir_all(join_request_path.parent().unwrap());
+		let _ = std::fs::remove_dir_all(evidence_path.parent().unwrap());
 	}
 }

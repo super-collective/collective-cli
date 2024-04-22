@@ -2,14 +2,18 @@
 
 use assert_cmd::Command;
 use assert_fs::fixture::*;
+use std::path::PathBuf;
 
 #[test]
 fn schema_generator_works() {
-	return;
 	let temp = assert_fs::TempDir::new().unwrap();
+	let cfg_path = PathBuf::from(std::env!("CARGO_MANIFEST_DIR")).join("src").join("tests").join("collective.yaml");
 
 	let mut cmd = Command::cargo_bin("collective").unwrap();
-	cmd.current_dir(temp.path()).arg("schema").arg("evidence").assert().success();
+	cmd.current_dir(temp.path());
+	cmd.arg("--config").arg(cfg_path);
+	cmd.arg("schema");
+	cmd.arg("evidence").assert().success();
 
 	let schema = temp.child("evidence.schema.json");
 	assert!(schema.exists());
@@ -17,27 +21,33 @@ fn schema_generator_works() {
 
 #[test]
 fn check_evidence_works() {
-	return;
 	let temp = assert_fs::TempDir::new().unwrap();
+	let cfg_path = PathBuf::from(std::env!("CARGO_MANIFEST_DIR")).join("src").join("tests").join("collective.yaml");
 
 	let mut cmd = Command::cargo_bin("collective").unwrap();
 	cmd.current_dir(temp.path())
+		.arg("--config")
+		.arg(cfg_path)
 		.arg("check")
 		.arg("evidence")
 		.assert()
 		.success()
-		.stdout("Validated 0 evidence reports.\n");
+		.stdout("Validated 0 files.\n");
 }
 
 #[test]
 fn example_works() {
-	return;
 	let temp = assert_fs::TempDir::new().unwrap();
+	let cfg_path = PathBuf::from(std::env!("CARGO_MANIFEST_DIR")).join("src").join("tests").join("collective.yaml");
 	let evidence = temp.child("evidence");
 	evidence.create_dir_all().unwrap();
 
 	let mut cmd = Command::cargo_bin("collective").unwrap();
 	cmd.current_dir(temp.path())
+		.arg("--config")
+		.arg(&cfg_path)
+		.arg("--evidence-dir")
+		.arg(evidence.path())
 		.arg("new")
 		.arg("evidence")
 		.arg("example")
@@ -50,15 +60,23 @@ fn example_works() {
 	// Check that we can validate it
 	let mut cmd = Command::cargo_bin("collective").unwrap();
 	cmd.current_dir(temp.path())
+		.arg("--config")
+		.arg(&cfg_path)
+		.arg("--evidence-dir")
+		.arg(evidence.path())
 		.arg("check")
 		.arg("evidence")
 		.assert()
 		.success()
-		.stdout("Validated 1 evidence report.\n");
+		.stdout("Validated 1 file.\n");
 
 	// now create indices
 	let mut cmd = Command::cargo_bin("collective").unwrap();
 	cmd.current_dir(temp.path())
+		.arg("--config")
+		.arg(&cfg_path)
+		.arg("--evidence-dir")
+		.arg(evidence.path())
 		.arg("index")
 		.arg("evidence")
 		.assert()

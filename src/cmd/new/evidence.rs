@@ -1,12 +1,10 @@
 use crate::{
 	cmd::OnOff,
-	collective::fellowship::{FellowshipEvidenceCategory, FellowshipEvidenceReport},
+	collective::fellowship::{FellowshipEvidenceReport},
 	prompt::Prompt,
 	types::prelude::*,
 };
 use anyhow::anyhow;
-use chrono::{NaiveDate, Weekday};
-use inquire::DateSelect;
 use std::path::PathBuf;
 use crate::config::GlobalConfig;
 
@@ -77,52 +75,11 @@ impl NewEvidenceCommand {
 		EvidenceReport::query_with_id(&g.collective, &mut prompt)
 	}
 
-	/*fn query(&self) -> Result<FellowshipEvidenceReport> {
-		let mut prompt = Prompt::new(self.cache == OnOff::On)?;
-
-		let name = prompt.query_cached_text::<String>(
-			"reporter_legal_name",
-			"your legal name",
-			Some("You can also use a pseudonym instead"),
-		)?;
-
-		let address = prompt.query_cached_text::<String>(
-			"reporter_address",
-			"your Polkadot address",
-			None,
-		)?;
-
-		let github = prompt
-			.query_cached_text::<String>("reporter_github", "your GitHub handle", None)?
-			.replace('@', " ");
-
-		let wish = Wish::<crate::collective::fellowship::FellowshipRank>::query_bare(&mut prompt)?;
-		let date = Self::query_date("Creation date of this report")?;
-		let report_period_start = Self::query_date("First day that this report covers")?;
-		let report_period_end = Self::query_date("Last day that this report covers")?;
-
-		Ok(FellowshipEvidenceReport {
-			collective: CollectiveId::Fellowship,
-			member,
-			wish,
-			date: date.to_string(),
-			period: ReportPeriod {
-				start: report_period_start.to_string(),
-				end: report_period_end.to_string(),
-			},
-			evidence: vec![Evidence {
-				category: FellowshipEvidenceCategory::variants()[0], //  FIXME
-				title: "TODO".into(),
-				tasks: vec![Tasks { title: "TODO".into(), links: vec!["TODO".into()] }],
-			}],
-		})
-	}*/
-
-	fn query_date(title: &str) -> Result<NaiveDate> {
+	/*fn query_date(title: &str) -> Result<NaiveDate> {
 		DateSelect::new(title)
 			.with_starting_date(chrono::Utc::now().date_naive())
 			.with_week_start(Weekday::Mon)
 			.prompt()
 			.map_err(Into::into)
-	}
+	}*/
 }

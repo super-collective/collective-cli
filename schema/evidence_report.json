@@ -9,20 +9,37 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "name": {
-      "title": "Name of the reporter",
-      "type": "string",
-      "description": "Legal name or otherwise unique alias"
-    },
-    "github": {
-      "title": "GitHub handle of the reporter",
-      "type": "string"
-    },
     "collective": {
       "title": "Collective",
       "description": "The collective that this report is for",
       "oneOf": [
         { "const": "Fellowship" }
+      ]
+    },
+    "member": {
+      "properties": {
+        "name": {
+          "title": "Name of the reporter",
+          "type": "string",
+          "description": "Legal name or otherwise unique alias"
+        },
+        "github": {
+          "title": "GitHub handle of the reporter",
+          "type": "string"
+        },
+        "address": {
+          "type": "string",
+          "title": "On-Chain address of the reporter"
+        },
+        "rank": {
+          "title": "Current rank of the reporter",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "address",
+        "rank"
       ]
     },
     "report_date": {
@@ -52,38 +69,21 @@
         "end_date"
       ]
     },
-    "address": {
-      "type": "string",
-      "title": "On-Chain address of the reporter"
-    },
     "wish": {
       "title": "Whether to retain rank or promote. Both contains their rank resp.",
-      "oneOf": [
-        {
-          "type": "object",
-          "properties": {
-            "retain": {
-              "title": "Retain this rank",
-              "type": "integer"
-            }
-          },
-          "required": [
-            "retain"
-          ]
-        },
-        {
-          "type": "object",
-          "properties": {
-            "promote": {
-              "title": "Promote to this rank",
-              "type": "integer"
-            }
-          },
-          "required": [
+      "properties": {
+        "intent": {
+          "title": "Intent of the report",
+          "enum": [
+            "retain",
             "promote"
           ]
+        },
+        "rank": {
+          "title": "Rank to retain or promote to",
+          "type": "integer"
         }
-      ]
+      }
     },
     "evidence": {
       "type": "array",
@@ -156,10 +156,8 @@
     }
   },
   "required": [
-    "name",
-    "address",
+    "member",
     "collective",
-    "wish",
     "report_date",
     "report_period",
     "evidence"

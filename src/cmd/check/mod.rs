@@ -20,7 +20,7 @@ enum CheckSubCommand {
 impl CheckCommand {
 	pub fn run(&self, g: &GlobalConfig) -> anyhow::Result<()> {
 		match &self.subcommand {
-			CheckSubCommand::Evidence(c) => c.run(),
+			CheckSubCommand::Evidence(c) => c.run(g),
 			CheckSubCommand::JoinRequest(c) => c.run(g),
 		}
 	}

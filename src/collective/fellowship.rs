@@ -68,6 +68,7 @@ impl From<FellowshipRank> for u32 {
 #[serde(tag = "t", content = "c")]
 pub enum FellowshipEvidenceCategory {
 	Development(FellowshipDevelopmentEvidence),
+	Spec(FellowshipSpecEvidence),
 }
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, strum::EnumIter)]
@@ -85,15 +86,19 @@ impl MultiTierNamed for FellowshipEvidenceCategory {
 	fn multi_tier_name(&self) -> Vec<Cow<'static, str>> {
 		match self {
 			Self::Development(dev) => [vec!["Development".into()], dev.multi_tier_name()].concat(),
+			Self::Spec(spec) => [vec!["Spec".into()], spec.multi_tier_name()].concat(),
 		}
 	}
 }
 
 impl EnumLike for FellowshipEvidenceCategory {
 	fn variants() -> Vec<Self> {
-		FellowshipDevelopmentEvidence::iter()
-			.map(Self::Development)
-			.collect()
+		[
+			FellowshipDevelopmentEvidence::iter()
+				.map(Self::Development)
+				.collect::<Vec<_>>(),
+			FellowshipSpecEvidence::iter().map(Self::Spec).collect::<Vec<_>>(),
+		].concat()		
 	}
 }
 
@@ -104,6 +109,23 @@ impl MultiTierNamed for FellowshipDevelopmentEvidence {
 			Self::Runtime => "Runtime",
 			Self::Tooling => "Tooling",
 			Self::Other => "Other",
+		}
+		.into()]
+	}
+}
+
+#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, strum::EnumIter)]
+#[serde(rename_all = "snake_case")]
+pub enum FellowshipSpecEvidence {
+	Rfc,
+	Docs,
+}
+
+impl MultiTierNamed for FellowshipSpecEvidence {
+	fn multi_tier_name(&self) -> Vec<Cow<'static, str>> {
+		vec![match self {
+			Self::Rfc => "RFC",
+			Self::Docs => "Docs",
 		}
 		.into()]
 	}

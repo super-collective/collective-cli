@@ -1,6 +1,5 @@
 use crate::types::{prelude::*, traits::Query};
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeSet;
 use derivative::Derivative;
 use core::fmt::Debug;
 
@@ -12,6 +11,7 @@ use core::fmt::Debug;
 pub struct GenericEvidenceReport<C: CollectiveTrait> {
 	pub member: C::Member,
 	pub wish: Wish<C::Rank>,
+	#[serde(skip, default = "GenericEvidenceReport::<C>::id")]
 	pub collective: CollectiveId,
 	#[serde(rename = "report_date")]
 	pub date: String,
@@ -19,6 +19,12 @@ pub struct GenericEvidenceReport<C: CollectiveTrait> {
 	pub period: ReportPeriod,
 	#[serde(rename = "evidence")]
 	pub evidence: Vec<GenericEvidence<C::EvidenceCategories>>,
+}
+
+impl<C: CollectiveTrait> GenericEvidenceReport<C> {
+	fn id() -> CollectiveId {
+		C::ID
+	}
 }
 
 impl<C: CollectiveTrait> Query for GenericEvidenceReport<C> {
@@ -49,22 +55,6 @@ impl<C: CollectiveTrait> Query for GenericEvidenceReport<C> {
 				tasks: vec![Tasks { title: "TODO".into(), links: vec!["TODO".into()] }],
 			}],
 		})
-	}
-}
-
-impl<C: CollectiveTrait> GenericEvidenceReport<C> {
-	/*
-
-	pub fn github_link(&self) -> String {
-		format!("<a target='_blank' href='https://github.com/{}'>{}</a>", self.github, self.github)
-	}
-
-	pub fn canonical_name(&self) -> String {
-		self.name.to_lowercase().replace(' ', "-")
-	}*/
-
-	pub fn evidence_categories(&self) -> BTreeSet<C::EvidenceCategories> {
-		self.evidence.iter().map(|e| e.category).collect()
 	}
 }
 

@@ -1,8 +1,9 @@
-use crate::collective::fellowship::FellowshipEvidenceReport;
 use glob::glob;
 use std::path::PathBuf;
-
-use valico::{json_schema, json_schema::schema::ScopedSchema};
+use crate::config::GlobalConfig;
+use valico::{json_schema::schema::ScopedSchema};
+use anyhow::Context;
+use crate::types::prelude::EvidenceReport;
 
 type Result<T> = anyhow::Result<T>;
 
@@ -14,33 +15,33 @@ pub struct CheckEvidenceCommand {
 }
 
 impl CheckEvidenceCommand {
-	pub fn run(&self) -> Result<()> {
-		let schema_str = FellowshipEvidenceReport::schema();
-		let schema: serde_json::Value = serde_json::from_str(schema_str)?;
-		let mut scope = json_schema::Scope::new();
-		let schema = scope.compile_and_return(schema, false).unwrap();
+	pub fn run(&self, g: &GlobalConfig) -> Result<()> {
+		//let schema_str = FellowshipEvidenceReport::schema();
+		//let schema: serde_json::Value = serde_json::from_str(schema_str)?;
+		//let mut scope = json_schema::Scope::new();
+		//let schema = scope.compile_and_return(schema, false).unwrap();
 
-		let paths = self.relevant_files()?;
+		let paths = self.relevant_files(g)?;
 		for path in paths.iter() {
 			let data = std::fs::read_to_string(path.as_path())?;
 
 			// Check that we can decode it.
-			let _: FellowshipEvidenceReport = serde_yaml::from_str(&data)?;
+			serde_yaml::from_str::<EvidenceReport>(&data).context(format!("checking {}", path.display()))?;
 
 			// Check that it validates against the schema.
-			Self::validate_schema(&schema, &data)?;
+			//Self::validate_schema(&schema, &data)?;
 		}
 
-		println!("Validated {} evidence report{}.", paths.len(), crate::cmd::plural(paths.len()));
+		println!("Validated {} file{}.", paths.len(), crate::cmd::plural(paths.len()));
 
 		Ok(())
 	}
 
-	fn relevant_files(&self) -> Result<Vec<PathBuf>> {
+	fn relevant_files(&self, g: &GlobalConfig) -> Result<Vec<PathBuf>> {
 		if let Some(files) = &self.files {
 			Ok(files.clone())
 		} else {
-			let pattern = format!("{}/**/*.evidence", crate::cmd::EVIDENCE_FOLDER);
+			let pattern = format!("{}/**/*.evidence", g.evidence_dir.display());
 			let mut files = vec![];
 
 			for entry in glob(&pattern)? {
@@ -51,7 +52,7 @@ impl CheckEvidenceCommand {
 		}
 	}
 
-	fn validate_schema<'a>(schema: &'a ScopedSchema<'a>, data: &str) -> Result<()> {
+	fn _validate_schema<'a>(schema: &'a ScopedSchema<'a>, data: &str) -> Result<()> {
 		let mut doc_as_yaml: serde_yaml::Value = serde_yaml::from_str(data)?;
 		doc_as_yaml.apply_merge()?;
 

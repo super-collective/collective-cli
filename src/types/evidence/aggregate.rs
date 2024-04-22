@@ -2,7 +2,6 @@ use crate::{prompt::Prompt, types::prelude::*, using_collective};
 use serde::{Deserialize, Serialize};
 
 use crate::collective::potoc::PotocEvidenceReport;
-use crate::collective::{fellowship::FellowshipJoinRequest, potoc::PotocJoinRequest};
 use crate::collective::fellowship::FellowshipEvidenceReport;
 
 #[derive(Debug, Serialize, Deserialize)]
