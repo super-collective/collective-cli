@@ -1,3 +1,6 @@
+[[bin]]
+name = "collective"
+
 [package]
 name = "collective"
 version = "0.3.0"
@@ -6,10 +9,6 @@ license = "GPL-3.0-only"
 repository = "https://github.com/ggwpez/fellowship"
 description = "A CLI to automate work around Polkadot collective work reports."
 include = ["example/*.png"]
-
-[[bin]]
-name = "collective"
-path = "src/main.rs"
 
 [dependencies]
 anyhow = "1.0.81"
