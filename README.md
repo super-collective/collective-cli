@@ -64,3 +64,7 @@ This should create a file in the `join_request/` directory of your collective. Y
 ## TODO
 - [ ] Add schema for join_request.
 - [ ] Add e2e tests. First attempt with this did not work for interactive CLI, see [tests](src/tests).
+
+## License
+
+GPL-3.0-only, see [LICENSE](./LICENSE).
