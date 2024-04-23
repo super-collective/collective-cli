@@ -8,7 +8,7 @@ pub trait CollectiveTrait {
 
 	type Rank: Rank;
 	type EvidenceCategories: EvidenceCategories;
-	type Member: Debug + Serialize + DeserializeOwned + Clone + Query;
+	type Member: Debug + Serialize + DeserializeOwned + Clone + Query + schemars::JsonSchema;
 	const NAME: &'static str;
 	const NICKNAME: &'static str;
 }

@@ -13,7 +13,8 @@
       "title": "Collective",
       "description": "The collective that this report is for",
       "oneOf": [
-        { "const": "Fellowship" }
+        { "const": "Fellowship" },
+        { "const": "Potoc" }
       ]
     },
     "member": {

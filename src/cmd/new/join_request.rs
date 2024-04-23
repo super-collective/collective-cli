@@ -2,7 +2,7 @@ use crate::{
 	cmd::OnOff,
 	config::{GlobalArgs, GlobalConfig},
 	prompt::Prompt,
-	types::join_request::JoinRequest,
+	types::prelude::*,
 };
 use anyhow::{anyhow, Context};
 use std::path::PathBuf;

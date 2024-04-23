@@ -15,8 +15,8 @@
 <body>
 <tt>
 
-<% use crate::types::traits::FormatLink; %>
-<% use crate::types::traits::Named; use std::collections::BTreeSet; %>
+<% use crate::types::prelude::*; %>
+<% use std::collections::BTreeSet; %>
 
 <center><h1>Work Report</h1></center>
 <div class="space"></div>

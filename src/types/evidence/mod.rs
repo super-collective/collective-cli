@@ -12,24 +12,34 @@ use inquire::Text;
 use pretty_assertions::assert_eq;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+/// A specific piece of evidence to help underpin an argument.
+#[derive(Debug, Serialize, Deserialize, Clone, schemars::JsonSchema)]
+#[schemars(bound = "EC: schemars::JsonSchema", rename = "Evidence")]
 pub struct GenericEvidence<EC> {
+	/// Title of this piece of evidence.
 	pub title: String,
+	/// Topic category of the evidence.
 	pub category: EC,
+	/// Tasks that are part of this evidence.
 	pub tasks: Vec<Tasks>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ReportPeriod {
+	/// First inclusive date that this report covers.
 	#[serde(rename = "start_date")]
 	pub start: String,
+	/// Last inclusive date that this report covers.
 	#[serde(rename = "end_date")]
 	pub end: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+/// A task that was either solely completed by the reporter or in collaboration with others.
+#[derive(Debug, Serialize, Deserialize, Clone, schemars::JsonSchema)]
 pub struct Tasks {
+	/// Title of the task.
 	pub title: String,
+	/// Links to the completed work.
 	pub links: Vec<String>,
 }
 

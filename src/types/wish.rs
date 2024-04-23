@@ -58,12 +58,3 @@ impl<R: Rank> Query for Wish<R> {
 		})
 	}
 }
-
-impl<Rank> Wish<Rank> {
-	pub fn title(&self) -> &'static str {
-		match self {
-			Wish::Retain(_) => "Retain",
-			Wish::Promote(_) => "Promote",
-		}
-	}
-}

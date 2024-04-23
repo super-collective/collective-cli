@@ -6,6 +6,6 @@ use serde::{de::DeserializeOwned, Serialize};
 pub trait RankBaseTrait: Named + EnumLike {}
 
 /// Not object safe version of a Rank.
-pub trait Rank: RankBaseTrait + Copy + Debug + Into<u32> + Serialize + DeserializeOwned {}
+pub trait Rank: RankBaseTrait + Copy + Debug + Into<u32> + Serialize + DeserializeOwned + schemars::JsonSchema {}
 
-impl<T: RankBaseTrait + Copy + Debug + Into<u32> + Serialize + DeserializeOwned> Rank for T {}
+impl<T: RankBaseTrait + Copy + Debug + Into<u32> + Serialize + DeserializeOwned + schemars::JsonSchema> Rank for T {}

@@ -1,4 +1,4 @@
-use crate::{config::GlobalConfig, types::join_request::JoinRequest};
+use crate::{config::GlobalConfig, types::prelude::*};
 use anyhow::Context;
 use glob::glob;
 use std::path::PathBuf;

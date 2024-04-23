@@ -16,11 +16,11 @@ pub trait EvidenceCategoriesBaseTrait: MultiTierNamed + EnumLike + Debug {}
 
 // Not object safe version of EvidenceCategories.
 pub trait EvidenceCategories:
-	EvidenceCategoriesBaseTrait + Copy + Query + Serialize + DeserializeOwned + Ord
+	EvidenceCategoriesBaseTrait + Copy + Query + Serialize + DeserializeOwned + Ord + schemars::JsonSchema
 {
 }
 
-impl<T: EvidenceCategoriesBaseTrait + Copy + Query + Serialize + DeserializeOwned + Ord>
+impl<T: EvidenceCategoriesBaseTrait + Copy + Query + Serialize + DeserializeOwned + Ord + schemars::JsonSchema>
 	EvidenceCategories for T
 {
 }

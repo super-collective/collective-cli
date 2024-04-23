@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::collective::{fellowship::FellowshipJoinRequest, potoc::PotocJoinRequest};
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, schemars::JsonSchema)]
 #[serde(tag = "collective")]
 pub enum JoinRequest {
 	Fellowship(FellowshipJoinRequest),

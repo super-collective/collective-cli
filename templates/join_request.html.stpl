@@ -15,8 +15,7 @@
 <body>
 <tt>
 
-<% use crate::types::traits::FormatLink; %>
-<% use crate::types::traits::Named; %>
+<% use crate::types::prelude::*; %>
 
 <center><h1>Request for Admission</h1></center>
 <center><h3><%- request.collective().name() %></h3></center>

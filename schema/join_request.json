@@ -1,0 +1,138 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema#",
+	"version": {
+	  "major": 1,
+	  "minor": 0,
+	  "patch": 0
+	},
+	"title": "Fellowship Evidence",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+	  "collective": {
+		"title": "Collective",
+		"description": "The collective that this report is for",
+		"oneOf": [
+		  { "const": "Fellowship" },
+		  { "const": "Potoc" }
+		]
+	  },
+	  "member": {
+		"properties": {
+		  "name": {
+			"title": "Name of the reporter",
+			"type": "string",
+			"description": "Legal name or otherwise unique alias"
+		  },
+		  "github": {
+			"title": "GitHub handle of the reporter",
+			"type": "string"
+		  },
+		  "address": {
+			"type": "string",
+			"title": "On-Chain address of the reporter"
+		  },
+		  "rank": {
+			"title": "Current rank of the reporter",
+			"type": "integer"
+		  }
+		},
+		"required": [
+		  "name",
+		  "address",
+		  "rank"
+		]
+	  },
+	  "date": {
+		"type": "string",
+		"title": "Date when this request was filled",
+		"format": "date"
+	  },
+	  "about": {
+		"type": "string",
+		"title": "Tell us something about yourself"
+	  },
+	  "motivation": {
+		"type": "string",
+		"title": "Tell us your motivation to join"
+	  },
+	  "evidence": {
+		"type": "array",
+		"title": "Pieces of evidence that support the report",
+		"items": {
+		  "type": "object",
+		  "additionalProperties": false,
+		  "properties": {
+			"title": {
+			  "type": "string",
+			  "title": "Title of the evidence"
+			},
+			"category": {
+			  "title": "Evidence categories covered in this report",
+			  "properties": {
+				"t": {
+				  "title": "Super Category",
+				  "enum": [
+					"development"
+				  ]
+				},
+				"c": {
+				  "title": "Sub Category",
+				  "enum": [
+					"sdk",
+					"runtime",
+					"tooling",
+					"other"
+				  ]
+				}
+			  },
+			  "required": [
+				"t",
+				"c"
+			  ]
+			},
+			"tasks": {
+			  "type": "array",
+			  "title": "Tasks of this evidence",
+			  "items": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+				  "title": {
+					"type": "string",
+					"title": "Title of the task"
+				  },
+				  "links": {
+					"type": "array",
+					"title": "Links to the task",
+					"items": {
+					  "type": "string",
+					  "format": "uri"
+					}
+				  }
+				},
+				"required": [
+				  "title",
+				  "links"
+				]
+			  }
+			}
+		  },
+		  "required": [
+			"title",
+			"category",
+			"tasks"
+		  ]
+		}
+	  }
+	},
+	"required": [
+	  "member",
+	  "about",
+	  "motivation",
+	  "collective",
+	  "date",
+	  "evidence"
+	]
+  }
+  

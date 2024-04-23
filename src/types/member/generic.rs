@@ -4,14 +4,22 @@ use derivative::Derivative;
 use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 
+/// Info about an existing or aspiring member of a collective.
 // TODO split into member and ranked-member
-#[derive(Serialize, Deserialize, Derivative)]
+#[derive(Serialize, Deserialize, Derivative, schemars::JsonSchema)]
 #[derivative(Debug(bound = "C::Rank: Debug"))]
 #[derivative(Clone(bound = "C::Rank: Clone"))]
+#[schemars(bound = "", rename = "Member")]
 pub struct GenericMember<C: CollectiveTrait> {
+	/// Legal name or pseudonym of the member.
 	pub name: String,
+	/// On-chain address of the member.
+	///
+	/// Can be a Substrate, Polkadot or Collectives Address.
 	pub address: String,
+	/// GitHub handle of the member.
 	pub github: String,
+	/// Current rank of the member.
 	pub rank: C::Rank,
 }
 

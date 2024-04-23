@@ -2,7 +2,7 @@ use crate::cmd::plural;
 
 use crate::{
 	config::GlobalConfig,
-	types::member::{Member, Members},
+	types::prelude::*,
 };
 use anyhow::{bail, Context};
 use sailfish::TemplateOnce;

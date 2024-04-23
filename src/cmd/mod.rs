@@ -1,3 +1,5 @@
+//! Command definition of the `collective` CLI.
+
 mod check;
 mod index;
 mod new;
@@ -6,8 +8,6 @@ mod schema;
 mod tests;
 
 use crate::config::{GlobalArgs, GlobalConfig};
-
-pub const EVIDENCE_FOLDER: &str = "evidence";
 
 /// See out how Rust dependencies and features are enabled.
 #[derive(Debug, clap::Parser)]
@@ -21,6 +21,7 @@ pub struct Command {
 	global: GlobalArgs,
 }
 
+/// How to write some output.
 #[derive(Debug, clap::Parser)]
 pub struct OutputArgs {
 	/// Write the output to a file.
@@ -48,13 +49,14 @@ enum SubCommand {
 }
 
 impl Command {
+	/// Run the command.
 	pub fn run(self) -> anyhow::Result<()> {
 		let g: GlobalConfig = self.global.try_into()?;
 
 		match &self.subcommand {
 			SubCommand::New(c) => c.run(&g),
 			SubCommand::Render(c) => c.run(&g),
-			SubCommand::Schema(c) => c.run(),
+			SubCommand::Schema(c) => c.run(&g),
 			SubCommand::Check(c) => c.run(&g),
 			SubCommand::Index(c) => c.run(),
 		}
@@ -62,7 +64,7 @@ impl Command {
 }
 
 impl OutputArgs {
-	pub fn write_schema(&self, default_path: &str, data: &str) -> anyhow::Result<()> {
+	fn write_schema(&self, default_path: &str, data: &str) -> anyhow::Result<()> {
 		if let Some(path) = &self.output {
 			std::fs::write(path, data)?;
 			println!("Wrote schema to '{}'", path.display());
@@ -78,7 +80,7 @@ impl OutputArgs {
 	}
 }
 
-pub fn plural(count: usize) -> &'static str {
+pub(crate) fn plural(count: usize) -> &'static str {
 	if count == 1 {
 		""
 	} else {
@@ -86,8 +88,11 @@ pub fn plural(count: usize) -> &'static str {
 	}
 }
 
+/// Toggle for on/off.
 #[derive(Debug, Clone, PartialEq, clap::ValueEnum)]
 pub enum OnOff {
+	/// Turned on.
 	On,
+	/// Turned off.
 	Off,
 }

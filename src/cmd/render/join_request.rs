@@ -1,4 +1,4 @@
-use crate::types::join_request::JoinRequest;
+use crate::types::prelude::*;
 use anyhow::{bail, Context};
 use sailfish::TemplateOnce;
 use std::path::PathBuf;

@@ -4,14 +4,21 @@ use derivative::Derivative;
 use inquire::Text;
 use serde::{Deserialize, Serialize};
 
-#[derive(Derivative, Serialize, Deserialize)]
+/// A request to join a collective.
+#[derive(Derivative, Serialize, Deserialize, schemars::JsonSchema)]
 #[derivative(Debug(bound = "C::Member: Debug, C::EvidenceCategories: Debug"))]
 #[derivative(Clone(bound = "C::Member: Clone, C::EvidenceCategories: Debug"))]
+#[schemars(bound = "", rename = "JoinRequest")]
 pub struct GenericJoinRequest<C: CollectiveTrait> {
+	/// Info about the requester that wants to join.
 	pub member: C::Member,
+	/// Motivation of the requester for joining the collective.
 	pub motivation: String,
+	/// Bio/about section of the requester.
 	pub about: String,
+	/// Date of the request.
 	pub date: String,
+	/// Evidence to underpin the request.
 	pub evidence: Vec<GenericEvidence<C::EvidenceCategories>>,
 }
 
