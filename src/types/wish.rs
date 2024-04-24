@@ -11,8 +11,9 @@ pub trait WishTrait: Named {
 	fn verb(&self) -> Cow<'static, str>;
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, schemars::JsonSchema)]
 #[serde(tag = "intent", content = "rank", rename_all = "lowercase")]
+#[schemars(bound = "R: Rank")]
 pub enum Wish<R> {
 	Retain(R),
 	Promote(R),

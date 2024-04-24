@@ -1,0 +1,66 @@
+collective: Fellowship
+member:
+  name: Oliver Tale-Yazdi
+  address: 16a357f5Sxab3V2ne4emGQvqJaCLeYpTMx3TCjnQhmJQ71DX
+  github: ggwpez
+  rank: 1
+wish:
+  intent: retain
+  rank: 1
+report_date: 2024-04-23
+report_period:
+  start_date: 2024-01-01
+  end_date: 2024-04-23
+evidence:
+- title: Multi Block Migrations
+  category:
+    t: development
+    c: sdk
+  tasks:
+  - title: Specification
+    links:
+    - https://github.com/polkadot-fellows/RFCs/pull/13
+  - title: Implementation
+    links:
+    - https://github.com/paritytech/polkadot-sdk/pull/1781
+- title: Omni Benchmarker
+  category:
+    t: development
+    c: sdk
+  tasks:
+  - title: Implementation
+    links:
+    - https://github.com/paritytech/polkadot-sdk/pull/3512
+- title: Parameters Pallet
+  category:
+    t: development
+    c: sdk
+  tasks:
+  - title: Implementation
+    links:
+    - https://github.com/paritytech/polkadot-sdk/pull/2061
+  - title: Deployment to Rococo
+    links:
+    - https://github.com/paritytech/polkadot-sdk/pull/4006
+- title: New Release Process
+  category:
+    t: development
+    c: sdk
+  tasks:
+  - title: Spec
+    links:
+    - https://github.com/paritytech/polkadot-sdk/pull/2490
+  - title: Preparation
+    links:
+    - https://github.com/paritytech/polkadot-sdk/pulls?q=is%3Apr+author%3Aggwpez+prdoc+is%3Aclosed+closed%3A%3E2024-01-01
+- title: Maintenance
+  category:
+    t: development
+    c: runtime
+  tasks:
+  - title: SDK
+    links:
+    - https://github.com/paritytech/polkadot-sdk/pulls?q=is%3Apr+author%3Aggwpez+closed%3A%3E2024-01-01+sort%3Aupdated-desc
+  - title: Runtimes
+    links:
+    - https://github.com/polkadot-fellows/runtimes/pulls?q=is%3Apr+author%3Aggwpez+closed%3A%3E2024-01-01

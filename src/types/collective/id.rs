@@ -35,3 +35,12 @@ impl Named for CollectiveId {
 		}
 	}
 }
+
+impl CollectiveId {
+	pub fn nickname(&self) -> Cow<'static, str> {
+		match self {
+			Self::Fellowship => FellowshipCollective::NICKNAME.into(),
+			Self::Potoc => PotocCollective::NICKNAME.into(),
+		}
+	}
+}

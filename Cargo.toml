@@ -44,6 +44,7 @@ expectrl = { git = "https://github.com/zhiburt/expectrl", branch = "main" }
 failure = "0.1.8"
 futures = "0.3.30"
 portable-pty = "0.8.1"
+predicates = "3.1.0"
 pretty_assertions = "1.4"
 ptyprocess = "0.4.1"
 tokio = { version = "1.37.0", features = ["full"] }

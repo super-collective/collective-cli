@@ -21,7 +21,7 @@ fn schema_generator_works() {
 	cmd.arg("schema");
 	cmd.arg("evidence").assert().success();
 
-	let schema = temp.child("evidence.schema.json");
+	let schema = temp.child("potoc.evidence.schema.json");
 	assert!(schema.exists());
 }
 

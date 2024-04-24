@@ -6,6 +6,8 @@ use anyhow::Context;
 use glob::glob;
 use std::path::PathBuf;
 use valico::json_schema::schema::ScopedSchema;
+use crate::types::prelude::*;
+use valico::json_schema;
 
 type Result<T> = anyhow::Result<T>;
 
@@ -18,10 +20,10 @@ pub struct CheckEvidenceCommand {
 
 impl CheckEvidenceCommand {
 	pub fn run(&self, g: &GlobalConfig) -> Result<()> {
-		//let schema_str = FellowshipEvidenceReport::schema();
-		//let schema: serde_json::Value = serde_json::from_str(schema_str)?;
-		//let mut scope = json_schema::Scope::new();
-		//let schema = scope.compile_and_return(schema, false).unwrap();
+		let schema_str = EvidenceReport::schema();
+		let schema: serde_json::Value = serde_json::from_str(&schema_str)?;
+		let mut scope = json_schema::Scope::new();
+		let schema = scope.compile_and_return(schema, false).unwrap();
 
 		let paths = self.relevant_files(g)?;
 		for path in paths.iter() {
@@ -32,7 +34,7 @@ impl CheckEvidenceCommand {
 				.context(format!("checking {}", path.display()))?;
 
 			// Check that it validates against the schema.
-			//Self::validate_schema(&schema, &data)?;
+			Self::validate_schema(&schema, &data)?;
 		}
 
 		println!("Validated {} file{}.", paths.len(), crate::cmd::plural(paths.len()));
@@ -55,7 +57,7 @@ impl CheckEvidenceCommand {
 		}
 	}
 
-	fn _validate_schema<'a>(schema: &'a ScopedSchema<'a>, data: &str) -> Result<()> {
+	fn validate_schema<'a>(schema: &'a ScopedSchema<'a>, data: &str) -> Result<()> {
 		let mut doc_as_yaml: serde_yaml::Value = serde_yaml::from_str(data)?;
 		doc_as_yaml.apply_merge()?;
 
@@ -65,7 +67,7 @@ impl CheckEvidenceCommand {
 		let res = schema.validate(&doc_as_json);
 
 		if !res.is_valid() || !res.is_strictly_valid() {
-			eprintln!("Validation failed for {:#?}", res);
+			anyhow::bail!("Validation failed for {:#?}", res);
 		}
 
 		Ok(())

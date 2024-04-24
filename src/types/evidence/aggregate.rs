@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::collective::{fellowship::FellowshipEvidenceReport, potoc::PotocEvidenceReport};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, schemars::JsonSchema)]
 #[serde(tag = "collective")]
 pub enum EvidenceReport {
 	Fellowship(FellowshipEvidenceReport),

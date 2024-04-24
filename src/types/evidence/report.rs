@@ -6,11 +6,12 @@ use core::fmt::Debug;
 use derivative::Derivative;
 use serde::{Deserialize, Serialize};
 
-#[derive(Derivative, Serialize, Deserialize)]
+#[derive(Derivative, Serialize, Deserialize, schemars::JsonSchema)]
 #[derivative(Debug(bound = "C::Member: Debug, C::EvidenceCategories: Debug"))]
 #[serde(bound(deserialize = "C::Rank: Deserialize<'de>, C::EvidenceCategories: Deserialize<'de>"))]
 #[serde(bound(serialize = "C::Rank: Serialize, C::EvidenceCategories: Serialize"))]
 #[serde(rename_all = "snake_case")]
+#[schemars(bound = "", rename = "EvidenceReport")]
 pub struct GenericEvidenceReport<C: CollectiveTrait> {
 	pub member: C::Member,
 	pub wish: Wish<C::Rank>,
@@ -62,13 +63,8 @@ impl<C: CollectiveTrait> Query for GenericEvidenceReport<C> {
 }
 
 impl<C: CollectiveTrait> GenericEvidenceReport<C> {
-	/// YAML schema in JSON format.
-	pub fn schema() -> &'static str {
-		include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/schema/evidence_report.json"))
-	}
-
 	pub fn example() -> &'static str {
-		include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/example/example.evidence"))
+		include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/example/fellowship/evidence/example.evidence"))
 	}
 
 	pub fn template() -> &'static str {

@@ -23,8 +23,7 @@ impl CheckJoinRequestCommand {
 			let data = std::fs::read_to_string(path.as_path())?;
 
 			// Check that we can decode it.
-			let _: JoinRequest =
-				serde_yaml::from_str(&data).context(format!("checking {}", path.display()))?;
+			serde_yaml::from_str::<JoinRequest>(&data).context(format!("checking {}", path.display()))?;
 			println!("Checking {}", path.display());
 		}
 

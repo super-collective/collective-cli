@@ -2,6 +2,10 @@
 // SPDX-FileCopyrightText: Oliver Tale-Yazdi <oliver@tasty.limo>
 
 use crate::{cmd::OutputArgs, collective::fellowship::FellowshipEvidenceReport};
+use crate::types::prelude::CollectiveId;
+use schemars::schema_for;
+use crate::config::GlobalConfig;
+use crate::collective::potoc::PotocEvidenceReport;
 
 #[derive(Debug, clap::Parser)]
 pub struct SchemaEvidenceCommand {
@@ -10,9 +14,19 @@ pub struct SchemaEvidenceCommand {
 }
 
 impl SchemaEvidenceCommand {
-	pub fn run(&self) -> anyhow::Result<()> {
-		let schema = FellowshipEvidenceReport::schema();
+	pub fn run(&self, g: &GlobalConfig) -> anyhow::Result<()> {
+		let schema = Self::schema(g);
+		let schema = serde_json::to_string_pretty(&schema)?;
+		let name = g.collective.nickname().replace(" ", "_").to_lowercase();
+		let path = format!("{}.evidence.schema.json", name);
 
-		self.output.write_schema("evidence.schema.json", schema)
+		self.output.write_schema(&path, &schema)
+	}
+
+	fn schema(g: &GlobalConfig) -> schemars::schema::RootSchema {
+		match g.collective {
+			CollectiveId::Fellowship => schema_for!(FellowshipEvidenceReport),
+			CollectiveId::Potoc => schema_for!(PotocEvidenceReport),
+		}
 	}
 }

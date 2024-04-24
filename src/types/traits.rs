@@ -149,3 +149,14 @@ pub fn vector_prompt<F: FnMut() -> std::result::Result<R, E>, R, E: Into<anyhow:
 		}
 	}
 }
+
+pub trait Schema {
+	fn schema() -> String;
+}
+
+impl<T: schemars::JsonSchema> Schema for T {
+	fn schema() -> String {
+		let schema = schemars::schema_for!(T);
+		serde_json::to_string_pretty(&schema).unwrap()
+	}
+}

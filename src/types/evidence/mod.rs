@@ -27,7 +27,7 @@ pub struct GenericEvidence<EC> {
 	pub tasks: Vec<Tasks>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone, schemars::JsonSchema)]
 pub struct ReportPeriod {
 	/// First inclusive date that this report covers.
 	#[serde(rename = "start_date")]

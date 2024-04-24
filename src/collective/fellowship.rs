@@ -26,7 +26,7 @@ pub type FellowshipEvidenceReport = GenericEvidenceReport<FellowshipCollective>;
 pub type FellowshipJoinRequest = GenericJoinRequest<FellowshipCollective>;
 
 #[repr(u8)]
-#[derive(Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter, schemars::JsonSchema)]
+#[derive(Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter, schemars::JsonSchema_repr)]
 pub enum FellowshipRank {
 	Candidate = 0,
 	Humble = 1,
@@ -142,12 +142,4 @@ fn encodes_evidence_category() {
 	let category = FellowshipEvidenceCategory::Development(FellowshipDevelopmentEvidence::Sdk);
 	let encoded = serde_yaml::to_string(&category).unwrap();
 	assert_eq!(encoded, "t: development\nc: sdk\n");
-}
-
-#[test]
-fn parses_example_file() {
-	let file = std::fs::read_to_string("example/example.evidence").unwrap();
-	let evidence: FellowshipEvidenceReport = serde_yaml::from_str(&file).unwrap();
-
-	assert_eq!(evidence.member.name(), "Max Power");
 }

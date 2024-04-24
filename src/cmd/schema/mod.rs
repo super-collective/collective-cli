@@ -22,7 +22,7 @@ enum SchemaSubCommand {
 impl SchemaCommand {
 	pub fn run(&self, g: &GlobalConfig) -> anyhow::Result<()> {
 		match &self.subcommand {
-			SchemaSubCommand::Evidence(c) => c.run(),
+			SchemaSubCommand::Evidence(c) => c.run(g),
 			SchemaSubCommand::JoinRequest(c) => c.run(g),
 		}
 	}

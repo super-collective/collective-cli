@@ -73,12 +73,3 @@ impl EnumLike for PotocEvidenceCategory {
 		vec![Self::CoreTooling, Self::DAppTooling]
 	}
 }
-
-#[test]
-fn parses_example_file() {
-	let file = std::fs::read_to_string("example/example.evidence").unwrap();
-	let evidence: crate::collective::fellowship::FellowshipEvidenceReport =
-		serde_yaml::from_str(&file).unwrap();
-
-	assert_eq!(evidence.member.name, "Max Power");
-}

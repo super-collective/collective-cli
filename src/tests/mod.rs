@@ -5,6 +5,8 @@
 
 use glob::glob;
 use std::process::Command;
+use std::path::PathBuf;
+use predicates::prelude::*;
 
 #[test]
 fn expect() {
@@ -29,4 +31,32 @@ fn expect() {
 		let _ = std::fs::remove_dir_all(join_request_path.parent().unwrap());
 		let _ = std::fs::remove_dir_all(evidence_path.parent().unwrap());
 	}
+}
+
+#[test]
+fn integration_example_fellowship() {
+	let example_dir = PathBuf::from(std::env!("CARGO_MANIFEST_DIR"))
+		.join("example")
+		.join("fellowship");
+	
+	let mut cmd = assert_cmd::Command::cargo_bin("collective").unwrap();
+	cmd.current_dir(example_dir);
+	cmd.arg("check");
+	cmd.arg("evidence")
+		.assert()
+		.stdout("Validated 2 files.\n");
+}
+
+#[test]
+fn integration_example_potoc() {
+	let example_dir = PathBuf::from(std::env!("CARGO_MANIFEST_DIR"))
+		.join("example")
+		.join("potoc");
+	
+	let mut cmd = assert_cmd::Command::cargo_bin("collective").unwrap();
+	cmd.current_dir(example_dir);
+	cmd.arg("check");
+	cmd.arg("join-request")
+		.assert()
+		.stdout(predicate::str::contains("Validated 2 files."));
 }
