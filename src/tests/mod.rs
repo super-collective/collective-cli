@@ -58,5 +58,5 @@ fn integration_example_potoc() {
 	cmd.arg("check");
 	cmd.arg("join-request")
 		.assert()
-		.stdout(predicate::str::contains("Validated 2 files."));
+		.stdout(predicate::str::contains("Validated 3 files."));
 }
