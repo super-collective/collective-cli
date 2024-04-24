@@ -25,7 +25,7 @@ Open your `settings.json` file and insert the following, or extend this section.
 
 ```json
 "yaml.schemas": {
-	"/Users/oliver/Documents/work/collective-cli/schema/evidence_report.json": "*.evidence",
+	"/Users/oliver/Documents/work/collective-cli/schema/potoc.evidence_report.json": "*.evidence",
 },
  "files.associations": {
 	"*.evidence": "yaml",
