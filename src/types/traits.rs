@@ -109,7 +109,9 @@ impl FormatLink for String {
 		} else if self.contains("/pulls?q=") {
 			"PR range".to_string()
 		} else {
-			self.clone().trim_start_matches("https://")[..25].into()
+			let s = self.trim_start_matches("https://");
+			// We need to use `chars()` to not accidentally intersect a multi-byte UTF8 sequence.
+			s.chars().take(25).collect()
 		}
 	}
 }

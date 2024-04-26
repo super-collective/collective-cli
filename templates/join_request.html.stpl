@@ -16,6 +16,7 @@
 <tt>
 
 <% use crate::types::prelude::*; %>
+<% use std::collections::BTreeSet; %>
 
 <center><h1>Request for Admission</h1></center>
 <center><h3><%- request.collective().name() %></h3></center>
@@ -23,20 +24,20 @@
 <div align="right">Date: <%= request.date() %></div>
 <br>
 <center></centeR>
-<strong><%- request.member().name() %></strong> (<%- request.member().github() %>, <%- request.member().address() %>) wishes to
+<strong><%- request.member().name() %></strong> (<%- request.member().github_link() %>, <%- request.member().address_link() %>) wishes to
 <div class="big"></div>
 &nbsp;&nbsp;- JOIN -
 <div class="big"></div>
 
     the <%- request.collective().name() %> with rank of
     <div class="big"></div>
-    &nbsp;&nbsp;- <%= request.member().rank().name().to_uppercase() %>.
+    &nbsp;&nbsp;- <%= request.member().rank().name().to_uppercase() %>
     <div class="big"></div>
 
 by providing evidence in the following categories:
 <div class="space"></div>
-<% for cat in request.evidence_categories().iter() { %>
-  &nbsp;- <%= cat.multi_tier_name().iter().map(|cs| format!("{cs}")).collect::<Vec<_>>().join(": ") %><br>
+<% for cat in request.evidence_categories().iter().map(|c| c.multi_tier_name()).collect::<BTreeSet<_>>().into_iter() { %>
+  &nbsp;- <%= cat.iter().map(|cs| format!("{cs}")).collect::<Vec<_>>().join(": ") %> <br>
 <% } %>
 <br><br>
 <hr>
