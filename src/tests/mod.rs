@@ -14,6 +14,10 @@ fn expect() {
 	let mut tested = 0;
 	let bin_path = assert_cmd::cargo::cargo_bin("collective");
 
+	if !bin_path.is_file() {
+		panic!("Did not find executable at: {:?}", bin_path);
+	}
+
 	for file in files {
 		// start expect process
 		let file = file.unwrap();
