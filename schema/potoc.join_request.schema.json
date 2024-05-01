@@ -76,6 +76,7 @@
       "required": [
         "address",
         "github",
+        "matrix",
         "name",
         "rank"
       ],
@@ -86,6 +87,10 @@
         },
         "github": {
           "description": "GitHub handle of the member.",
+          "type": "string"
+        },
+        "matrix": {
+          "description": "Matrix chat handle.",
           "type": "string"
         },
         "name": {
@@ -110,10 +115,10 @@
       ]
     },
     "PotocRank": {
-      "type": "string",
+      "type": "integer",
       "enum": [
-        "Candidate",
-        "Member"
+        0,
+        1
       ]
     },
     "Tasks": {

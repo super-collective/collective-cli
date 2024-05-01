@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // SPDX-FileCopyrightText: Oliver Tale-Yazdi <oliver@tasty.limo>
 
-use crate::{config::GlobalConfig, types::prelude::EvidenceReport};
+use crate::{
+	config::GlobalConfig,
+	types::prelude::{EvidenceReport, *},
+};
 use anyhow::Context;
 use glob::glob;
 use std::path::PathBuf;
-use valico::json_schema::schema::ScopedSchema;
-use crate::types::prelude::*;
-use valico::json_schema;
+use valico::{json_schema, json_schema::schema::ScopedSchema};
 
 type Result<T> = anyhow::Result<T>;
 

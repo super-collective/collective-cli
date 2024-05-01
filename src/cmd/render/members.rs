@@ -3,10 +3,7 @@
 
 use crate::cmd::plural;
 
-use crate::{
-	config::GlobalConfig,
-	types::prelude::*,
-};
+use crate::{config::GlobalConfig, types::prelude::*};
 use anyhow::{bail, Context};
 use sailfish::TemplateOnce;
 use std::path::PathBuf;

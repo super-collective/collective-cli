@@ -3,6 +3,7 @@ member:
   name: Max Power
   address: "16a357f5Sxab3V2ne4emGQvqJaCLeYpTMx3TCjnQhmJQ71DX"
   github: mpower
+  matrix: neo
   rank: 9
 wish:
   intent: retain

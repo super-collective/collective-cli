@@ -22,6 +22,8 @@ pub struct GenericMember<C: CollectiveTrait> {
 	pub address: String,
 	/// GitHub handle of the member.
 	pub github: String,
+	/// Matrix chat handle.
+	pub matrix: String,
 	/// Current rank of the member.
 	pub rank: C::Rank,
 }
@@ -76,10 +78,16 @@ impl<C: CollectiveTrait> Query for GenericMember<C> {
 			.query_cached_text::<String>("reporter_github", "your GitHub handle", None)?
 			.replace('@', " ");
 
+		let matrix = prompt.query_cached_text::<String>(
+			"reporter_matrix",
+			"your Matrix chat handle",
+			None,
+		)?;
+
 		let rank_title =
 			if let Some(title) = title { format!("Rank {title}") } else { "Rank".into() };
 		let rank = C::Rank::query(Some(&rank_title), None, prompt)?;
 
-		Ok(Self { name, address, github, rank })
+		Ok(Self { name, address, github, matrix, rank })
 	}
 }

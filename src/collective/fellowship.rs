@@ -26,7 +26,9 @@ pub type FellowshipEvidenceReport = GenericEvidenceReport<FellowshipCollective>;
 pub type FellowshipJoinRequest = GenericJoinRequest<FellowshipCollective>;
 
 #[repr(u8)]
-#[derive(Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter, schemars::JsonSchema_repr)]
+#[derive(
+	Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter, schemars::JsonSchema_repr,
+)]
 pub enum FellowshipRank {
 	Candidate = 0,
 	Humble = 1,
@@ -66,7 +68,9 @@ impl From<FellowshipRank> for u32 {
 	}
 }
 
-#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, schemars::JsonSchema)]
+#[derive(
+	Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, schemars::JsonSchema,
+)]
 #[serde(rename_all = "snake_case")]
 #[serde(tag = "t", content = "c")]
 pub enum FellowshipEvidenceCategory {
@@ -75,7 +79,17 @@ pub enum FellowshipEvidenceCategory {
 }
 
 #[derive(
-	Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, strum::EnumIter, schemars::JsonSchema,
+	Debug,
+	Serialize,
+	Deserialize,
+	Copy,
+	Clone,
+	PartialOrd,
+	Ord,
+	PartialEq,
+	Eq,
+	strum::EnumIter,
+	schemars::JsonSchema,
 )]
 #[serde(rename_all = "snake_case")]
 pub enum FellowshipDevelopmentEvidence {
@@ -119,7 +133,17 @@ impl MultiTierNamed for FellowshipDevelopmentEvidence {
 }
 
 #[derive(
-	Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, strum::EnumIter, schemars::JsonSchema,
+	Debug,
+	Serialize,
+	Deserialize,
+	Copy,
+	Clone,
+	PartialOrd,
+	Ord,
+	PartialEq,
+	Eq,
+	strum::EnumIter,
+	schemars::JsonSchema,
 )]
 #[serde(rename_all = "snake_case")]
 pub enum FellowshipSpecEvidence {

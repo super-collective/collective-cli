@@ -9,7 +9,7 @@ proc del {} {
 	}
 }
 
-spawn collective new evidence;
+spawn $env(BIN) new evidence;
 expect -re ".*Please enter legal name or pseudonym:.*";
 del; send "Max Power\r";
 
@@ -18,6 +18,9 @@ del; send "555555\r";
 
 expect -re ".*Please enter your GitHub handle:.*";
 del; send "mpower\r";
+
+expect -re ".*Please enter your Matrix chat handle:.*";
+del; send "neo\r";
 
 expect "Rank that you currently have";
 expect "type to filter";

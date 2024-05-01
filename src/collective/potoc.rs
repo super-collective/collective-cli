@@ -25,7 +25,9 @@ pub type PotocEvidenceReport = GenericEvidenceReport<PotocCollective>;
 pub type PotocJoinRequest = GenericJoinRequest<PotocCollective>;
 
 #[repr(u8)]
-#[derive(Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter, schemars::JsonSchema)]
+#[derive(
+	Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter, schemars::JsonSchema_repr,
+)]
 pub enum PotocRank {
 	Candidate = 0,
 	Member = 1,
@@ -49,7 +51,9 @@ impl From<PotocRank> for u32 {
 	}
 }
 
-#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, schemars::JsonSchema)]
+#[derive(
+	Debug, Serialize, Deserialize, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, schemars::JsonSchema,
+)]
 #[serde(rename_all = "snake_case")]
 pub enum PotocEvidenceCategory {
 	CoreTooling,
