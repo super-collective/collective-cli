@@ -23,7 +23,12 @@ jobs:
       with:
         fetch-depth: 1
     - uses: Swatinem/rust-cache@v2
+
     - name: Build
+      run: cargo build --locked --quiet
+
+    - name: Install
       run: cargo install --path . --locked --quiet
+
     - name: Run tests
       run: cargo test --locked --quiet
