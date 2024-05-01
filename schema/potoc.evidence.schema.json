@@ -78,6 +78,13 @@
           "description": "GitHub handle of the member.",
           "type": "string"
         },
+        "matrix": {
+          "description": "Matrix chat handle.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "name": {
           "description": "Legal name or pseudonym of the member.",
           "type": "string"

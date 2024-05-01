@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // SPDX-FileCopyrightText: Oliver Tale-Yazdi <oliver@tasty.limo>
 
-use crate::{cmd::OutputArgs, collective::fellowship::FellowshipEvidenceReport};
-use crate::types::prelude::CollectiveId;
+use crate::{
+	cmd::OutputArgs,
+	collective::{fellowship::FellowshipEvidenceReport, potoc::PotocEvidenceReport},
+	config::GlobalConfig,
+	types::prelude::CollectiveId,
+};
 use schemars::schema_for;
-use crate::config::GlobalConfig;
-use crate::collective::potoc::PotocEvidenceReport;
 
 #[derive(Debug, clap::Parser)]
 pub struct SchemaEvidenceCommand {

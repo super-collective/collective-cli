@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // SPDX-FileCopyrightText: Oliver Tale-Yazdi <oliver@tasty.limo>
 
-use crate::{cmd::OutputArgs};
-use crate::types::prelude::*;
+use crate::{
+	cmd::OutputArgs,
+	collective::{fellowship::FellowshipJoinRequest, potoc::PotocJoinRequest},
+	config::GlobalConfig,
+	types::prelude::*,
+};
 use schemars::schema_for;
-use crate::config::GlobalConfig;
-use crate::collective::fellowship::FellowshipJoinRequest;
-use crate::collective::potoc::PotocJoinRequest;
 
 #[derive(Debug, clap::Parser)]
 pub struct SchemaJoinRequestCommand {

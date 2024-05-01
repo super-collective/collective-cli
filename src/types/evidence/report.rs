@@ -64,7 +64,10 @@ impl<C: CollectiveTrait> Query for GenericEvidenceReport<C> {
 
 impl<C: CollectiveTrait> GenericEvidenceReport<C> {
 	pub fn example() -> &'static str {
-		include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/example/fellowship/evidence/example.evidence"))
+		include_str!(concat!(
+			env!("CARGO_MANIFEST_DIR"),
+			"/example/fellowship/evidence/example.evidence"
+		))
 	}
 
 	pub fn template() -> &'static str {

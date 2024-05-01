@@ -1,5 +1,5 @@
 #!/usr/bin/expect
-#set timeout 1
+set timeout 1
 
 proc del {} {
 	set times 0;
@@ -9,7 +9,7 @@ proc del {} {
 	}
 }
 
-spawn collective new join-request;
+spawn $env(BIN) new join-request;
 expect -re ".*Please enter legal name or pseudonym:.*";
 del; send "Max Power\r";
 
@@ -18,6 +18,9 @@ del; send "555555\r";
 
 expect -re ".*Please enter your GitHub handle:.*";
 del; send "mpower\r";
+
+expect -re ".*Please enter your Matrix chat handle:.*";
+del; send "neo\r";
 
 expect "Rank to join";
 expect "enter to select";
