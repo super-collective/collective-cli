@@ -115,10 +115,10 @@
       ]
     },
     "PotocRank": {
-      "type": "string",
+      "type": "integer",
       "enum": [
-        "Candidate",
-        "Member"
+        0,
+        1
       ]
     },
     "Tasks": {
