@@ -76,6 +76,7 @@
       "required": [
         "address",
         "github",
+        "matrix",
         "name",
         "rank"
       ],
@@ -90,10 +91,7 @@
         },
         "matrix": {
           "description": "Matrix chat handle.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string"
         },
         "name": {
           "description": "Legal name or pseudonym of the member.",
