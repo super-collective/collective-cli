@@ -1,6 +1,6 @@
 # Take from https://github.com/paritytech/try-runtime-cli/blob/9210f834e654a862a417444e864325fcfc2a63ab/.github/workflows/build-release-binaries.yaml
 
-name: Build and Attach Binaries to Release
+name: Release
 
 on:
   release:
