@@ -46,8 +46,8 @@ jobs:
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./target/${{ matrix.platform.target }}/release/try-runtime
-        asset_name: try-runtime-${{ matrix.platform.target }}
+        asset_path: ./target/${{ matrix.platform.target }}/release/collective
+        asset_name: collective-${{ matrix.platform.target }}
         asset_content_type: application/octet-stream
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
