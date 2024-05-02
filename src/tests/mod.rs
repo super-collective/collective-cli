@@ -19,8 +19,11 @@ fn expect() {
 	}
 
 	for file in files {
-		// start expect process
 		let file = file.unwrap();
+		if file.display().to_string().contains("target") {
+			continue;
+		}
+
 		let mut cmd = Command::new("expect");
 		cmd.env("BIN", &bin_path);
 		cmd.current_dir(file.parent().unwrap());

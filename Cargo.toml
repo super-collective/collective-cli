@@ -1,6 +1,6 @@
 [package]
 name = "collective"
-version = "0.4.1"
+version = "0.4.2"
 edition = "2021"
 license = "GPL-3.0-only"
 repository = "https://github.com/ggwpez/fellowship"
@@ -11,21 +11,21 @@ name = "collective"
 path = "src/bin/collective.rs"
 
 [dependencies]
-anyhow = "1.0.81"
+anyhow = "1.0.82"
 backtrace = "0.3.71"
-chrono = "0.4.37"
+chrono = "0.4.38"
 clap = { version = "4.5.4", features = ["derive", "cargo"] }
 derivative = "2.2.0"
 dirs = "5.0.1"
 env_logger = "0.11.3"
 glob = "0.3.1"
-inquire = { version = "0.7.4", features = ["date"] }
+inquire = { version = "0.7.5", features = ["date"] }
 log = "0.4.21"
 relative-path = "1.9.2"
 sailfish = "0.8.3"
-schemars = "0.8.16"
-serde = { version = "1.0.197", features = ["derive"] }
-serde_json = "1.0.115"
+schemars = "0.8.17"
+serde = { version = "1.0.200", features = ["derive"] }
+serde_json = "1.0.116"
 serde_repr = "0.1.19"
 serde_yaml = "0.9.34"
 strum = { version = "0.26", features = ["derive"] }
