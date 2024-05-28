@@ -29,6 +29,10 @@ pub struct GenericMember<C: CollectiveTrait> {
 }
 
 impl<C: CollectiveTrait> MemberTrait for GenericMember<C> {
+	fn matrix(&self) -> &str {
+		&self.matrix
+	}
+	
 	fn github(&self) -> &str {
 		&self.github
 	}

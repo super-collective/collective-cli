@@ -34,6 +34,10 @@ impl Named for Member {
 }
 
 impl MemberTrait for Member {
+	fn matrix(&self) -> &str {
+		using_collective!(self, member, { member.matrix() })
+	}
+	
 	fn github(&self) -> &str {
 		using_collective!(self, member, { member.github() })
 	}

@@ -10,6 +10,10 @@ use std::path::PathBuf;
 pub struct RenderEvidenceCommand {
 	#[clap(index = 1)]
 	path: PathBuf,
+
+	/// Render in Markdown instead of HTML.
+	#[clap(long, alias = "md")]
+	pub markdown: bool,
 }
 
 impl RenderEvidenceCommand {
@@ -20,10 +24,15 @@ impl RenderEvidenceCommand {
 		let file = std::fs::read_to_string(self.path.as_path()).context("reading evidence file")?;
 		let report: EvidenceReport = serde_yaml::from_str(&file)?;
 
-		let ctx = crate::template::EvidenceTemplate { report };
-		let rendered = ctx.render_once()?;
+		let (rendered, ext) = if self.markdown {
+			let ctx = crate::template::EvidenceMdTemplate { report };
+			(ctx.render_once()?, "md")
+		} else {
+			let ctx = crate::template::EvidenceTemplate { report };
+			(ctx.render_once()?, "html")
+		};
 
-		let output_path = self.path.with_extension("html");
+		let output_path = self.path.with_extension(ext);
 		std::fs::write(&output_path, rendered)?;
 
 		println!("Rendered evidence report to {}", output_path.display());

@@ -6,7 +6,7 @@ use core::fmt::Debug;
 use serde::{de::DeserializeOwned, Serialize};
 
 /// Object safe version of a Rank.
-pub trait RankBaseTrait: Named + EnumLike {}
+pub trait RankBaseTrait: Named + Numbered + EnumLike {}
 
 /// Not object safe version of a Rank.
 pub trait Rank:

@@ -24,7 +24,7 @@
 <div align="right">Date: <%= request.date() %></div>
 <br>
 <center></centeR>
-<strong><%- request.member().name() %></strong> (<%- request.member().github_link() %>, <%- request.member().address_link() %>) wishes to
+<strong><%- request.member().name() %></strong> (<%- request.member().github_link() %>, <%- request.member().address_link(true) %>) wishes to
 <div class="big"></div>
 &nbsp;&nbsp;- JOIN -
 <div class="big"></div>

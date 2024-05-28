@@ -27,7 +27,7 @@ pub type FellowshipJoinRequest = GenericJoinRequest<FellowshipCollective>;
 
 #[repr(u8)]
 #[derive(
-	Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter, schemars::JsonSchema_repr,
+	Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter, schemars::JsonSchema_repr, PartialEq,
 )]
 pub enum FellowshipRank {
 	Candidate = 0,
@@ -166,4 +166,16 @@ fn encodes_evidence_category() {
 	let category = FellowshipEvidenceCategory::Development(FellowshipDevelopmentEvidence::Sdk);
 	let encoded = serde_yaml::to_string(&category).unwrap();
 	assert_eq!(encoded, "t: development\nc: sdk\n");
+}
+
+// TODO factor into CollectiveFormatter trait.
+pub trait FellowshipFormatting {
+	fn to_fellowship_date(&self) -> String;
+}
+
+impl<T: AsRef<str>> FellowshipFormatting for T {
+	fn to_fellowship_date(&self) -> String {
+		let date = chrono::NaiveDate::parse_from_str(self.as_ref(), "%Y-%m-%d").expect(format!("parsing date {}", self.as_ref()).as_str());
+		date.format("%Y/%m/%d").to_string()
+	}
 }
