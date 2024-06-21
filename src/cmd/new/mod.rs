@@ -3,6 +3,7 @@
 
 mod evidence;
 mod join_request;
+mod member;
 
 use crate::config::GlobalConfig;
 
@@ -18,6 +19,8 @@ enum NewSubCommand {
 	Evidence(evidence::NewEvidenceCommand),
 	// Create a new member request.
 	JoinRequest(join_request::NewJoinRequestCommand),
+	// Create a new member.
+	Member(member::NewMemberCommand),
 }
 
 impl NewCommand {
@@ -25,6 +28,7 @@ impl NewCommand {
 		match &self.subcommand {
 			NewSubCommand::Evidence(c) => c.run(g),
 			NewSubCommand::JoinRequest(c) => c.run(g),
+			NewSubCommand::Member(c) => c.run(g),
 		}
 	}
 }

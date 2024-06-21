@@ -8,7 +8,7 @@ use super::MemberTrait;
 use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, schemars::JsonSchema)]
 #[serde(tag = "collective")]
 pub enum Member {
 	Fellowship(<crate::collective::fellowship::FellowshipCollective as CollectiveTrait>::Member),
