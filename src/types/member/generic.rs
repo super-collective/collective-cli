@@ -46,18 +46,6 @@ impl<C: CollectiveTrait> MemberTrait for GenericMember<C> {
 	}
 }
 
-impl<C: CollectiveTrait> Encode for GenericMember<C> {
-	fn to_yaml(&self) -> serde_yaml::Value {
-		serde_yaml::to_value(self).unwrap()
-	}
-}
-
-impl<C: CollectiveTrait> Decode for GenericMember<C> {
-	fn from_yaml(value: serde_yaml::Value) -> anyhow::Result<Self> {
-		serde_yaml::from_value(value).map_err(Into::into)
-	}
-}
-
 impl<C: CollectiveTrait> Named for GenericMember<C> {
 	fn name(&self) -> Cow<'static, str> {
 		self.name.clone().into()

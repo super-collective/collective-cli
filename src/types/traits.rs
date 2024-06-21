@@ -5,22 +5,6 @@ use anyhow::Result;
 use inquire::{Confirm, Select};
 use std::borrow::Cow;
 
-/// Encode an item.
-///
-/// Only needed since the serde traits are not object safe.
-pub trait Encode {
-	fn to_yaml(&self) -> serde_yaml::Value;
-}
-
-/// Decode an item.
-///
-/// Only needed since the serde traits are not object safe.
-pub trait Decode {
-	fn from_yaml(value: serde_yaml::Value) -> anyhow::Result<Self>
-	where
-		Self: Sized;
-}
-
 pub trait Named {
 	fn name(&self) -> Cow<'static, str>;
 }
