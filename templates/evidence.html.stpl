@@ -26,7 +26,7 @@
 <div align="right">Date: <%= report.date() %></div>
 <br>
 <center></centeR>
-Fellow <strong><%- report.member().name() %></strong> (<%- report.member().github_link() %>, <%- report.member().address_link() %>) wishes to
+Fellow <strong><%- report.member().name() %></strong> (<%- report.member().github_link() %>, <%- report.member().address_link(true) %>) wishes to
 <div class="big"></div>
 &nbsp;&nbsp;- <%= report.wish().name().to_uppercase() %> -
 <div class="big"></div>

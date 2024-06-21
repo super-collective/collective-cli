@@ -7,6 +7,7 @@ pub trait MemberTrait: Named {
 	fn canonical_name(&self) -> String {
 		self.name().to_string().replace(' ', "-").to_lowercase()
 	}
+	fn matrix(&self) -> &str;
 	fn github(&self) -> &str;
 	fn github_link(&self) -> String {
 		format!(
@@ -16,10 +17,10 @@ pub trait MemberTrait: Named {
 		)
 	}
 	fn address(&self) -> &str;
-	fn address_link(&self) -> String {
+	fn address_link(&self, shorten: bool) -> String {
 		let address = self.address();
 		let shortened =
-			if address.len() > 8 { format!("{}..", &address[..8]) } else { address.to_string() };
+			if shorten && address.len() > 8 { format!("{}..", &address[..8]) } else { address.to_string() };
 		format!(
 			"<a target='_blank' href='https://collectives.statescan.io/#/accounts/{}'>{}</a>",
 			address, shortened

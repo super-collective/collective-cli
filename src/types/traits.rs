@@ -5,24 +5,18 @@ use anyhow::Result;
 use inquire::{Confirm, Select};
 use std::borrow::Cow;
 
-/// Encode an item.
-///
-/// Only needed since the serde traits are not object safe.
-pub trait Encode {
-	fn to_yaml(&self) -> serde_yaml::Value;
-}
-
-/// Decode an item.
-///
-/// Only needed since the serde traits are not object safe.
-pub trait Decode {
-	fn from_yaml(value: serde_yaml::Value) -> anyhow::Result<Self>
-	where
-		Self: Sized;
-}
-
 pub trait Named {
 	fn name(&self) -> Cow<'static, str>;
+}
+
+pub trait Numbered {
+	fn number(&self) -> u8;
+}
+
+impl<T: EnumLike + core::cmp::PartialEq> Numbered for T {
+	fn number(&self) -> u8 {
+		T::variants().iter().position(|r| r == self).unwrap() as u8
+	}
 }
 
 /// Something with a fixed set of variants that can be listed at runtime.
@@ -61,7 +55,7 @@ pub trait MultiTierNamed {
 	fn multi_tier_name(&self) -> Vec<Cow<'static, str>>;
 }
 
-impl<T: MultiTierNamed> Named for T {
+impl<T: ?Sized + MultiTierNamed> Named for T {
 	fn name(&self) -> Cow<'static, str> {
 		self.multi_tier_name().join("").into()
 	}
@@ -102,10 +96,10 @@ impl FormatLink for String {
 		{
 			format!("RFC {}", rfc)
 		} else if let Some(link) =
-			self.strip_prefix("https://github.com/polkadot-fellows/runtimes/pull/")
+			self.strip_prefix("https://github.com/polkadot-fellows/runtimes/pull/").or(self.strip_prefix("https://github.com/polkadot-fellows/runtimes/issues/"))
 		{
 			let link = link.replace("/pull/", "#").replace("/issues/", "#");
-			format!("Runtimes {}", link)
+			format!("Runtime {}", link)
 		} else if self.contains("/pulls?q=") {
 			"PR range".to_string()
 		} else {
@@ -160,5 +154,22 @@ impl<T: schemars::JsonSchema> Schema for T {
 	fn schema() -> String {
 		let schema = schemars::schema_for!(T);
 		serde_json::to_string_pretty(&schema).unwrap()
+	}
+}
+
+pub trait IntoRomanNumeral {
+	fn into_roman_numeral(self) -> String;
+}
+
+impl<T: Into<u32>> IntoRomanNumeral for T {
+	fn into_roman_numeral(self) -> String {
+		let n: u32 = self.into();
+		if n > 9 {
+			return n.to_string();
+		}
+
+		[
+			"0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
+		][n as usize].to_string()
 	}
 }

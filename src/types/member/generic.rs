@@ -29,6 +29,10 @@ pub struct GenericMember<C: CollectiveTrait> {
 }
 
 impl<C: CollectiveTrait> MemberTrait for GenericMember<C> {
+	fn matrix(&self) -> &str {
+		&self.matrix
+	}
+	
 	fn github(&self) -> &str {
 		&self.github
 	}
@@ -39,18 +43,6 @@ impl<C: CollectiveTrait> MemberTrait for GenericMember<C> {
 
 	fn rank(&self) -> &dyn RankBaseTrait {
 		&self.rank
-	}
-}
-
-impl<C: CollectiveTrait> Encode for GenericMember<C> {
-	fn to_yaml(&self) -> serde_yaml::Value {
-		serde_yaml::to_value(self).unwrap()
-	}
-}
-
-impl<C: CollectiveTrait> Decode for GenericMember<C> {
-	fn from_yaml(value: serde_yaml::Value) -> anyhow::Result<Self> {
-		serde_yaml::from_value(value).map_err(Into::into)
 	}
 }
 

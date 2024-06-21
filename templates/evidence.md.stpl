@@ -1,0 +1,53 @@
+<% use crate::types::prelude::*; %>
+
+# Evidence-0000: <%= match report.wish().name().as_ref() {
+	// shitty code
+		"Retain" => "Retention at Rank",
+		"Promote" => "Promotion to Rank",
+		_ => unreachable!(),
+}.to_string() + " " + &report.wish().rank().number().into_roman_numeral() %>
+
+|                 |                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------- |
+| **Report Date** | <%= report.date().to_fellowship_date() %>                                                             |
+| **Submitted by**| <%- report.member().name() %>                                                                        |
+
+
+## Member details
+
+- Matrix username: `<%- report.member().matrix() %>`
+- Polkadot address: <%- report.member().address_link(false) %>
+- Current rank: **<%= report.member().rank().number().into_roman_numeral() %>**
+- Date of initial induction: `2022/11/21`
+- Date of last report: `None`
+- Area(s) of Expertise/Interest:
+	- `cross-chain message passing (XCMP, HRMP, DMP & UMP)`
+	- `the Polkadot business-logic (aka the 'runtime')`
+	- `pallets utilised by the Polkadot (Main) Network and its system chains`
+	- `the internals of the frame pallet framework`
+	- `runtime and host APIs`
+	- `standard RPCs`
+
+
+## Reporting period
+
+<% use crate::collective::fellowship::FellowshipFormatting; %>
+
+- Start date: <%= report.period().start.to_fellowship_date() %>
+- End date: <%= report.period().end.to_fellowship_date() %>
+
+
+## Evidence
+
+|  Areas of Contribution | Tasks  | Links   |Notes   |
+|---|---|---|---|
+<% for (_, evidence) in report.evidence().iter().enumerate() { %>| <%= evidence.category().multi_tier_name().into_iter().collect::<Vec<_>>().join(" ") %> | <%= evidence.title() %> | <%- evidence.tasks().iter().map(|t| t.links.iter()).flatten().map(|l| l.format_link()).collect::<Vec<_>>().join(", ") %>  | <%- evidence.tasks().iter().map(|t| t.title.clone()).collect::<Vec<_>>().join(", ") %> | %>
+<% } %>
+
+## Misc
+
+- [ ] Question(s): 
+
+- [ ] Concern(s): 
+
+- [ ] Comment(s): 

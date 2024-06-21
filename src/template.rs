@@ -10,6 +10,12 @@ pub struct EvidenceTemplate {
 }
 
 #[derive(sailfish::TemplateOnce)]
+#[template(path = "evidence.md.stpl")]
+pub struct EvidenceMdTemplate {
+	pub report: EvidenceReport,
+}
+
+#[derive(sailfish::TemplateOnce)]
 #[template(path = "members.md.stpl")]
 pub struct MembersTemplate {
 	pub members: Members,
