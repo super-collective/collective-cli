@@ -5,6 +5,6 @@
 <% use crate::types::prelude::*; %>
 -->
 
-| Name | Rank | Address |
+| Name | github | Address |
 |------|------|---------| <% for member in members.members.iter() { %>
-| <%- member.name() %> | <%- member.rank().name() %> | <%- member.address() %> |<% } %>
+| <%- member.name() %> | <%- member.github() %> | <%- member.address_link(true) %> |<% } %>

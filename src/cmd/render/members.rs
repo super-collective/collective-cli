@@ -7,6 +7,7 @@ use crate::{config::GlobalConfig, types::prelude::*};
 use anyhow::{bail, Context};
 use sailfish::TemplateOnce;
 use std::path::PathBuf;
+use glob::glob;
 
 type Result<T> = anyhow::Result<T>;
 
@@ -32,7 +33,7 @@ impl RenderMembersCommand {
 			let ctx = crate::template::MembersTemplate { members };
 			let rendered = ctx.render_once()?;
 			std::fs::write(&self.output, rendered)?;
-			log::info!("Rendered members to '{}'", self.output.display());
+			println!("Rendered members to '{}'", self.output.display());
 		} else {
 			log::warn!("Members collection is empty");
 		}
@@ -55,20 +56,27 @@ impl RenderMembersCommand {
 
 	fn parse_files(&self, g: &GlobalConfig) -> Result<Vec<Member>> {
 		let mut members: Vec<Member> = vec![];
+		let paths = self.relevant_files(g)?;
 
-		for entry in std::fs::read_dir(&g.members_dir)? {
-			let entry = entry?;
-			let path = entry.path();
+		for path in paths {
+			let file = std::fs::File::open(&path)?;
+			let member: Member = serde_yaml::from_reader(file)?;
 
-			if path.is_file() && path.extension() == Some("yaml".as_ref()) {
-				let file = std::fs::File::open(&path)?;
-				let member: Member = serde_yaml::from_reader(file)?;
-
-				log::debug!("Parsed member from '{}'", path.display());
-				members.push(member);
-			}
+			log::debug!("Parsed member from '{}'", path.display());
+			members.push(member);
 		}
 
 		Ok(members)
+	}
+
+	fn relevant_files(&self, g: &GlobalConfig) -> Result<Vec<PathBuf>> {
+		let pattern = format!("{}/**/*.y*", g.members_dir.display());
+		let mut files = vec![];
+
+		for entry in glob(&pattern)? {
+			files.push(entry?);
+		}
+
+		Ok(files)
 	}
 }

@@ -3,6 +3,7 @@
 
 mod evidence;
 mod join_request;
+mod member;
 
 use crate::config::GlobalConfig;
 
@@ -18,6 +19,8 @@ enum CheckSubCommand {
 	Evidence(evidence::CheckEvidenceCommand),
 	/// Check a join-request for formatting errors.
 	JoinRequest(join_request::CheckJoinRequestCommand),
+	/// Check a member for formatting errors.
+	Member(member::CheckMemberCommand),
 }
 
 impl CheckCommand {
@@ -25,6 +28,7 @@ impl CheckCommand {
 		match &self.subcommand {
 			CheckSubCommand::Evidence(c) => c.run(g),
 			CheckSubCommand::JoinRequest(c) => c.run(g),
+			CheckSubCommand::Member(c) => c.run(g),
 		}
 	}
 }
