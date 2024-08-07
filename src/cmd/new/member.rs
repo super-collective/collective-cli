@@ -29,14 +29,14 @@ impl NewMemberCommand {
 		let file = std::fs::read_to_string(path.as_path()).context("reading evidence file")?;
 		let request: JoinRequest =
 			serde_yaml::from_str(&file).with_context(|| format!("parsing {:?}", path))?;
-		
+
 		let member = request.member();
 		let mut target_path = g.members_dir.join(member.github());
 		target_path.set_extension("yml");
 		if target_path.exists() {
 			bail!("member already exists: {}", target_path.display());
 		}
-		
+
 		let member = match &request {
 			JoinRequest::Fellowship(r) => Member::Fellowship(r.member.clone()),
 			JoinRequest::Potoc(r) => Member::Potoc(r.member.clone()),

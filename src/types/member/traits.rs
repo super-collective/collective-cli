@@ -20,8 +20,11 @@ pub trait MemberTrait: Named {
 	fn address(&self) -> &str;
 	fn address_link(&self, shorten: bool) -> String {
 		let address = self.address();
-		let shortened =
-			if shorten && address.len() > 8 { format!("{}..", &address[..8]) } else { address.to_string() };
+		let shortened = if shorten && address.len() > 8 {
+			format!("{}..", &address[..8])
+		} else {
+			address.to_string()
+		};
 		format!(
 			"<a target='_blank' href='https://collectives.statescan.io/#/accounts/{}'>{}</a>",
 			address, shortened

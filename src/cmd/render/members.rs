@@ -5,9 +5,9 @@ use crate::cmd::plural;
 
 use crate::{config::GlobalConfig, types::prelude::*};
 use anyhow::{bail, Context};
+use glob::glob;
 use sailfish::TemplateOnce;
 use std::path::PathBuf;
-use glob::glob;
 
 type Result<T> = anyhow::Result<T>;
 

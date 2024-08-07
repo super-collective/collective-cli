@@ -4,10 +4,11 @@
 mod evidence;
 mod join_request;
 
-use crate::cmd::OutputArgs;
-use crate::types::prelude::EvidenceReport;
-use crate::types::prelude::JoinRequest;
-use crate::config::GlobalConfig;
+use crate::{
+	cmd::OutputArgs,
+	config::GlobalConfig,
+	types::prelude::{EvidenceReport, JoinRequest},
+};
 use schemars::schema_for;
 
 #[derive(Debug, clap::Parser)]
@@ -53,7 +54,7 @@ impl GenericSchemaEvidence {
 	pub fn run(&self) -> anyhow::Result<()> {
 		let schema = schema_for!(EvidenceReport);
 		let schema = serde_json::to_string_pretty(&schema)?;
-		
+
 		let path = "evidence.schema.json";
 		self.output.write_schema(&path, &schema)
 	}
@@ -63,7 +64,7 @@ impl GenericSchemaJoinRequest {
 	pub fn run(&self) -> anyhow::Result<()> {
 		let schema = schema_for!(JoinRequest);
 		let schema = serde_json::to_string_pretty(&schema)?;
-		
+
 		let path = "join_request.schema.json";
 		self.output.write_schema(&path, &schema)
 	}

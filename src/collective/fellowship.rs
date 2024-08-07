@@ -27,7 +27,14 @@ pub type FellowshipJoinRequest = GenericJoinRequest<FellowshipCollective>;
 
 #[repr(u8)]
 #[derive(
-	Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter, schemars::JsonSchema_repr, PartialEq,
+	Debug,
+	Serialize_repr,
+	Deserialize_repr,
+	Copy,
+	Clone,
+	strum::EnumIter,
+	schemars::JsonSchema_repr,
+	PartialEq,
 )]
 pub enum FellowshipRank {
 	Candidate = 0,
@@ -175,7 +182,8 @@ pub trait FellowshipFormatting {
 
 impl<T: AsRef<str>> FellowshipFormatting for T {
 	fn to_fellowship_date(&self) -> String {
-		let date = chrono::NaiveDate::parse_from_str(self.as_ref(), "%Y-%m-%d").expect(format!("parsing date {}", self.as_ref()).as_str());
+		let date = chrono::NaiveDate::parse_from_str(self.as_ref(), "%Y-%m-%d")
+			.expect(format!("parsing date {}", self.as_ref()).as_str());
 		date.format("%Y/%m/%d").to_string()
 	}
 }

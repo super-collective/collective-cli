@@ -38,7 +38,7 @@ impl<C: CollectiveTrait> MemberTrait for GenericMember<C> {
 	fn email(&self) -> &str {
 		&self.email
 	}
-	
+
 	fn github(&self) -> &str {
 		&self.github
 	}
@@ -72,7 +72,8 @@ impl<C: CollectiveTrait> Query for GenericMember<C> {
 			None,
 		)?;
 
-		let email = prompt.query_cached_text::<String>("reporter_email", "your email address", None)?;
+		let email =
+			prompt.query_cached_text::<String>("reporter_email", "your email address", None)?;
 
 		let github = prompt
 			.query_cached_text::<String>("reporter_github", "your GitHub handle", None)?
