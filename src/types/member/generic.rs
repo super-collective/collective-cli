@@ -20,6 +20,8 @@ pub struct GenericMember<C: CollectiveTrait> {
 	///
 	/// Can be a Substrate, Polkadot or Collectives Address.
 	pub address: String,
+	/// Email address of the member.
+	pub email: String,
 	/// GitHub handle of the member.
 	pub github: String,
 	/// Matrix chat handle.
@@ -31,6 +33,10 @@ pub struct GenericMember<C: CollectiveTrait> {
 impl<C: CollectiveTrait> MemberTrait for GenericMember<C> {
 	fn matrix(&self) -> &str {
 		&self.matrix
+	}
+
+	fn email(&self) -> &str {
+		&self.email
 	}
 	
 	fn github(&self) -> &str {
@@ -66,6 +72,8 @@ impl<C: CollectiveTrait> Query for GenericMember<C> {
 			None,
 		)?;
 
+		let email = prompt.query_cached_text::<String>("reporter_email", "your email address", None)?;
+
 		let github = prompt
 			.query_cached_text::<String>("reporter_github", "your GitHub handle", None)?
 			.replace('@', " ");
@@ -80,6 +88,6 @@ impl<C: CollectiveTrait> Query for GenericMember<C> {
 			if let Some(title) = title { format!("Rank {title}") } else { "Rank".into() };
 		let rank = C::Rank::query(Some(&rank_title), None, prompt)?;
 
-		Ok(Self { name, address, github, matrix, rank })
+		Ok(Self { name, address, email, github, matrix, rank })
 	}
 }

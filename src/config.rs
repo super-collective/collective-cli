@@ -39,6 +39,7 @@ pub struct GlobalConfig {
 	pub members_dir: PathBuf,
 	pub evidence_dir: PathBuf,
 	pub join_requests_dir: PathBuf,
+	#[allow(dead_code)]
 	pub config_path: PathBuf,
 }
 

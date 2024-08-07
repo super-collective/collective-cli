@@ -29,7 +29,9 @@ impl RenderMembersCommand {
 			members_dir.display()
 		);
 
-		if let Ok(members) = Members::try_from(members) {
+		if let Ok(mut members) = Members::try_from(members) {
+			members.members.sort_by(|a, b| a.name().cmp(&b.name()));
+
 			let ctx = crate::template::MembersTemplate { members };
 			let rendered = ctx.render_once()?;
 			std::fs::write(&self.output, rendered)?;

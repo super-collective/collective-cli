@@ -53,7 +53,7 @@
           "description": "Topic category of the evidence.",
           "allOf": [
             {
-              "$ref": "#/definitions/PotocEvidenceCategory"
+              "$ref": "#/definitions/FellowshipEvidenceCategory"
             }
           ]
         },
@@ -69,6 +69,77 @@
           "type": "string"
         }
       }
+    },
+    "FellowshipDevelopmentEvidence": {
+      "type": "string",
+      "enum": [
+        "sdk",
+        "runtime",
+        "tooling",
+        "other"
+      ]
+    },
+    "FellowshipEvidenceCategory": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "c",
+            "t"
+          ],
+          "properties": {
+            "c": {
+              "$ref": "#/definitions/FellowshipDevelopmentEvidence"
+            },
+            "t": {
+              "type": "string",
+              "enum": [
+                "development"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "c",
+            "t"
+          ],
+          "properties": {
+            "c": {
+              "$ref": "#/definitions/FellowshipSpecEvidence"
+            },
+            "t": {
+              "type": "string",
+              "enum": [
+                "spec"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "FellowshipRank": {
+      "type": "integer",
+      "enum": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    "FellowshipSpecEvidence": {
+      "type": "string",
+      "enum": [
+        "rfc",
+        "docs"
+      ]
     },
     "Member": {
       "description": "Info about an existing or aspiring member of a collective.",
@@ -106,25 +177,11 @@
           "description": "Current rank of the member.",
           "allOf": [
             {
-              "$ref": "#/definitions/PotocRank"
+              "$ref": "#/definitions/FellowshipRank"
             }
           ]
         }
       }
-    },
-    "PotocEvidenceCategory": {
-      "type": "string",
-      "enum": [
-        "core_tooling",
-        "d_app_tooling"
-      ]
-    },
-    "PotocRank": {
-      "type": "integer",
-      "enum": [
-        0,
-        1
-      ]
     },
     "Tasks": {
       "description": "A task that was either solely completed by the reporter or in collaboration with others.",

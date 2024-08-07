@@ -32,6 +32,9 @@ fn expect() {
 		let stderr = String::from_utf8_lossy(&output.stderr);
 		assert!(output.status.success(), "{stderr}");
 
+		// print output
+		println!("{}", String::from_utf8_lossy(&output.stdout));
+
 		let join_request_path = file.parent().unwrap().join("join_request").join("0.yaml");
 		let evidence_path = file.parent().unwrap().join("evidence").join("0.evidence");
 

@@ -69,8 +69,14 @@ impl Command {
 impl OutputArgs {
 	fn write_schema(&self, default_path: &str, data: &str) -> anyhow::Result<()> {
 		if let Some(path) = &self.output {
-			std::fs::write(path, data)?;
-			println!("Wrote schema to '{}'", path.display());
+			if path.is_dir() {
+				let path = path.join(default_path);
+				std::fs::write(&path, data)?;
+				println!("Wrote schema to '{}'", path.display());
+			} else {
+				std::fs::write(path, data)?;
+				println!("Wrote schema to '{}'", path.display());
+			}
 		} else if self.stdout {
 			println!("{}", data);
 		} else {

@@ -8,6 +8,7 @@ pub trait MemberTrait: Named {
 		self.name().to_string().replace(' ', "-").to_lowercase()
 	}
 	fn matrix(&self) -> &str;
+	fn email(&self) -> &str;
 	fn github(&self) -> &str;
 	fn github_link(&self) -> String {
 		format!(
