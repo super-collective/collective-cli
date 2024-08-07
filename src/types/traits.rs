@@ -95,8 +95,9 @@ impl FormatLink for String {
 			self.strip_prefix("https://github.com/polkadot-fellows/RFCs/pull/")
 		{
 			format!("RFC {}", rfc)
-		} else if let Some(link) =
-			self.strip_prefix("https://github.com/polkadot-fellows/runtimes/pull/").or(self.strip_prefix("https://github.com/polkadot-fellows/runtimes/issues/"))
+		} else if let Some(link) = self
+			.strip_prefix("https://github.com/polkadot-fellows/runtimes/pull/")
+			.or(self.strip_prefix("https://github.com/polkadot-fellows/runtimes/issues/"))
 		{
 			let link = link.replace("/pull/", "#").replace("/issues/", "#");
 			format!("Runtime {}", link)
@@ -168,8 +169,6 @@ impl<T: Into<u32>> IntoRomanNumeral for T {
 			return n.to_string();
 		}
 
-		[
-			"0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
-		][n as usize].to_string()
+		["0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"][n as usize].to_string()
 	}
 }

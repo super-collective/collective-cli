@@ -16,6 +16,9 @@ del; send "Max Power\r";
 expect -re ".*Please enter your Polkadot address:.*";
 del; send "555555\r";
 
+expect -re ".*Please enter your email address:.*";
+del; send "hey\r";
+
 expect -re ".*Please enter your GitHub handle:.*";
 del; send "mpower\r";
 
@@ -24,8 +27,9 @@ del; send "neo\r";
 
 expect "Rank to join";
 expect "enter to select";
+del; send "\r";
 #send "\033\[B";
-send "Member\r";
+#send "Member\r";
 expect -re ".*What motivated you to apply?.*";
 send "Polkadot best\r";
 

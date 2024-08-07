@@ -3,6 +3,7 @@ member:
   name: Max Power
   address: '555555'
   github: mpower
+  email: "m@power.com"
   matrix: neo
   rank: 1
 motivation: Polkadot best

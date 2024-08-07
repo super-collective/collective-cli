@@ -26,7 +26,14 @@ pub type PotocJoinRequest = GenericJoinRequest<PotocCollective>;
 
 #[repr(u8)]
 #[derive(
-	Debug, Serialize_repr, Deserialize_repr, Copy, Clone, strum::EnumIter, schemars::JsonSchema_repr, PartialEq,
+	Debug,
+	Serialize_repr,
+	Deserialize_repr,
+	Copy,
+	Clone,
+	strum::EnumIter,
+	schemars::JsonSchema_repr,
+	PartialEq,
 )]
 pub enum PotocRank {
 	Candidate = 0,

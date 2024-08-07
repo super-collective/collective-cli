@@ -37,7 +37,11 @@ impl MemberTrait for Member {
 	fn matrix(&self) -> &str {
 		using_collective!(self, member, { member.matrix() })
 	}
-	
+
+	fn email(&self) -> &str {
+		using_collective!(self, member, { member.email() })
+	}
+
 	fn github(&self) -> &str {
 		using_collective!(self, member, { member.github() })
 	}

@@ -16,6 +16,9 @@ del; send "Max Power\r";
 expect -re ".*Please enter your Polkadot address:.*";
 del; send "555555\r";
 
+expect -re ".*Please enter your email address:.*";
+del; send "hey\r";
+
 expect -re ".*Please enter your GitHub handle:.*";
 del; send "mpower\r";
 
